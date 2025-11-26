@@ -14,7 +14,9 @@ private:
 
     std::vector<Action> actions;         
     std::stack<Action> done_actions;      
-    std::stack<Action> redone_actions;    
+    std::stack<Action> redone_actions;   
+    
+    vector<Character &> players;
 
 public:
     Game(Board& board);
@@ -24,6 +26,8 @@ public:
     void add_character(Character* character);
 
     Action computeNextAction(Character& character, Direction direction);
+
+    void play (Direction direction);
 
     bool undo();
     bool redo();

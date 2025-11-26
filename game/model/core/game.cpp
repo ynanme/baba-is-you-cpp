@@ -18,6 +18,75 @@ void Game::update() {
 }
 
 
+void Game :: play (Direction direction) {
+    for (Character & player: players) {
+        Action action {player, direction};
+        do(action);
+    }
+}
+
+void Game :: do (Action action) {
+
+    Character & player = action.get_initiator();
+    Character & neighbor = board.get_neighbor(player, action.get_direction());
+    if (neighbor != nullptr) {
+        CollisionResult result = neighbor.collide();
+        action.set_result(result);
+        
+        switch (action.get_result()) {
+    
+            case CollisionResult::BLOCKED:
+                std::cout << "Mouvement bloqué." << std::endl;
+                break;
+    
+            case CollisionResult::SHIFTED:
+                std::cout << "On pousse un objet." << std::endl;
+                neighbor.move(direction);
+                board.set(neighbor);
+                action.add_impacted_character(neighbor);
+                player.move(direction);
+                board.set(player);
+                chain_move(board.get_neighbor(neighbor, action.get_direction()), action);
+                break;
+    
+            case CollisionResult::COEXISTED:
+                std::cout << "Superposition autorisée." << std::endl;
+                player.move(direction);
+                break;
+    
+            case CollisionResult::DEFEATED:
+                std::cout << "Le joueur est mort." << std::endl;
+                terminate(false)
+                break;
+    
+            case CollisionResult::AWARDED:
+                std::cout << "Victoire !" << std::endl;
+                terminate(true)
+    
+                break;
+        }
+        done_actions.push(action);
+    } else {
+        player.move(direction);
+        board.set(neighbor);
+    }
+}
+
+void Game :: chain_move (Character & neighbor, Action action) {
+    while (neighbor != nullptr && neighbor.collide() != CollisionResult::BLOCKED) {
+        neighbor.move(action.get_direction());
+        board.set(neighbor);
+        action.add_impacted_character(neighbor);
+        neighbor = board.get_neighbor(neighbor, direction);
+    }
+}
+
+void Game :: move_character (Character & character, Direction direction) {
+    character.move(direction);
+    board.set(character);
+}
+
+
 Action Game::computeNextAction(Character& player, Direction direction) {
 
     if (!is_you(player)) {
