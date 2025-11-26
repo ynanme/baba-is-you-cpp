@@ -1,8 +1,8 @@
 #include "action.hpp"
 
 
-Action :: Action (Character & initiator, Direction direction, CollisionResult result):
-direction {direction}, result {result} {
+Action :: Action (Character & initiator, Direction direction):
+direction {direction} {
     involved_characters.push_back(initiator);
 }
 
@@ -11,8 +11,13 @@ Direction Action :: get_direction () const {
     return direction;
 }
 
+
 CollisionResult Action :: get_result () const {
     return result;
+}
+
+void Action :: set_result (CollisionResult new_result) {
+    result = new_result;
 }
 
 
