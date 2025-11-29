@@ -4,13 +4,6 @@
 #include "../../utils/geometry.hpp"
 
 
-enum class CollisionResult {
-    BLOCKED,
-    SHIFTED,
-    COEXISTED,
-    DEFEATED,
-    AWARDED
-};
 
 
 class CollisionHandler {

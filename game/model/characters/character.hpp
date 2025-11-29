@@ -2,9 +2,15 @@
 #define _CHARACTER
 
 #include "labels.hpp"
-#include "../collision_handlers/collision_handlers.hpp"
 #include "../../utils/geometry.hpp"
 
+enum class CollisionResult {
+    BLOCKED,
+    SHIFTED,
+    COEXISTED,
+    DEFEATED,
+    AWARDED
+};
 
 
 class Character {
@@ -12,12 +18,12 @@ class Character {
     private:
     
         Position position;
-        CollisionHandler collision_handler;
+        CollisionResult collision_result;
         Label label;
 
     public:
 
-        Character (Position position, CollisionHandler collision_handler, Label label);
+        Character (Position position, CollisionResult collision_result, Label label);
 
         Position get_position () const;
         Label get_label () const;
@@ -25,7 +31,7 @@ class Character {
         void move (Direction direction);
 
         CollisionResult collide ();
-        void change_collision_handling (CollisionHandler new_collision_handler);
+        void change_collision_handling (CollisionResult new_collision_result);
 
 };
 

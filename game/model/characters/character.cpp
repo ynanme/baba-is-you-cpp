@@ -1,8 +1,8 @@
 #include "character.hpp"
 
 
-Character :: Character (Position position, CollisionHandler collision_handler, Label label):
-position {position}, collision_handler {collision_handler}, label {label} {}
+Character :: Character (Position position, CollisionResult collision_result, Label label):
+position {position}, collision_result {collision_result}, label {label} {}
 
 
 Position Character :: get_position () const {
@@ -20,9 +20,9 @@ void Character :: move (Direction direction) {
 
 
 CollisionResult Character :: collide () {
-    return collision_handler.handle_collision();
+    return collision_result;
 }
 
-void Character :: change_collision_handling (CollisionHandler new_collision_handler) {
-    collision_handler = new_collision_handler;
+void Character :: change_collision_handling (CollisionResult new_collision_result) {
+    collision_result = new_collision_result;
 }
