@@ -11,7 +11,7 @@
 class Action {
 
     private:
-        vector<Character &> involved_characters;
+        vector<Character *> involved_characters;
         Direction direction;
         CollisionResult result;
 
@@ -25,7 +25,7 @@ class Action {
         void set_result (CollisionResult new_result);
         
         Character & get_initiator () const;
-        vector<Character &> get_involved_characters () const;
+        vector<Character *> get_involved_characters () const;
         void add_involved_character (Character & involved_character);
 
 };

@@ -1,7 +1,7 @@
 #include "action.hpp"
 
 
-Action :: Action (Character & initiator, Direction direction):
+Action :: Action (Character * initiator, Direction direction):
 direction {direction} {
     involved_characters.push_back(initiator);
 }
@@ -25,10 +25,10 @@ Character & Action :: get_initiator () const {
     return involved_characters.at(0);
 }
 
-vector<Character &> Action :: get_involved_characters () const {
+vector<Character *> Action :: get_involved_characters () const {
     return involved_characters;
 }
 
 void Action :: add_involved_character (Character & involved_character) {
-    involved_characters.push_back(involved_character);
+    involved_characters.push_back(&involved_character);
 }
