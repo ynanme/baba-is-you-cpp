@@ -37,6 +37,11 @@ ostream& operator << (ostream& out, const Position& position) {
     return out;
 }
 
+bool operator<(const Position& first, const Position& second) {
+    if (first.get_x() != second.get_x()) return first.get_x() < second.get_x();
+    return first.get_y() < second.get_y();
+}
+
 
 Direction operator ! (Direction direction) {
     switch (direction) {

@@ -33,6 +33,8 @@ class Position {
 
 bool operator == (const Position& first, const Position& second);
 
+bool operator<(const Position& first, const Position& second);
+
 ostream& operator << (ostream& out, const Position& position);
 
 
