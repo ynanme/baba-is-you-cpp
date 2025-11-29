@@ -4,10 +4,10 @@
 #include <map>
 #include <vector>
 #include <algorithm>
-#include "../utils/geometry.hpp"
+#include "../../utils/geometry.hpp"
 #include "../characters/character.hpp"
 #include "action.hpp"
-#include "observer_pattern.hpp"
+#include "../../utils/observer_pattern.hpp"
 
 using std::map;
 using std::vector;
@@ -29,10 +29,9 @@ public:
 
     void add_character(Character* character);
     void remove_character(Character* character);
+    const vector<Character*>& get_neighbor(Character& character, Direction direction);
+    void set(Character& character);
 
-    Action move_character(Character& character, Direction direction);
-
-private:
     bool in_bounds(const Position& pos) const;
     vector<Character*>& get_cell(const Position& pos);
 };
