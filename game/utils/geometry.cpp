@@ -3,6 +3,7 @@
 
 Position :: Position (int x, int y): x {x}, y {y} {}
 
+
 int Position :: get_x () const {
     return x;
 }
@@ -10,6 +11,7 @@ int Position :: get_x () const {
 int Position :: get_y () const {
     return y;
 }
+
 
 void Position :: shift (Direction direction) {
     switch (direction) {
@@ -28,6 +30,15 @@ void Position :: shift (Direction direction) {
     }
 }
 
+Position Position :: neighbor (Position position, Direction direction, int range) {
+    Position neighbor {position.get_x(), position.get_y()};
+    for (int i = 1; i <= range; i ++) {
+        neighbor.shift(direction);
+    }
+    return neighbor;
+}
+
+
 bool operator == (const Position& first, const Position& second) {
     return first.get_x() == second.get_x() && first.get_y() == second.get_y();
 }
@@ -41,6 +52,7 @@ bool operator<(const Position& first, const Position& second) {
     if (first.get_x() != second.get_x()) return first.get_x() < second.get_x();
     return first.get_y() < second.get_y();
 }
+
 
 
 Direction operator ! (Direction direction) {
