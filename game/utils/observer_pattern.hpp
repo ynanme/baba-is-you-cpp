@@ -6,25 +6,30 @@
 using namespace std;
 
 
+template<typename Event>
 class Observer {
 
     public:
-        virtual void update () = 0;
+        virtual void update (Event event) = 0;
 
 };
 
 
+template<typename Event>
 class Subject {
 
     private:
-        vector<Observer *> observers;
+        vector<Observer<Event> *> observers;
 
     public:
-        void attach (Observer * observer);
-        void detach (Observer * observer);
-        void notify ();
+        void attach (Observer<Event> * observer);
+        void detach (Observer<Event> * observer);
+        void notify (Event event);
 
 };
+
+
+#include "observer_pattern.tpp"
 
 
 #endif
