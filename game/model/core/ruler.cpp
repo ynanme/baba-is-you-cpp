@@ -121,7 +121,7 @@ vector<LabelT> Ruler :: filter_on_rules (vector<LabelT> filtered_phrases) {
 
 int Ruler :: word_index (vector<Character *> cell) {
     int index = -1;
-    for (int i = 0; i < cell.size(); i ++) {
+    for (size_t i = 0; i < cell.size(); i ++) {
         if (words.find((cell.at(i)->get_label())) != words.end()) {
             index = i;
         }

@@ -3,9 +3,7 @@
 
 Game::Game(Board& board)
     : board(board)
-{
-    board.attach(this);
-}
+{}
 
 void Game::add_character(Character* character) {
     characters.push_back(character);
@@ -17,14 +15,14 @@ void Game::add_character(Character* character) {
     std::cout << "Board mis à jour." << std::endl;
 }*/
 
-void Game::update() {
+void Game::update(RuleChange event) {
     bool hasYou = false;
     bool hasWin = false;
 
-    for (Character& player : players) {
+    for (Character * player : players) {
         hasYou = true;
-        for (Character* obj : board.at(player.getPosition())) {
-            if (obj->hasProperty(Property::Win)) { // Ou vérifier ça avec le RuleManager
+        for (Character* obj : board.at(player->get_position())) {
+            if (obj->collide() == CollisionResult::AWARDED) { // Ou vérifier ça avec le RuleManager
                 terminate(true);  
                 return;
             }
@@ -33,7 +31,7 @@ void Game::update() {
 
     // Si plus aucun YOU, alors défaite
     if (!hasYou && !players.empty()) {  // ou si tous les YOU sont morts
-        terminate(false, "YOU IS DEAD!");
+        terminate(hasWin, "YOU IS DEAD!");
     }
 }
 
@@ -41,20 +39,20 @@ void Game :: play (Direction direction) {
     if (is_terminated) {
         return;
     }
-    for (Character & player: players) {
+    for (Character * player: players) {
         Action action {player, direction};
-        do(action);
+        _do(action);
     }
 }
 
-void Game :: do (Action action) {
+void Game :: _do (Action action) {
 
-    Character & player = action.get_initiator();
-    vector<Character*>& neighbors = board.get_neighbor(player, action.get_direction());
+    Character & player = *action.get_initiator();
+    vector<Character*> neighbors = board.get_neighbor(player, action.get_direction());
     for (Character* neighbor_ptr : neighbors){
-        Character& neighbor = *neighbor_ptr;
+        if (neighbor_ptr != nullptr) {
+            Character& neighbor = *neighbor_ptr;
 
-        if (neighbor != nullptr) {
             CollisionResult result = neighbor.collide();
             action.set_result(result);
             
@@ -82,12 +80,12 @@ void Game :: do (Action action) {
         
                 case CollisionResult::DEFEATED:
                     cout << "Le joueur est mort." << endl;
-                    terminate(false)
+                    terminate(false);
                     break;
         
                 case CollisionResult::AWARDED:
                     cout << "Victoire !" << endl;
-                    terminate(true)
+                    terminate(true);
         
                     break;
             }
@@ -118,14 +116,14 @@ void apply_chain(Character& neighbor, Action action){
 }*/
 
 void Game::push_chain(Character& obj, Direction dir, Action& action) {
-    Position next_pos = obj.get_position() + dir;
+    Position next_pos = Position::neighbor(obj.get_position(), dir, 1);
     if (!board.in_bounds(next_pos)) return;
 
-    vector<Character*>& next_cell = board.at(next_pos);
+    vector<Character*> next_cell = board.at(next_pos);
 
     // Pousser récursivement tout ce qui est poussable devant
     for (Character* candidate : next_cell) {
-        if (rule_manager.supports_collision(candidate, CollisionResult::SHIFTED)) {
+        if (candidate->collide() == CollisionResult::SHIFTED) {
             if (can_push(*candidate, dir)) {
                 push_chain(*candidate, dir, action);  // pousse d'abord plus loin
             }
@@ -134,16 +132,16 @@ void Game::push_chain(Character& obj, Direction dir, Action& action) {
 
     // Maintenant on peut déplacer l'objet courant en toute sécurité
     move_character(obj, dir);
-    action.add_impacted_character(obj);
+    action.add_involved_character(obj);
 }
 
 bool Game::can_push(Character& obj, Direction dir) {
-    Position next_pos = obj.get_position() + dir;        
+    Position next_pos = Position::neighbor(obj.get_position(), dir, 1);        
     if (!board.in_bounds(next_pos)) {
         return false;                            
     }
 
-    vector<Character*>& next_cell = board.at(next_pos);
+    vector<Character*> next_cell = board.at(next_pos);
 
     // Si la case devant est vide, alors on peut pousser
     if (next_cell.empty()) {
@@ -152,7 +150,7 @@ bool Game::can_push(Character& obj, Direction dir) {
 
     // Sinon, on regarde tous les objets dans la case devant
     for (Character* candidate : next_cell) {
-        if (rule_manager.supports_collision(candidate, CollisionResult::SHIFTED)) {
+        if (candidate->collide() == CollisionResult::SHIFTED) {
             // S'il y en a au moins un qui est poussable ET qu'on peut le pousser lui-meme
             if (can_push(*candidate, dir)) {
                 return true;
@@ -199,7 +197,7 @@ bool Game::redo() {
     redone_actions.pop();
 
     // Rejouer exactement la même action
-    Character& c = action.get_initiator();
+    Character& c = *action.get_initiator();
     move_character(c, action.get_direction());
 
     // La remettre dans done_actions
@@ -222,11 +220,11 @@ void Game::terminate(bool win, const string& message) {
         end_message = message;
     }
 
-    notify(); 
+    // notify(); 
 }
 
 void Game::reverseAction(const Action& action) {
-    Character& c = action.get_initiator();
+    Character& c = *action.get_initiator();
     Direction dir = action.get_direction();
 
     Direction inverse = !dir; 
@@ -246,5 +244,4 @@ void Game::reverseAction(const Action& action) {
 
     move_character(c, inverse);
 
-    board.notify();
 }

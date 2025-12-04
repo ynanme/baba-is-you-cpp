@@ -2,14 +2,13 @@
 #define _COLLISION_HANDLERS
 
 #include "../../utils/geometry.hpp"
-
-
+#include "../characters/character.hpp"
 
 
 class CollisionHandler {
 
     public:
-        virtual CollisionResult handle_collision ();
+        CollisionResult handle_collision ();
 
 };
 

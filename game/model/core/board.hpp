@@ -8,13 +8,14 @@
 #include "../characters/character.hpp"
 #include "action.hpp"
 #include "../../utils/observer_pattern.hpp"
+#include "events.hpp"
 
 using std::map;
 using std::vector;
 
 class Game;
 
-class Board : public Subject {
+class Board : public Subject<CharacterSet> {
 private:
     map<Position, vector<Character*>> grid;
     int width;

@@ -21,7 +21,7 @@ void Action :: set_result (CollisionResult new_result) {
 }
 
 
-Character & Action :: get_initiator () const {
+Character * Action :: get_initiator () const {
     return involved_characters.at(0);
 }
 

@@ -1,10 +1,6 @@
-#include "../model/characters/labels.hpp"
+#include "label_to_string.hpp"
 #include <iostream>
 
-class LabelToString {
-public:
-    static std::string to_string(Label label);
-};
 
 std::string LabelToString::to_string(Label label) {
     switch (label) {

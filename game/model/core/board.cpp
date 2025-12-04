@@ -41,8 +41,8 @@ void Board::set(Character& character) {
 
     if (std::find(cell.begin(), cell.end(), &character) == cell.end()) {
         cell.push_back(&character);
+        notify({this, character.get_position()}); 
     }
-    notify(); 
 }
 
 bool Board::in_bounds(const Position& pos) const {
@@ -59,7 +59,7 @@ void Board::add_character(Character* character) {
         throw std::out_of_range("Position hors des limites du plateau.");
     }
     get_cell(pos).push_back(character);
-    notify(); 
+    notify({this, character->get_position()}); 
 }
 
 void Board::remove_character(Character* character) {
@@ -67,7 +67,7 @@ void Board::remove_character(Character* character) {
     vector<Character*>& cell = get_cell(pos);
 
     cell.erase(std::remove(cell.begin(), cell.end(), character), cell.end());
-    notify();
+    notify({this, character->get_position()}); 
 }
 
 

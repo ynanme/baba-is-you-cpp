@@ -1,7 +1,7 @@
 #include "../model/core/board.hpp"
 #include "../model/characters/character.hpp"  
 #include "../utils/geometry.hpp"
-#include "../utils/label_to_string.cpp"
+#include "../utils/label_to_string.hpp"
 #include "../model/characters/labels.hpp"
 #include <cassert>
 #include <iostream>

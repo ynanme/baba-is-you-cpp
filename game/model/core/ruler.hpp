@@ -40,8 +40,6 @@ class Ruler: public Observer<CharacterSet>, public Subject<RuleChange> {
 
         void update (CharacterSet event);
 
-        void notify (RuleChange event);
-
 };
 
 
