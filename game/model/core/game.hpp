@@ -32,6 +32,7 @@ public:
     void update(RuleChange __event) override;
 
     void add_character(Character* character);
+    void add_player(Character* player);
 
     //Action computeNextAction(Character& character, Direction direction);
 

@@ -10,6 +10,11 @@ void Game::add_character(Character* character) {
     board.add_character(character);
 }
 
+void Game::add_player(Character* player) {
+    players.push_back(player);
+    add_character(player);
+}
+
 /*void Game::update() {
     // on peut ajouter une fonction de rendu graphique, rafraîchir l'écran, etc...
     std::cout << "Board mis à jour." << std::endl;
@@ -49,51 +54,53 @@ void Game :: _do (Action action) {
 
     Character & player = *action.get_initiator();
     vector<Character*> neighbors = board.get_neighbor(player, action.get_direction());
+    if(neighbors.empty()) {
+        move_character (player, action.get_direction());
+        done_actions.push(action);
+        return;
+    }
     for (Character* neighbor_ptr : neighbors){
-        if (neighbor_ptr != nullptr) {
-            Character& neighbor = *neighbor_ptr;
 
-            CollisionResult result = neighbor.collide();
-            action.set_result(result);
-            
-            switch (action.get_result()) {
+        Character& neighbor = *neighbor_ptr;
+
+        CollisionResult result = neighbor.collide();
+        action.set_result(result);
         
-                case CollisionResult::BLOCKED:
-                    cout << "Mouvement bloqué." << endl;
-                    break;
-        
-                case CollisionResult::SHIFTED:
-                    cout << "On pousse un objet." << endl;
-                    // Vérifier si on peut pousser la chaîne d'objets
-                    if (can_push(neighbor, action.get_direction())) {
-                        // Pousser la chaîne d'objets du dernier voisin au premier
-                        push_chain(neighbor, action.get_direction(), action);
-                        move_character(player, action.get_direction());
-                    }
-                    break;
-        
-                // Je pense qu'on doit supprimer ce cas car le if au-dessus le gère déjà
-                case CollisionResult::COEXISTED:
-                    cout << "Superposition autorisée." << endl;
-                    move_character (player, action.get_direction());
-                    break;
-        
-                case CollisionResult::DEFEATED:
-                    cout << "Le joueur est mort." << endl;
-                    terminate(false);
-                    break;
-        
-                case CollisionResult::AWARDED:
-                    cout << "Victoire !" << endl;
-                    terminate(true);
-        
-                    break;
-            }
-            done_actions.push(action);
-        } else {
-            move_character (player, action.get_direction());
+        switch (action.get_result()) {
+    
+            case CollisionResult::BLOCKED:
+                cout << "Mouvement bloqué." << endl;
+                break;
+    
+            case CollisionResult::SHIFTED:
+                cout << "On pousse un objet." << endl;
+                // Vérifier si on peut pousser la chaîne d'objets
+                if (can_push(neighbor, action.get_direction())) {
+                    // Pousser la chaîne d'objets du dernier voisin au premier
+                    push_chain(neighbor, action.get_direction(), action);
+                    move_character(player, action.get_direction());
+                }
+                break;
+    
+            // Je pense qu'on doit supprimer ce cas car le if au-dessus le gère déjà
+            case CollisionResult::COEXISTED:
+                cout << "Superposition autorisée." << endl;
+                move_character (player, action.get_direction());
+                break;
+    
+            case CollisionResult::DEFEATED:
+                cout << "Le joueur est mort." << endl;
+                terminate(false);
+                break;
+    
+            case CollisionResult::AWARDED:
+                cout << "Victoire !" << endl;
+                terminate(true);
+    
+                break;
         }
-
+        done_actions.push(action);
+         
     }
     
 }
@@ -163,6 +170,7 @@ bool Game::can_push(Character& obj, Direction dir) {
 }
 
 void Game :: move_character (Character & character, Direction direction) {
+    board.remove_character(&character);
     character.move(direction);
     board.set(character);
 }
@@ -198,6 +206,15 @@ bool Game::redo() {
 
     // Rejouer exactement la même action
     Character& c = *action.get_initiator();
+
+    if (action.get_result() == CollisionResult::SHIFTED) {
+        for (Character* neighbor : board.get_neighbor(c, action.get_direction())) {
+            if (neighbor->collide() == CollisionResult::SHIFTED) {
+                _do(Action(neighbor, action.get_direction()));        
+            }
+        }
+    } 
+
     move_character(c, action.get_direction());
 
     // La remettre dans done_actions
@@ -227,8 +244,16 @@ void Game::reverseAction(const Action& action) {
     Character& c = *action.get_initiator();
     Direction dir = action.get_direction();
 
-    Direction inverse = !dir; 
+    if(action.get_result() == CollisionResult::SHIFTED) {
+        for (Character* neighbor : board.get_neighbor(c, dir)) {
+            if (neighbor->collide() == CollisionResult::SHIFTED) {
+                Action action_neighbor = Action(neighbor, dir);
+                reverseAction(action_neighbor);        
+            }
+        }
+    }
 
+    Direction inverse = !dir; 
     Position old_pos = c.get_position();
     Position new_pos = old_pos;
     new_pos.shift(inverse);

@@ -16,16 +16,16 @@ int Position :: get_y () const {
 void Position :: shift (Direction direction) {
     switch (direction) {
         case Direction::UP:
-            -- x;
+            y=y-1;
             break;
         case Direction::RIGHT:
-            ++ y;
+            x=x+1;
             break;
         case Direction::DOWN:
-            ++ x;
+            y=y+1;
             break;
         case Direction::LEFT:
-            -- y;
+            x=x-1;
             break;
     }
 }

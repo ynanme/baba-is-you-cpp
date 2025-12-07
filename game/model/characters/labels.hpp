@@ -32,6 +32,8 @@ enum class Label {
     WORD_STOP,
     WORD_WIN,
     WORD_YOU,
+
+    NONE
     
 };
 

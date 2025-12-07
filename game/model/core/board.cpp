@@ -1,6 +1,11 @@
 #include "board.hpp"
 #include <iostream>
 
+Character Board::NONE_CHARACTER(Position(-1, -1), CollisionResult::BLOCKED, Label::NONE);
+const std::vector<Character*> Board::NONE_VECTOR = {
+    &Board::NONE_CHARACTER
+};
+
 Board::Board(int width, int height)
     : width{width}, height{height} {}
 
@@ -27,7 +32,7 @@ const vector<Character*>& Board::get_neighbor(Character& character, Direction di
     pos.shift(direction);
 
     if (!in_bounds(pos)) {
-        throw std::out_of_range("Position hors des limites du plateau.");
+        return NONE_VECTOR;
     }
 
     const vector<Character*>& cell = at(pos);
@@ -48,15 +53,15 @@ void Board::set(Character& character) {
 bool Board::in_bounds(const Position& pos) const {
     return pos.get_x() >= 0 &&
            pos.get_y() >= 0 &&
-           pos.get_x() < height &&
-           pos.get_y() < width;
+           pos.get_x() < width &&
+           pos.get_y() < height;
 }
 
 
 void Board::add_character(Character* character) {
     Position pos = character->get_position();
     if(!in_bounds(pos)) {
-        throw std::out_of_range("Position hors des limites du plateau.");
+        throw std::out_of_range("Position hors des limites du plateau. " + std::to_string(pos.get_x()) + ", " + std::to_string(pos.get_y()));
     }
     get_cell(pos).push_back(character);
     notify({this, character->get_position()}); 

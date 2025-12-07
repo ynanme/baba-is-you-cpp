@@ -16,6 +16,10 @@ using std::vector;
 class Game;
 
 class Board : public Subject<CharacterSet> {
+
+static Character NONE_CHARACTER;
+static const std::vector<Character*> NONE_VECTOR;
+
 private:
     map<Position, vector<Character*>> grid;
     int width;
