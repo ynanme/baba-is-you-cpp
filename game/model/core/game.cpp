@@ -38,7 +38,44 @@ void Game::update(RuleChange event) {
     if (!hasYou && !players.empty()) {  // ou si tous les YOU sont morts
         terminate(hasWin, "YOU IS DEAD!");
     }
+
+    for (tuple<Label, Label, Label> rule : event.new_rules) {
+        Label subject = get<0>(rule);
+        Label property = get<2>(rule);
+        if (property == Label::WORD_YOU) {
+            make_player(subject);
+        } else {
+            change_collision_handlings(subject, COLLISION_HANDLINGS[property]);
+        }
+    }
 }
+
+void Game :: change_collision_handlings (Label label, CollisionResult collision_handling) {
+    for (Character * character : characters) {
+        if (character->get_label() == label) {
+            character->change_collision_handling(collision_handling);
+        }
+    }
+}
+
+void Game :: make_player (Label label) {
+    for (Character * character : characters) {
+        if (character->get_label() == label) {
+            players.push_back(character);
+        }
+    }
+}
+
+void Game :: unmake_player (Label label) {
+    for (Character * character : characters) {
+        if (character->get_label() == label) {
+            players.erase(remove(players.begin(), players.end(), character), players.end());
+        }
+    }
+}
+
+unordered_map<Label, CollisionResult> Game :: COLLISION_HANDLINGS = {};
+
 
 void Game :: play (Direction direction) {
     if (is_terminated) {

@@ -13,6 +13,9 @@ using namespace std;
 
 class Game : public Observer<RuleChange> {
 private:
+
+    static unordered_map<Label, CollisionResult> COLLISION_HANDLINGS;
+
     Board& board;
 
     vector<Action> actions;         
@@ -33,6 +36,10 @@ public:
 
     void add_character(Character* character);
     void add_player(Character* player);
+
+    void make_player (Label label);
+    void unmake_player (Label label);
+    void change_collision_handlings (Label label, CollisionResult collision_handling);
 
     //Action computeNextAction(Character& character, Direction direction);
 
