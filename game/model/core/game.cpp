@@ -307,3 +307,17 @@ void Game::reverseAction(const Action& action) {
     move_character(c, inverse);
 
 }
+
+
+
+ostream& operator << (ostream& out, const Game& game) {
+    out << "Game has " << game.board << " and following characters:" << endl;
+    for (Character * character: game.characters) {
+        out << *character;
+        if (find(game.players.begin(), game.players.end(), character) != game.players.end()) {
+            out << " IS YOU";
+        }
+        out << endl;
+    }
+    return out;
+}

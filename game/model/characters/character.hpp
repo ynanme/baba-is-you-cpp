@@ -33,7 +33,15 @@ class Character {
         CollisionResult collide ();
         void change_collision_handling (CollisionResult new_collision_result);
 
+
+    friend std::ostream& operator << (ostream& out, const Character& character);
+
 };
+
+
+
+ostream& operator << (ostream& out, const Character& character);
+ostream& operator << (ostream& out, CollisionResult collision_handling);
 
 
 #endif

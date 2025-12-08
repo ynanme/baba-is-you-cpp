@@ -1,6 +1,7 @@
 #ifndef _BOARD
 #define _BOARD
 
+#include <iostream>
 #include <map>
 #include <vector>
 #include <algorithm>
@@ -39,6 +40,13 @@ public:
 
     bool in_bounds(const Position& pos) const;
     vector<Character*>& get_cell(const Position& pos);
+
+friend ostream& operator << (ostream& out, const Board& board);
+
 };
+
+
+ostream& operator << (ostream& out, const Board& board);
+
 
 #endif

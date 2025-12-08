@@ -1,8 +1,10 @@
 #ifndef _GAME
 #define _GAME
 
+#include <iostream>
 #include <vector>
 #include <stack>
+#include <unordered_map>
 #include "board.hpp"
 #include "../characters/character.hpp"
 #include "./action.hpp"
@@ -60,7 +62,15 @@ public:
     void move_character (Character & character, Direction direction);
 
 private:
-    void reverseAction(const Action& action);  
+    void reverseAction(const Action& action); 
+    
+    
+    friend ostream& operator << (ostream& out, const Game& game);
+
 };
+
+
+ostream& operator << (ostream& out, const Game& game);
+
 
 #endif

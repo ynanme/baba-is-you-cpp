@@ -76,3 +76,8 @@ void Board::remove_character(Character* character) {
 }
 
 
+
+ostream& operator << (ostream& out, const Board& board) {
+    out << "Board(" << board.width << ", " << board.height << ")";
+    return out;
+}

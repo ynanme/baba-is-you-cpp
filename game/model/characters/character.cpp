@@ -1,4 +1,5 @@
 #include "character.hpp"
+#include "../../utils/label_to_string.hpp"
 
 
 Character :: Character (Position position, CollisionResult collision_result, Label label):
@@ -25,4 +26,12 @@ CollisionResult Character :: collide () {
 
 void Character :: change_collision_handling (CollisionResult new_collision_result) {
     collision_result = new_collision_result;
+}
+
+
+
+ostream& operator << (ostream& out, const Character& character) {
+    LabelToString labeller;
+    out << labeller.to_string(character.label) << " " << character.collision_result << " at " << character.position;
+    return out;
 }
