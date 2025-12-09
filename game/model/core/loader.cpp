@@ -95,7 +95,7 @@ void Loader :: setup_game (Game * game, Board * board, Ruler * ruler, Label who_
 
 
 
-int main () {
+/*int main () {
 
     // run in otosan
     // g++ -Wall -std=c++11 -o loader $(find game/model -name "*.cpp") $(find game/utils -name "*.cpp")
@@ -107,4 +107,4 @@ int main () {
     cout << *g << endl;
 
     return EXIT_SUCCESS;
-}
+}*/
