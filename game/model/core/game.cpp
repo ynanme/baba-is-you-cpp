@@ -5,6 +5,8 @@ Game::Game(Board& board)
     : board(board)
 {}
 
+Board& Game::get_board() const { return board; }
+
 void Game::add_character(Character* character) {
     characters.push_back(character);
     board.add_character(character);

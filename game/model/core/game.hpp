@@ -34,6 +34,8 @@ private:
 public:
     Game(Board& board);
 
+    Board& get_board() const;
+
     void update(RuleChange __event) override;
 
     void add_character(Character* character);
