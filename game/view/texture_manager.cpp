@@ -20,6 +20,11 @@ TextureManager::TextureManager()
     ));
 
     sprites.insert(std::make_pair(
+        Label::WALL,
+        SpriteInfo(&tilesTexture_2, getSpriteRect(1, 4))
+    ));
+
+    sprites.insert(std::make_pair(
         Label::FLAG,
         SpriteInfo(&tilesTexture_2, getSpriteRect(14, 10))
     ));
@@ -39,15 +44,60 @@ TextureManager::TextureManager()
         SpriteInfo(&tilesTexture_1, getSpriteRect(0, 0))
     ));
 
-    /*sprites.insert(std::make_pair(
+    sprites.insert(std::make_pair(
         Label::WORD_IS,
-        SpriteInfo(&wordsTexture, sf::IntRect(25, 0, 24, 24))
+        SpriteInfo(&wordsTexture, getSpriteRect(9, 4))
     ));
 
     sprites.insert(std::make_pair(
         Label::WORD_YOU,
-        SpriteInfo(&wordsTexture, sf::IntRect(50, 0, 24, 24))
-    ));*/
+        SpriteInfo(&wordsTexture, getSpriteRect(12, 10))
+    ));
+
+    sprites.insert(std::make_pair(
+        Label::WORD_DEFEAT,
+        SpriteInfo(&wordsTexture, getSpriteRect(0, 109))
+    ));
+
+    // à réctifier plus tard
+    sprites.insert(std::make_pair(
+        Label::WORD_WIN,
+        SpriteInfo(&wordsTexture, getSpriteRect(8, 136))
+    ));
+
+    sprites.insert(std::make_pair(
+        Label::WORD_STOP,
+        SpriteInfo(&wordsTexture, getSpriteRect(9, 13))
+    ));
+
+    sprites.insert(std::make_pair(
+        Label::WORD_PUSH,
+        SpriteInfo(&wordsTexture, getSpriteRect(3, 13))
+    ));
+
+    // à réctifier plus tard
+    sprites.insert(std::make_pair(
+        Label::WORD_SINK,
+        SpriteInfo(&wordsTexture, getSpriteRect(9, 129))
+    ));
+
+    sprites.insert(std::make_pair(
+        Label::WORD_WALL,
+        SpriteInfo(&tilesTexture_2, getSpriteRect(0, 4))
+    ));
+
+    sprites.insert(std::make_pair(
+        Label::WORD_FLAG,
+        SpriteInfo(&tilesTexture_2, getSpriteRect(13, 10))
+    ));
+
+    sprites.insert(std::make_pair(
+        Label::WORD_ROCK,
+        SpriteInfo(&tilesTexture_2, getSpriteRect(30, 25))
+    ));
+
+
+
 }
 
 const SpriteInfo& TextureManager::getSprite(Label label) const
