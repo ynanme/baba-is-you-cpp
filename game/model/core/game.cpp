@@ -1,4 +1,5 @@
 #include "game.hpp"
+#include "ruler.hpp"
 #include <iostream>
 
 Game::Game(Board& board)
@@ -41,13 +42,18 @@ void Game::update(RuleChange event) {
         terminate(hasWin, "YOU IS DEAD!");
     }
 
+    cout << "game received notification for rule change of ";
+    print_rules(event.new_rules);
+
     for (tuple<Label, Label, Label> rule : event.new_rules) {
         Label subject = get<0>(rule);
         Label property = get<2>(rule);
         if (property == Label::WORD_YOU) {
-            make_player(subject);
+            cout << "game launched player change for " << subject << endl;
+            make_player(WORDS_SUBJECTS[subject]);
         } else {
-            change_collision_handlings(subject, COLLISION_HANDLINGS[property]);
+            cout << "game launched collision handling change for " << subject << " to " << COLLISION_HANDLINGS[property] << endl;
+            change_collision_handlings(WORDS_SUBJECTS[subject], COLLISION_HANDLINGS[property]);
         }
     }
 }
@@ -55,6 +61,7 @@ void Game::update(RuleChange event) {
 void Game :: change_collision_handlings (Label label, CollisionResult collision_handling) {
     for (Character * character : characters) {
         if (character->get_label() == label) {
+            cout << character->get_label() << " at " << character->get_position() << " now handle collisions like " << collision_handling << endl;
             character->change_collision_handling(collision_handling);
         }
     }
@@ -63,6 +70,7 @@ void Game :: change_collision_handlings (Label label, CollisionResult collision_
 void Game :: make_player (Label label) {
     for (Character * character : characters) {
         if (character->get_label() == label) {
+            cout << character->get_label() << " at " << character->get_position() << " became player" << endl;
             players.push_back(character);
         }
     }
@@ -76,7 +84,25 @@ void Game :: unmake_player (Label label) {
     }
 }
 
-unordered_map<Label, CollisionResult> Game :: COLLISION_HANDLINGS = {};
+unordered_map<Label, CollisionResult> Game :: COLLISION_HANDLINGS = {
+    {Label::WORD_DEFEAT, CollisionResult::DEFEATED},
+    {Label::WORD_HOT, CollisionResult::DEFEATED},
+    {Label::WORD_PUSH, CollisionResult::SHIFTED},
+    {Label::WORD_SINK, CollisionResult::DEFEATED},
+    {Label::WORD_STOP, CollisionResult::BLOCKED},
+    {Label::WORD_WIN, CollisionResult::AWARDED}
+};
+
+unordered_map<Label, Label> Game :: WORDS_SUBJECTS = {
+    {Label::WORD_BABA, Label::BABA},
+    {Label::WORD_FLAG, Label::FLAG},
+    {Label::WORD_GRASS, Label::GRASS},
+    {Label::WORD_LAVA, Label::LAVA},
+    {Label::WORD_ROCK, Label::ROCK},
+    {Label::WORD_SKULL, Label::SKULL},
+    {Label::WORD_WALL, Label::WALL},
+    {Label::WORD_WATER, Label::WATER}
+};
 
 
 void Game :: play (Direction direction) {

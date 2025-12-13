@@ -25,10 +25,11 @@ class Ruler: public Observer<CharacterSet>, public Subject<RuleChange> {
 
     private:
 
-        unordered_set<Label> words;
-        unordered_map<Label, Token> words_tokens;
+        static unordered_set<Label> WORDS;
+        static unordered_map<Label, Token> WORDS_TOKENS;
 
-        vector<PositonT> get_positions_to_scan (Position word_position);
+        vector<PositonT> get_positions_to_scan_for_rule_creation (Position word_position);
+        vector<PositonT> get_positions_to_scan_for_rule_destruction (Position word_position);
         vector<CellT> get_cells_to_scan (Board & board, vector<PositonT> scanned_positions);
 
         vector<LabelT> filter_on_phrases (vector<CellT> scanned_cells);
@@ -41,6 +42,9 @@ class Ruler: public Observer<CharacterSet>, public Subject<RuleChange> {
         void update (CharacterSet event);
 
 };
+
+
+void print_rules (vector<LabelT> rules);
 
 
 #endif

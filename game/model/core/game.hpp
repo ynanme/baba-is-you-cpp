@@ -17,6 +17,7 @@ class Game : public Observer<RuleChange> {
 private:
 
     static unordered_map<Label, CollisionResult> COLLISION_HANDLINGS;
+    static unordered_map<Label, Label> WORDS_SUBJECTS;
 
     Board& board;
 
