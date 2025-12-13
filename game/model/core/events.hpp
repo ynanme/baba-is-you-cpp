@@ -14,7 +14,8 @@ class RuleChange {
 
     public:
         vector<tuple<Label, Label, Label>> new_rules;
-        RuleChange (vector<tuple<Label, Label, Label>> new_rules);
+        vector<tuple<Label, Label, Label>> old_rules;
+        RuleChange (vector<tuple<Label, Label, Label>> new_rules, vector<tuple<Label, Label, Label>> old_rules);
 
 };
 
