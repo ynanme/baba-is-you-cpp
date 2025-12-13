@@ -1,6 +1,7 @@
 #ifndef _LABELS
 #define _LABELS
 
+#include <iostream>
 
 
 enum class Label {
@@ -36,6 +37,9 @@ enum class Label {
     NONE
     
 };
+
+
+std::ostream& operator << (std::ostream& out, Label label);
 
 
 #endif
