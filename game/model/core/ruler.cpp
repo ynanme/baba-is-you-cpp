@@ -20,33 +20,111 @@ void Ruler :: update (CharacterSet event) {
 
         cout << "found a word at said position" << endl;
 
-        vector<LabelT> potential_new_rules = filter_on_rules(
+        /*vector<LabelT> potential_new_rules = filter_on_rules(
             filter_on_phrases(
                 get_cells_to_scan(
                     *event.board, get_positions_to_scan_for_rule_creation(event.position)
                 )
             )
+        );*/
+
+        vector<LabelT> detected_rules = filter_on_rules(
+            filter_on_phrases(
+                get_cells_to_scan(
+                    *event.board, get_all_rule_positions(*event.board)
+                )
+            )
         );
 
-        vector<LabelT> potential_old_rules = filter_on_rules(
+
+        /*vector<LabelT> potential_old_rules = filter_on_rules(
             filter_on_phrases(
                 get_cells_to_scan(
                     *event.board, get_positions_to_scan_for_rule_destruction(event.position)
                 )
             )
-        );
+        );*/
+
+        vector<LabelT> new_rules;
+        for (LabelT &r : detected_rules) {
+            if (find(active_rules.begin(), active_rules.end(), r) == active_rules.end()) {
+                new_rules.push_back(r);
+            }
+        }
+
+        vector<LabelT> old_rules;
+        for (auto &r : active_rules) {
+            if (find(detected_rules.begin(), detected_rules.end(), r) == detected_rules.end()) {
+                old_rules.push_back(r);
+            }
+        }
+
+        cout << "ACTIVE RULES BEFORE:" << endl;
+        print_rules(vector<LabelT>(active_rules.begin(), active_rules.end()));
+
+        cout << "DETECTED RULES NOW:" << endl;
+        print_rules(detected_rules);
+
 
         cout << "and deduced following new rules: ";
+        print_rules(new_rules);
+        cout << "and following old rules: ";
+        print_rules(old_rules);
+
+        /*cout << "and deduced following new rules: ";
         print_rules(potential_new_rules);
         cout << "and following old rules: ";
         print_rules(potential_old_rules);
 
         if (!potential_new_rules.empty() || !potential_old_rules.empty()) {
             notify({potential_new_rules, potential_old_rules});
+        }*/
+
+        if (!new_rules.empty() || !old_rules.empty()) {
+            notify({new_rules, old_rules});
         }
-        
+
+        active_rules.clear();
+        for (const LabelT& rule : detected_rules) {
+            active_rules.insert(rule);
+        }
+
     }
 
+}
+
+
+vector<PositonT> Ruler::get_all_rule_positions(Board& board) {
+
+    vector<PositonT> positions;
+
+    int width  = board.get_width();
+    int height = board.get_height();
+
+    for (int y = 0; y < height; y++) {
+        for (int x = 0; x < width; x++) {
+
+            Position p(x, y);
+
+            if (x + 2 < width) {
+                positions.push_back({
+                    p,
+                    Position(x + 1, y),
+                    Position(x + 2, y)
+                });
+            }
+
+            if (y + 2 < height) {
+                positions.push_back({
+                    p,
+                    Position(x, y + 1),
+                    Position(x, y + 2)
+                });
+            }
+        }
+    }
+
+    return positions;
 }
 
 
