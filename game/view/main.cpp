@@ -28,7 +28,7 @@ int main() {
     game.add_character(skull);*/
 
     Loader loader;
-    Game * game=loader.load("../../res/levels/1.txt");
+    Game * game=loader.load("../../res/levels/ruler_demo_1.txt");
 
     cout << *game << endl;
 
