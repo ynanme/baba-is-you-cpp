@@ -289,22 +289,19 @@ bool Game::redo() {
 
     Action action = redone_actions.top();
     redone_actions.pop();
+    
+    Direction direction = action.get_direction();
 
-    // Rejouer exactement la même action
-    Character& c = *action.get_initiator();
-
-    if (action.get_result() == CollisionResult::SHIFTED) {
-        for (Character* neighbor : board.get_neighbor(c, action.get_direction())) {
-            if (neighbor->collide() == CollisionResult::SHIFTED) {
-                _do(Action(neighbor, action.get_direction()));        
-            }
+    for (Character* character : action.get_involved_characters()) {
+        if (character) {
+            move_character(*character, direction); 
         }
-    } 
+    }
 
-    move_character(c, action.get_direction());
-
-    // La remettre dans done_actions
-    done_actions.push(action);
+    done_actions.push(action); 
+    
+    cout << "Redo effectué : " << action.get_involved_characters().size() 
+         << " caractères déplacés." << endl;
 
     return true;
 }
@@ -330,30 +327,38 @@ void Game::reverseAction(const Action& action) {
     Character& c = *action.get_initiator();
     Direction dir = action.get_direction();
 
-    if(action.get_result() == CollisionResult::SHIFTED) {
+    /*if(action.get_result() == CollisionResult::SHIFTED) {
         for (Character* neighbor : board.get_neighbor(c, dir)) {
             if (neighbor->collide() == CollisionResult::SHIFTED) {
                 Action action_neighbor = Action(neighbor, dir);
                 reverseAction(action_neighbor);        
             }
         }
-    }
+    }*/
+    
 
     Direction inverse = !dir; 
     Position old_pos = c.get_position();
     Position new_pos = old_pos;
     new_pos.shift(inverse);
+    for (Character* character : action.get_involved_characters()) {
+        if (character) {
+            // Déplacer simplement le personnage dans la direction inverse
+            // L'implémentation de move_character gère déjà board.remove/set
+            move_character(*character, inverse); 
+        }
+    }
 
     vector<Character*>& old_cell = board.get_cell(old_pos);
-    old_cell.erase(
+    /*old_cell.erase(
         std::remove(old_cell.begin(), old_cell.end(), &c),
         old_cell.end()
     );
 
     vector<Character*>& new_cell = board.get_cell(new_pos);
-    new_cell.push_back(&c);
+    new_cell.push_back(&c);*/
 
-    move_character(c, inverse);
+    //move_character(c, inverse);
 
 }
 
