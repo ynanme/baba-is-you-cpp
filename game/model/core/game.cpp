@@ -24,39 +24,60 @@ void Game::add_player(Character* player) {
 }*/
 
 void Game::update(RuleChange event) {
-    bool hasYou = false;
-    bool hasWin = false;
 
-    for (Character * player : players) {
-        hasYou = true;
+    cout << "game received rule change" << endl;
+
+    for (const LabelT& rule : event.new_rules) {
+
+        Label subject  = get<0>(rule);
+        Label property = get<2>(rule);
+
+        cout << " + rule added: ";
+        print_rules({rule});
+
+        change_collision_handlings(
+            WORDS_SUBJECTS[subject],
+            COLLISION_HANDLINGS[property]
+        );
+    
+    }
+
+    for (const LabelT& rule : event.old_rules) {
+
+        Label subject  = get<0>(rule);
+        Label property = get<2>(rule);
+
+        cout << " - rule removed: ";
+        print_rules({rule});
+
+        if (property == Label::WORD_YOU) {
+            unmake_player(WORDS_SUBJECTS[subject]); 
+        }
+        else {
+            change_collision_handlings(
+                WORDS_SUBJECTS[subject],
+                CollisionResult::COEXISTED
+            );
+        }
+    }
+
+    bool hasYou = !players.empty();
+
+    if (!hasYou) {
+        terminate(false, "NO MORE YOU!");
+        return;
+    }
+
+    for (Character* player : players) {
         for (Character* obj : board.at(player->get_position())) {
-            if (obj->collide() == CollisionResult::AWARDED) { // Ou vérifier ça avec le RuleManager
-                terminate(true);  
+            if (obj->collide() == CollisionResult::AWARDED) {
+                terminate(true);
                 return;
             }
         }
     }
-
-    // Si plus aucun YOU, alors défaite
-    if (!hasYou && !players.empty()) {  // ou si tous les YOU sont morts
-        terminate(hasWin, "YOU IS DEAD!");
-    }
-
-    cout << "game received notification for rule change of ";
-    print_rules(event.new_rules);
-
-    for (tuple<Label, Label, Label> rule : event.new_rules) {
-        Label subject = get<0>(rule);
-        Label property = get<2>(rule);
-        if (property == Label::WORD_YOU) {
-            cout << "game launched player change for " << subject << endl;
-            make_player(WORDS_SUBJECTS[subject]);
-        } else {
-            cout << "game launched collision handling change for " << subject << " to " << COLLISION_HANDLINGS[property] << endl;
-            change_collision_handlings(WORDS_SUBJECTS[subject], COLLISION_HANDLINGS[property]);
-        }
-    }
 }
+
 
 void Game :: change_collision_handlings (Label label, CollisionResult collision_handling) {
     for (Character * character : characters) {
