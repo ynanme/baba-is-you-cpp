@@ -8,8 +8,9 @@
 #include "ruler.hpp"
 #include "../characters/labels.hpp"
 #include "game.hpp"
+#include <sstream>
 
-
+using RuleT = tuple<Label, Label, Label>;
 
 class Loader {
 

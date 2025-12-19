@@ -47,6 +47,7 @@ public:
     void change_collision_handlings (Label label, CollisionResult collision_handling);
 
     //Action computeNextAction(Character& character, Direction direction);
+    void force_rule_initialization();
 
     void play (Direction direction);
     void _do(Action action);

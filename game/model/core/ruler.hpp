@@ -45,6 +45,7 @@ class Ruler: public Observer<CharacterSet>, public Subject<RuleChange> {
         static unordered_map<Label, Token> WORDS_TOKENS;
 
         unordered_set<LabelT, RuleHash> active_rules;
+        vector<LabelT> detected_rules;
 
 
         vector<PositonT> get_positions_to_scan_for_rule_creation (Position word_position);
@@ -58,7 +59,6 @@ class Ruler: public Observer<CharacterSet>, public Subject<RuleChange> {
         int word_index (vector<Character *> cell);
 
     public:
-
         void update (CharacterSet event);
 
 };

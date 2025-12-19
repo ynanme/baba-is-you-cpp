@@ -9,23 +9,6 @@
 #include <iostream>
 
 int main() {
-    /*Board board(12, 7);   
-
-    Game game(board);
-
-    Character* baba = new Character(Position(1, 1), CollisionResult::COEXISTED, Label::BABA);
-    Character* word_baba = new Character(Position(5, 5), CollisionResult::SHIFTED, Label::WORD_BABA);
-
-    Character* rock = new Character(Position(6, 5), CollisionResult::BLOCKED, Label::ROCK);
-    Character* flag = new Character(Position(10, 5), CollisionResult::AWARDED, Label::FLAG);
-    Character* skull = new Character(Position(0, 5), CollisionResult::DEFEATED, Label::SKULL);
-
-    game.add_player(baba);
-
-    game.add_character(word_baba);
-    game.add_character(rock);
-    game.add_character(flag);
-    game.add_character(skull);*/
 
     Loader loader;
     Game * game=loader.load("../../res/levels/ruler_demo_1.txt");

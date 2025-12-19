@@ -39,6 +39,12 @@ void Game::update(RuleChange event) {
             WORDS_SUBJECTS[subject],
             COLLISION_HANDLINGS[property]
         );
+
+        /**/if (property == Label::WORD_YOU) {
+            make_player(WORDS_SUBJECTS[subject]); 
+            continue;
+        }
+        
     
     }
 
@@ -61,12 +67,12 @@ void Game::update(RuleChange event) {
         }
     }
 
-    bool hasYou = !players.empty();
+    /*bool hasYou = !players.empty();
 
     if (!hasYou) {
         terminate(false, "NO MORE YOU!");
         return;
-    }
+    }*/
 
     for (Character* player : players) {
         for (Character* obj : board.at(player->get_position())) {
@@ -78,10 +84,38 @@ void Game::update(RuleChange event) {
     }
 }
 
+void Game::force_rule_initialization() {
+
+    for (Character* c : characters) {
+
+        // Détecter si le character est un mot 
+        if (WORDS_SUBJECTS.find(c->get_label()) == WORDS_SUBJECTS.end())
+            continue;
+
+        Position original = c->get_position();
+
+        for (Direction dir : {
+                 Direction::UP,
+                 Direction::DOWN,
+                 Direction::LEFT,
+                 Direction::RIGHT }) {
+
+            Position next = Position::neighbor(original, dir, 1);
+            if (!board.in_bounds(next)) continue;
+
+            move_character(*c, dir);
+            move_character(*c, !dir);
+
+            return; 
+        }
+    }
+}
+
+
 
 void Game :: change_collision_handlings (Label label, CollisionResult collision_handling) {
     for (Character * character : characters) {
-        if (character->get_label() == label) {
+        if (character->get_label() == label && character->get_label() != Label::WORD_YOU) {
             cout << character->get_label() << " at " << character->get_position() << " now handle collisions like " << collision_handling << endl;
             character->change_collision_handling(collision_handling);
         }
@@ -100,6 +134,7 @@ void Game :: make_player (Label label) {
 void Game :: unmake_player (Label label) {
     for (Character * character : characters) {
         if (character->get_label() == label) {
+            cout << character->get_label() << " at " << character->get_position() << " is no longer player" << endl;
             players.erase(remove(players.begin(), players.end(), character), players.end());
         }
     }
@@ -190,23 +225,6 @@ void Game :: _do (Action action) {
     }
     
 }
-
-/*void Game :: chain_move (vector<Character*> neighbors, Action action) {
-    for(Character * neighbor : neighbors){
-        Character& neighbor_ref = *neighbor;
-        apply_chain(neighbor_ref, action);
-    }
-    
-}
-
-void apply_chain(Character& neighbor, Action action){
-    //if (neighbor != nullptr && neighbor.collide() != CollisionResult::BLOCKED) {
-    move_character(neighbor, action.get_direction());
-    action.add_impacted_character(neighbor);
-    vector<Character*>& neighbors = board.get_neighbor(neighbor, action.get_direction());
-    chain_move(neighbors, action);
-    //}
-}*/
 
 void Game::push_chain(Character& obj, Direction dir, Action& action) {
     Position next_pos = Position::neighbor(obj.get_position(), dir, 1);
@@ -327,39 +345,17 @@ void Game::reverseAction(const Action& action) {
     Character& c = *action.get_initiator();
     Direction dir = action.get_direction();
 
-    /*if(action.get_result() == CollisionResult::SHIFTED) {
-        for (Character* neighbor : board.get_neighbor(c, dir)) {
-            if (neighbor->collide() == CollisionResult::SHIFTED) {
-                Action action_neighbor = Action(neighbor, dir);
-                reverseAction(action_neighbor);        
-            }
-        }
-    }*/
-    
-
     Direction inverse = !dir; 
     Position old_pos = c.get_position();
     Position new_pos = old_pos;
     new_pos.shift(inverse);
     for (Character* character : action.get_involved_characters()) {
         if (character) {
-            // Déplacer simplement le personnage dans la direction inverse
-            // L'implémentation de move_character gère déjà board.remove/set
             move_character(*character, inverse); 
         }
     }
 
     vector<Character*>& old_cell = board.get_cell(old_pos);
-    /*old_cell.erase(
-        std::remove(old_cell.begin(), old_cell.end(), &c),
-        old_cell.end()
-    );
-
-    vector<Character*>& new_cell = board.get_cell(new_pos);
-    new_cell.push_back(&c);*/
-
-    //move_character(c, inverse);
-
 }
 
 

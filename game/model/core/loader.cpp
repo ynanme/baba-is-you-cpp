@@ -52,18 +52,26 @@ unordered_map<string, CollisionResult> Loader :: COLLISION_HANDLINGS = {
 };
 
 
-Game * Loader :: load (string file_path) {
+Game* Loader::load(string file_path) {
+
     ifstream file(file_path);
-    if (file.is_open()) {
-        Board * board = build_board(file);
-        Game * game = new Game(*board);
-        Ruler * ruler = new Ruler();
-        Label who_is_you = get_you(file);
-        build_characters(file, game);
-        setup_game(game, board, ruler, who_is_you);
-        return game;
+    if (!file.is_open()) {
+        throw runtime_error("Unfound path: " + file_path);
     }
-    throw runtime_error("Unfound path: " + file_path);
+
+    Board* board = build_board(file);
+    Game* game = new Game(*board);
+    Ruler* ruler = new Ruler();
+
+    Label who_is_you = get_you(file);
+
+    build_characters(file, game);
+
+    setup_game(game, board, ruler, who_is_you);
+
+    game->force_rule_initialization();
+    
+    return game;
 }
 
 Board * Loader :: build_board (istream& file) {
@@ -90,21 +98,4 @@ void Loader :: build_characters (istream& file, Game * game) {
 void Loader :: setup_game (Game * game, Board * board, Ruler * ruler, Label who_is_you) {
     board->attach(ruler);
     ruler->attach(game);
-    game->make_player(who_is_you);
 }
-
-
-
-/*int main () {
-
-    // run in otosan
-    // g++ -Wall -std=c++11 -o loader $(find game/model -name "*.cpp") $(find game/utils -name "*.cpp")
-    // ./loader
-
-    Loader loader;
-
-    Game * g = loader.load("res/levels/1.txt");
-    cout << *g << endl;
-
-    return EXIT_SUCCESS;
-}*/

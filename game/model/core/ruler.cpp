@@ -28,7 +28,7 @@ void Ruler :: update (CharacterSet event) {
             )
         );*/
 
-        vector<LabelT> detected_rules = filter_on_rules(
+        detected_rules = filter_on_rules(
             filter_on_phrases(
                 get_cells_to_scan(
                     *event.board, get_all_rule_positions(*event.board)
