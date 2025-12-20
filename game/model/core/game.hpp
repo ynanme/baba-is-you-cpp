@@ -48,6 +48,7 @@ public:
 
     //Action computeNextAction(Character& character, Direction direction);
     void force_rule_initialization();
+    void check_effects_after_move(Character& player);
 
     void play (Direction direction);
     void _do(Action action);

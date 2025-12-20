@@ -171,7 +171,7 @@ void Game :: play (Direction direction) {
     }
 }
 
-void Game :: _do (Action action) {
+/*void Game :: _do (Action action) {
 
     Character & player = *action.get_initiator();
     vector<Character*> neighbors = board.get_neighbor(player, action.get_direction());
@@ -203,7 +203,6 @@ void Game :: _do (Action action) {
                 }
                 break;
     
-            // Je pense qu'on doit supprimer ce cas car le if au-dessus le gère déjà
             case CollisionResult::COEXISTED:
                 cout << "Superposition autorisée." << endl;
                 move_character (player, action.get_direction());
@@ -224,6 +223,115 @@ void Game :: _do (Action action) {
          
     }
     
+}*/
+
+void Game::_do(Action action) {
+    Character& player = *action.get_initiator();
+    Direction dir = action.get_direction();
+
+    Position target_pos = Position::neighbor(player.get_position(), dir, 1);
+    if (!board.in_bounds(target_pos)) {
+        cout << "Mouvement bloqué (hors limites)." << endl;
+        return;
+    }
+
+    vector<Character*> target_objects = board.at(target_pos);
+
+    if (target_objects.empty()) {
+        move_character(player, dir);
+        check_effects_after_move(player); 
+        done_actions.push(action);
+        return;
+    }
+
+    bool has_blocked = false;
+    bool has_shifted = false;
+    vector<Character*> pushable_objects;
+
+    for (Character* obj : target_objects) {
+        CollisionResult res = obj->collide();
+        switch (res) {
+            case CollisionResult::BLOCKED:
+                has_blocked = true;
+                break;
+            case CollisionResult::SHIFTED:
+                has_shifted = true;
+                pushable_objects.push_back(obj);
+                break;
+            case CollisionResult::COEXISTED:
+                break;
+            case CollisionResult::DEFEATED:
+            case CollisionResult::AWARDED:
+                break;
+        }
+    }
+
+    if (has_blocked) {
+        cout << "Mouvement bloqué." << endl;
+        return;
+    }
+
+    bool will_move = true;
+    if (has_shifted) {
+        bool can_push_all = true;
+        for (Character* pushable : pushable_objects) {
+            if (!can_push(*pushable, dir)) {
+                can_push_all = false;
+                break;
+            }
+        }
+
+        if (can_push_all) {
+            cout << "On pousse un objet." << endl;
+            // Pousser toute la chaîne
+            for (Character* pushable : pushable_objects) {
+                push_chain(*pushable, dir, action);
+            }
+        } else {
+            cout << "Mouvement bloqué (objet non poussable)." << endl;
+            will_move = false;
+        }
+    }
+
+    if (will_move) {
+        // Cas COEXISTED ou vide ou après push : on bouge
+        if (!has_shifted) {
+            cout << "Superposition autorisée." << endl;
+        }
+        move_character(player, dir);
+        check_effects_after_move(player);  // Check defeated/awarded sur la NOUVELLE position
+        done_actions.push(action);
+    }
+}
+
+void Game::check_effects_after_move(Character& player) {
+    vector<Character*> current_objects = board.at(player.get_position());
+
+    bool has_defeated = false;
+    bool has_awarded = false;
+
+    for (Character* obj : current_objects) {
+        if (obj == &player) continue;  
+
+        CollisionResult res = obj->collide();
+        if (res == CollisionResult::DEFEATED) {
+            has_defeated = true;
+        } else if (res == CollisionResult::AWARDED) {
+            has_awarded = true;
+        }
+    }
+
+    if (has_defeated) {
+        cout << "Le joueur est mort." << endl;
+        terminate(false);
+        return;
+    }
+
+    if (has_awarded) {
+        cout << "Victoire !" << endl;
+        terminate(true);
+        return;
+    }
 }
 
 void Game::push_chain(Character& obj, Direction dir, Action& action) {
@@ -247,30 +355,27 @@ void Game::push_chain(Character& obj, Direction dir, Action& action) {
 }
 
 bool Game::can_push(Character& obj, Direction dir) {
-    Position next_pos = Position::neighbor(obj.get_position(), dir, 1);        
-    if (!board.in_bounds(next_pos)) {
-        return false;                            
-    }
+    Position next_pos = Position::neighbor(obj.get_position(), dir, 1);
+    if (!board.in_bounds(next_pos)) return false;
 
     vector<Character*> next_cell = board.at(next_pos);
+    if (next_cell.empty()) return true;
 
-    // Si la case devant est vide, alors on peut pousser
-    if (next_cell.empty()) {
-        return true;
+    for (Character* c : next_cell) {
+        if (c->collide() == CollisionResult::BLOCKED) {
+            return false;
+        }
     }
 
-    // Sinon, on regarde tous les objets dans la case devant
-    for (Character* candidate : next_cell) {
-        if (candidate->collide() == CollisionResult::SHIFTED) {
-            // S'il y en a au moins un qui est poussable ET qu'on peut le pousser lui-meme
-            if (can_push(*candidate, dir)) {
-                return true;
+    for (Character* c : next_cell) {
+        if (c->collide() == CollisionResult::SHIFTED) {
+            if (!can_push(*c, dir)) {
+                return false;
             }
         }
     }
 
-    // Aucun objet poussable dans la case devant, alors bloqué
-    return false;
+    return true;
 }
 
 void Game :: move_character (Character & character, Direction direction) {
