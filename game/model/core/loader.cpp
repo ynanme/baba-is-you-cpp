@@ -65,11 +65,10 @@ Game* Loader::load(string file_path) {
 
     Label who_is_you = get_you(file);
 
-    build_characters(file, game);
+    build_rules_and_characters(file, game);
+
 
     setup_game(game, board, ruler, who_is_you);
-
-    game->force_rule_initialization();
     
     return game;
 }
@@ -87,15 +86,50 @@ Label Loader :: get_you (istream& file) {
 }
 
 
+void Loader :: build_rules (istream& file, Game * game) {
+    cout << "rules" << endl;
+    std::string line;
+    while (std::getline(file, line)) {
+        std::istringstream iss(line);
+        std::string subject, verb, property;
+        if (!(iss >> subject >> verb >> property)) {
+            string subject, verb, property;
+            cout << subject << " " << verb << " " << property << endl;
+            game->add_rule_to_history({LABELS[subject], LABELS[verb], LABELS[property]});
+        }
+    }
+}
+
 void Loader :: build_characters (istream& file, Game * game) {
     int x, y;
     string label, collision;
+    cout << "characters" << endl;
     while (file >> x >> y >> label >> collision) {
+        cout << x << " " << y << " " << label << " " << collision << endl;
         game->add_character(new Character({x, y}, COLLISION_HANDLINGS[collision], LABELS[label]));
+    }
+}
+
+void Loader::build_rules_and_characters(std::istream& file, Game* game) {
+    string first;
+    while (file >> first) {
+        if (isdigit(first[0])) {
+            int x = std::stoi(first);
+            int y;
+            string label, collision;
+            file >> y >> label >> collision;
+            game->add_character(new Character({x, y}, COLLISION_HANDLINGS[collision], LABELS[label]));
+        }
+        else {
+            string verb, property;
+            file >> verb >> property;
+            game->add_rule_to_history({LABELS[first], LABELS[verb], LABELS[property]});
+        }
     }
 }
 
 void Loader :: setup_game (Game * game, Board * board, Ruler * ruler, Label who_is_you) {
     board->attach(ruler);
     ruler->attach(game);
+    game->make_player(who_is_you);
 }

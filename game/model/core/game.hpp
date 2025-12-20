@@ -5,6 +5,7 @@
 #include <vector>
 #include <stack>
 #include <unordered_map>
+#include <set>
 #include "board.hpp"
 #include "../characters/character.hpp"
 #include "./action.hpp"
@@ -12,6 +13,8 @@
 #include "events.hpp"
 
 using namespace std;
+
+using Rule = tuple<Label, Label, Label>;
 
 class Game : public Observer<RuleChange> {
 private:
@@ -27,6 +30,8 @@ private:
     
     vector<Character *> characters;
     vector<Character *> players;
+
+    set<Rule> rules_history;
 
     bool is_terminated = false;     
     bool has_won = false;
@@ -45,6 +50,8 @@ public:
     void make_player (Label label);
     void unmake_player (Label label);
     void change_collision_handlings (Label label, CollisionResult collision_handling);
+
+    void add_rule_to_history (Rule rule);
 
     //Action computeNextAction(Character& character, Direction direction);
     void force_rule_initialization();

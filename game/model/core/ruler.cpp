@@ -5,12 +5,6 @@
 using namespace std;
 
 
-void print_rules (vector<LabelT> rules) {
-    for (LabelT rule: rules) {
-        cout << get<0>(rule) << "_" << get<1>(rule) << "_" << get<2>(rule) << " ";
-    }
-    cout << endl;
-}
 
 void Ruler :: update (CharacterSet event) {
 
@@ -20,73 +14,29 @@ void Ruler :: update (CharacterSet event) {
 
         cout << "found a word at said position" << endl;
 
-        /*vector<LabelT> potential_new_rules = filter_on_rules(
+        vector<LabelT> potential_new_rules = filter_on_rules(
             filter_on_phrases(
                 get_cells_to_scan(
                     *event.board, get_positions_to_scan_for_rule_creation(event.position)
                 )
             )
-        );*/
-
-        detected_rules = filter_on_rules(
-            filter_on_phrases(
-                get_cells_to_scan(
-                    *event.board, get_all_rule_positions(*event.board)
-                )
-            )
         );
 
-
-        /*vector<LabelT> potential_old_rules = filter_on_rules(
+        vector<LabelT> potential_old_rules = filter_on_rules(
             filter_on_phrases(
                 get_cells_to_scan(
                     *event.board, get_positions_to_scan_for_rule_destruction(event.position)
                 )
             )
-        );*/
-
-        vector<LabelT> new_rules;
-        for (LabelT &r : detected_rules) {
-            if (find(active_rules.begin(), active_rules.end(), r) == active_rules.end()) {
-                new_rules.push_back(r);
-            }
-        }
-
-        vector<LabelT> old_rules;
-        for (auto &r : active_rules) {
-            if (find(detected_rules.begin(), detected_rules.end(), r) == detected_rules.end()) {
-                old_rules.push_back(r);
-            }
-        }
-
-        cout << "ACTIVE RULES BEFORE:" << endl;
-        print_rules(vector<LabelT>(active_rules.begin(), active_rules.end()));
-
-        cout << "DETECTED RULES NOW:" << endl;
-        print_rules(detected_rules);
-
+        );
 
         cout << "and deduced following new rules: ";
-        print_rules(new_rules);
-        cout << "and following old rules: ";
-        print_rules(old_rules);
-
-        /*cout << "and deduced following new rules: ";
         print_rules(potential_new_rules);
         cout << "and following old rules: ";
         print_rules(potential_old_rules);
 
         if (!potential_new_rules.empty() || !potential_old_rules.empty()) {
             notify({potential_new_rules, potential_old_rules});
-        }*/
-
-        if (!new_rules.empty() || !old_rules.empty()) {
-            notify({new_rules, old_rules});
-        }
-
-        active_rules.clear();
-        for (const LabelT& rule : detected_rules) {
-            active_rules.insert(rule);
         }
 
     }
@@ -94,37 +44,64 @@ void Ruler :: update (CharacterSet event) {
 }
 
 
-vector<PositonT> Ruler::get_all_rule_positions(Board& board) {
+vector<LabelT> Ruler :: filter_on_rules (vector<LabelT> filtered_phrases) {
 
-    vector<PositonT> positions;
+    vector<LabelT> rules;
 
-    int width  = board.get_width();
-    int height = board.get_height();
-
-    for (int y = 0; y < height; y++) {
-        for (int x = 0; x < width; x++) {
-
-            Position p(x, y);
-
-            if (x + 2 < width) {
-                positions.push_back({
-                    p,
-                    Position(x + 1, y),
-                    Position(x + 2, y)
-                });
-            }
-
-            if (y + 2 < height) {
-                positions.push_back({
-                    p,
-                    Position(x, y + 1),
-                    Position(x, y + 2)
-                });
-            }
+    for (LabelT phrase: filtered_phrases) {
+        if (
+            WORDS_TOKENS[get<0>(phrase)] == Token::SUBJECT &&
+            WORDS_TOKENS[get<1>(phrase)] == Token::VERB &&
+            WORDS_TOKENS[get<2>(phrase)] == Token::PROPERTY
+        ) {
+            rules.push_back(phrase);
         }
     }
+    
+    return rules;
+    
+}
 
-    return positions;
+
+vector<LabelT> Ruler :: filter_on_phrases (vector<CellT> scanned_cells) {
+
+    vector<LabelT> phrases;
+
+    for (CellT triplet : scanned_cells) {
+
+        int first_index = word_index(get<0>(triplet));
+        int second_index = word_index(get<1>(triplet));
+        int third_index = word_index(get<2>(triplet));
+
+        if (first_index != -1 && second_index != -1 && third_index != -1) {
+            phrases.push_back({
+                get<0>(triplet).at(first_index)->get_label(),
+                get<1>(triplet).at(second_index)->get_label(),
+                get<2>(triplet).at(third_index)->get_label()
+            });
+        }
+
+    }
+
+    return phrases;
+
+}
+
+
+vector<CellT> Ruler :: get_cells_to_scan (Board & board, vector<PositonT> scanned_positions) {
+
+    vector<CellT> cells_to_scan;
+
+    for (PositonT triplet : scanned_positions) {
+        cells_to_scan.push_back({
+            board.at(get<0>(triplet)),
+            board.at(get<1>(triplet)),
+            board.at(get<2>(triplet))
+        });
+    }
+
+    return cells_to_scan;
+
 }
 
 
@@ -162,125 +139,6 @@ vector<PositonT> Ruler :: get_positions_to_scan_for_rule_creation (Position word
         }
     };
 }
-
-
-vector<CellT> Ruler :: get_cells_to_scan (Board & board, vector<PositonT> scanned_positions) {
-
-    vector<CellT> cells_to_scan;
-
-    for (PositonT triplet : scanned_positions) {
-        cells_to_scan.push_back({
-            board.at(get<0>(triplet)),
-            board.at(get<1>(triplet)),
-            board.at(get<2>(triplet))
-        });
-    }
-
-    return cells_to_scan;
-
-}
-
-
-vector<LabelT> Ruler :: filter_on_phrases (vector<CellT> scanned_cells) {
-
-    vector<LabelT> phrases;
-
-    for (CellT triplet : scanned_cells) {
-
-        int first_index = word_index(get<0>(triplet));
-        int second_index = word_index(get<1>(triplet));
-        int third_index = word_index(get<2>(triplet));
-
-        if (first_index != -1 && second_index != -1 && third_index != -1) {
-            phrases.push_back({
-                get<0>(triplet).at(first_index)->get_label(),
-                get<1>(triplet).at(second_index)->get_label(),
-                get<2>(triplet).at(third_index)->get_label()
-            });
-        }
-
-    }
-
-    return phrases;
-
-}
-
-
-vector<LabelT> Ruler :: filter_on_rules (vector<LabelT> filtered_phrases) {
-
-    vector<LabelT> rules;
-
-    for (LabelT phrase: filtered_phrases) {
-        if (
-            WORDS_TOKENS[get<0>(phrase)] == Token::SUBJECT &&
-            WORDS_TOKENS[get<1>(phrase)] == Token::VERB &&
-            WORDS_TOKENS[get<2>(phrase)] == Token::PROPERTY
-        ) {
-            rules.push_back(phrase);
-        }
-    }
-    
-    return rules;
-    
-}
-
-
-int Ruler :: word_index (vector<Character *> cell) {
-    int index = -1;
-    for (size_t i = 0; i < cell.size(); i ++) {
-        if (WORDS.find((cell.at(i)->get_label())) != WORDS.end()) {
-            index = i;
-        }
-    }
-    return index;
-}
-
-
-unordered_set<Label> Ruler :: WORDS = {
-    
-    Label::WORD_BABA,
-    Label::WORD_FLAG,
-    Label::WORD_GRASS,
-    Label::WORD_LAVA,
-    Label::WORD_ROCK,
-    Label::WORD_SKULL,
-    Label::WORD_WALL,
-    Label::WORD_WATER,
-    
-    Label::WORD_IS,
-    
-    Label::WORD_DEFEAT,
-    Label::WORD_HOT,
-    Label::WORD_PUSH,
-    Label::WORD_SINK,
-    Label::WORD_STOP,
-    Label::WORD_WIN,
-    Label::WORD_YOU
-
-};
-
-unordered_map<Label, Token> Ruler :: WORDS_TOKENS = {
-
-    {Label::WORD_BABA, Token::SUBJECT},
-    {Label::WORD_FLAG, Token::SUBJECT},
-    {Label::WORD_GRASS, Token::SUBJECT},
-    {Label::WORD_LAVA, Token::SUBJECT},
-    {Label::WORD_ROCK, Token::SUBJECT},
-    {Label::WORD_SKULL, Token::SUBJECT},
-    {Label::WORD_WALL, Token::SUBJECT},
-    {Label::WORD_WATER, Token::SUBJECT},
-
-    {Label::WORD_IS, Token::VERB},
-
-    {Label::WORD_DEFEAT, Token::PROPERTY},
-    {Label::WORD_HOT, Token::PROPERTY},
-    {Label::WORD_PUSH, Token::PROPERTY},
-    {Label::WORD_SINK, Token::PROPERTY},
-    {Label::WORD_STOP, Token::PROPERTY},
-    {Label::WORD_WIN, Token::PROPERTY},
-    {Label::WORD_YOU, Token::PROPERTY}
-    
-};
 
 
 vector<PositonT> Ruler :: get_positions_to_scan_for_rule_destruction (Position word_position) {
@@ -354,3 +212,70 @@ vector<PositonT> Ruler :: get_positions_to_scan_for_rule_destruction (Position w
     };
 
 }
+
+
+int Ruler :: word_index (vector<Character *> cell) {
+    int index = -1;
+    for (size_t i = 0; i < cell.size(); i ++) {
+        if (WORDS.find((cell.at(i)->get_label())) != WORDS.end()) {
+            index = i;
+        }
+    }
+    return index;
+}
+
+
+void print_rules (vector<LabelT> rules) {
+    for (LabelT rule: rules) {
+        cout << get<0>(rule) << "_" << get<1>(rule) << "_" << get<2>(rule) << " ";
+    }
+    cout << endl;
+}
+
+
+unordered_set<Label> Ruler :: WORDS = {
+    
+    Label::WORD_BABA,
+    Label::WORD_FLAG,
+    Label::WORD_GRASS,
+    Label::WORD_LAVA,
+    Label::WORD_ROCK,
+    Label::WORD_SKULL,
+    Label::WORD_WALL,
+    Label::WORD_WATER,
+    
+    Label::WORD_IS,
+    
+    Label::WORD_DEFEAT,
+    Label::WORD_HOT,
+    Label::WORD_PUSH,
+    Label::WORD_SINK,
+    Label::WORD_STOP,
+    Label::WORD_WIN,
+    Label::WORD_YOU
+
+};
+
+
+unordered_map<Label, Token> Ruler :: WORDS_TOKENS = {
+
+    {Label::WORD_BABA, Token::SUBJECT},
+    {Label::WORD_FLAG, Token::SUBJECT},
+    {Label::WORD_GRASS, Token::SUBJECT},
+    {Label::WORD_LAVA, Token::SUBJECT},
+    {Label::WORD_ROCK, Token::SUBJECT},
+    {Label::WORD_SKULL, Token::SUBJECT},
+    {Label::WORD_WALL, Token::SUBJECT},
+    {Label::WORD_WATER, Token::SUBJECT},
+
+    {Label::WORD_IS, Token::VERB},
+
+    {Label::WORD_DEFEAT, Token::PROPERTY},
+    {Label::WORD_HOT, Token::PROPERTY},
+    {Label::WORD_PUSH, Token::PROPERTY},
+    {Label::WORD_SINK, Token::PROPERTY},
+    {Label::WORD_STOP, Token::PROPERTY},
+    {Label::WORD_WIN, Token::PROPERTY},
+    {Label::WORD_YOU, Token::PROPERTY}
+    
+};

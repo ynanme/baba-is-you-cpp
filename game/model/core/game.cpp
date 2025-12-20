@@ -18,6 +18,10 @@ void Game::add_player(Character* player) {
     add_character(player);
 }
 
+void Game :: add_rule_to_history (Rule rule) {
+    rules_history.insert(rule);
+}
+
 /*void Game::update() {
     // on peut ajouter une fonction de rendu graphique, rafraîchir l'écran, etc...
     std::cout << "Board mis à jour." << std::endl;
@@ -45,26 +49,39 @@ void Game::update(RuleChange event) {
             continue;
         }
         
+        rules_history.insert(rule);
     
     }
 
+    cout << "rules are ";
+    for (Rule rule: rules_history) {
+        cout << get<0>(rule) << "_" << get<1>(rule) << "_" << get<2>(rule) << " ";
+    }
+    cout << endl;
+
     for (const LabelT& rule : event.old_rules) {
 
-        Label subject  = get<0>(rule);
-        Label property = get<2>(rule);
+        if (rules_history.find(rule) != rules_history.end()) {
+            Label subject  = get<0>(rule);
+            Label property = get<2>(rule);
 
-        cout << " - rule removed: ";
-        print_rules({rule});
+            cout << " and do contain " << get<0>(rule) << "_" << get<1>(rule) << "_" << get<2>(rule) << endl;
+    
+            cout << " - rule removed: ";
+            print_rules({rule});
+    
+            if (property == Label::WORD_YOU) {
+                unmake_player(WORDS_SUBJECTS[subject]); 
+            }
+            else {
+                change_collision_handlings(
+                    WORDS_SUBJECTS[subject],
+                    CollisionResult::COEXISTED
+                );
+            }
+            rules_history.erase(rule);
+        }
 
-        if (property == Label::WORD_YOU) {
-            unmake_player(WORDS_SUBJECTS[subject]); 
-        }
-        else {
-            change_collision_handlings(
-                WORDS_SUBJECTS[subject],
-                CollisionResult::COEXISTED
-            );
-        }
     }
 
     /*bool hasYou = !players.empty();
@@ -474,5 +491,9 @@ ostream& operator << (ostream& out, const Game& game) {
         }
         out << endl;
     }
+    for (Rule rule: game.rules_history) {
+        cout << get<0>(rule) << "_" << get<1>(rule) << "_" << get<2>(rule) << " ";
+    }
+    cout << endl;
     return out;
 }
