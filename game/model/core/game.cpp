@@ -39,14 +39,14 @@ void Game::update(RuleChange event) {
         cout << " + rule added: ";
         print_rules({rule});
 
-        change_collision_handlings(
-            WORDS_SUBJECTS[subject],
-            COLLISION_HANDLINGS[property]
-        );
-
-        /**/if (property == Label::WORD_YOU) {
+        if (property == Label::WORD_YOU) {
             make_player(WORDS_SUBJECTS[subject]); 
             continue;
+        } else {
+            change_collision_handlings(
+                WORDS_SUBJECTS[subject],
+                COLLISION_HANDLINGS[property]
+            );
         }
         
         rules_history.insert(rule);
