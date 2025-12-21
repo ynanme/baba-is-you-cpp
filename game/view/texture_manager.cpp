@@ -9,6 +9,11 @@ TextureManager::TextureManager()
     wordsTexture.loadFromFile("assets/spritesheet_words.png");
     grassTexture.loadFromFile("assets/GRASS.png");
     textGrassTexture.loadFromFile("assets/Text_GRASS_0.png");
+    waterTexture.loadFromFile("assets/WATER_0.png");
+    textWaterTexture.loadFromFile("assets/Text_WATER_0.png");
+    textLavaTexture.loadFromFile("assets/Text_LAVA_0.png");
+    lavaTexture.loadFromFile("assets/LAVA_0.png");
+    hotTextTexture.loadFromFile("assets/Text_HOT_0.png");
 
     // tiles.png
     sprites.insert(std::make_pair(
@@ -31,10 +36,6 @@ TextureManager::TextureManager()
         SpriteInfo(&tilesTexture_2, getSpriteRect(14, 10))
     ));
 
-    /*sprites.insert(std::make_pair(
-        Label::LAVA,
-        SpriteInfo(&tilesTexture_2, getSpriteRect(6, 10))
-    ));*/
     sprites.insert(std::make_pair(
         Label::SKULL,
         SpriteInfo(&tilesTexture_3, getSpriteRect(15, 63))  
@@ -52,6 +53,41 @@ TextureManager::TextureManager()
     sprites.insert(std::make_pair(
         Label::WORD_GRASS,
         SpriteInfo(&textGrassTexture, whole_pic_text_grass)
+    ));
+
+    sf::Vector2u textWaterSize = textWaterTexture.getSize();
+    sf::IntRect whole_pic_text_water(0, 0, textWaterSize.x, textWaterSize.y);
+    sprites.insert(std::make_pair(
+        Label::WORD_WATER,
+        SpriteInfo(&textWaterTexture, whole_pic_text_water)
+    ));
+
+    sf::Vector2u waterSize = waterTexture.getSize();
+    sf::IntRect whole_pic_water(0, 0, waterSize.x, waterSize.y);
+    sprites.insert(std::make_pair(
+        Label::WATER,
+        SpriteInfo(&waterTexture, whole_pic_water)
+    ));
+
+    sf::Vector2u lavaSize = lavaTexture.getSize();
+    sf::IntRect whole_pic_lava(0, 0, lavaSize.x, lavaSize.y);
+    sprites.insert(std::make_pair(
+        Label::LAVA,
+        SpriteInfo(&lavaTexture, whole_pic_lava)
+    ));
+
+    sf::Vector2u textLavaSize = textLavaTexture.getSize();
+    sf::IntRect whole_pic_text_lava(0, 0, textLavaSize.x, textLavaSize.y);
+    sprites.insert(std::make_pair(
+        Label::WORD_LAVA,
+        SpriteInfo(&textLavaTexture, whole_pic_text_lava)
+    ));
+
+    sf::Vector2u textHotSize = hotTextTexture.getSize();
+    sf::IntRect whole_pic_text_hot(0, 0, textHotSize.x, textHotSize.y);
+    sprites.insert(std::make_pair(
+        Label::WORD_HOT,
+        SpriteInfo(&hotTextTexture, whole_pic_text_hot)
     ));
 
     // words.png

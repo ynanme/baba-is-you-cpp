@@ -18,6 +18,11 @@ private:
     sf::Texture wordsTexture;
     sf::Texture grassTexture;
     sf::Texture textGrassTexture;
+    sf::Texture waterTexture;
+    sf::Texture textWaterTexture;
+    sf::Texture lavaTexture;
+    sf::Texture textLavaTexture;
+    sf::Texture hotTextTexture;
 
     std::map<Label, SpriteInfo> sprites;
 
