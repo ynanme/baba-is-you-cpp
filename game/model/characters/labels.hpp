@@ -23,6 +23,7 @@ enum class Label {
     WORD_SKULL,
     WORD_WALL,
     WORD_WATER,
+    WORD_PULL,
 
     WORD_IS,
 

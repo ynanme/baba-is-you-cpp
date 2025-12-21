@@ -7,6 +7,8 @@ TextureManager::TextureManager()
     tilesTexture_2.loadFromFile("assets/spritesheet_characters_2.png");
     tilesTexture_3.loadFromFile("assets/spritesheet_characters_3.png");
     wordsTexture.loadFromFile("assets/spritesheet_words.png");
+    grassTexture.loadFromFile("assets/GRASS.png");
+    textGrassTexture.loadFromFile("assets/Text_GRASS_0.png");
 
     // tiles.png
     sprites.insert(std::make_pair(
@@ -38,6 +40,20 @@ TextureManager::TextureManager()
         SpriteInfo(&tilesTexture_3, getSpriteRect(15, 63))  
     ));
 
+    sf::Vector2u grassSize = grassTexture.getSize();
+    sf::IntRect whole_pic_grass(0, 0, grassSize.x, grassSize.y);
+    sprites.insert(std::make_pair(
+        Label::GRASS,
+        SpriteInfo(&grassTexture, whole_pic_grass)
+    ));
+
+    sf::Vector2u textGrassSize = textGrassTexture.getSize();
+    sf::IntRect whole_pic_text_grass(0, 0, textGrassSize.x, textGrassSize.y);
+    sprites.insert(std::make_pair(
+        Label::WORD_GRASS,
+        SpriteInfo(&textGrassTexture, whole_pic_text_grass)
+    ));
+
     // words.png
     sprites.insert(std::make_pair(
         Label::WORD_BABA,
@@ -57,6 +73,11 @@ TextureManager::TextureManager()
     sprites.insert(std::make_pair(
         Label::WORD_DEFEAT,
         SpriteInfo(&wordsTexture, getSpriteRect(0, 109))
+    ));
+
+    sprites.insert(std::make_pair(
+        Label::WORD_PULL,
+        SpriteInfo(&wordsTexture, getSpriteRect(6, 13))
     ));
 
     // à réctifier plus tard

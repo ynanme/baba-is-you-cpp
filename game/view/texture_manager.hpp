@@ -16,6 +16,8 @@ private:
     sf::Texture tilesTexture_2;
     sf::Texture tilesTexture_3;
     sf::Texture wordsTexture;
+    sf::Texture grassTexture;
+    sf::Texture textGrassTexture;
 
     std::map<Label, SpriteInfo> sprites;
 
