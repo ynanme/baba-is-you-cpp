@@ -21,7 +21,7 @@ private:
     std::vector<CharacterView> characterViews;
 
     void createWindow();
-    void rebuildCharacters(); // clé
+    void rebuildCharacters(); 
 
 public:
     BoardView(Board& board, Game& game);

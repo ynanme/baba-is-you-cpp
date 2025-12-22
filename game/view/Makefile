@@ -11,7 +11,6 @@ CXXFLAGS = -std=c++11 -Iinclude
 LDFLAGS = -lsfml-graphics -lsfml-window -lsfml-system
 
 # Liste des fichiers sources à compiler
-# Note : L'utilisation de jokers (*) simplifie l'inclusion de tous les .cpp dans les dossiers spécifiés
 SOURCES = \
     ../model/characters/labels.hpp \
     ../model/*/*.cpp \
@@ -20,6 +19,7 @@ SOURCES = \
     texture_manager.cpp \
     character_view.cpp \
     board_view.cpp \
+    menu.cpp \
     main.cpp
 
 # La règle 'all' est la cible par défaut
