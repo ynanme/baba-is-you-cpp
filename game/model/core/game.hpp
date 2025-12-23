@@ -11,15 +11,17 @@
 #include "./action.hpp"
 #include "../../utils/observer_pattern.hpp"
 #include "events.hpp"
+#include "properties.hpp"
 
 using namespace std;
 
 using Rule = tuple<Label, Label, Label>;
 
+
 class Game : public Observer<RuleChange> {
 private:
 
-    static unordered_map<Label, CollisionResult> COLLISION_HANDLINGS;
+    static unordered_map<Label, Property> WORDS_PROPERTIES;
     static unordered_map<Label, Label> WORDS_SUBJECTS;
 
     Board& board;
@@ -32,6 +34,7 @@ private:
     vector<Character *> players;
 
     set<Rule> rules_history;
+    unordered_map<Label, set<Property>> properties;
 
     bool is_terminated = false;     
     bool has_won = false;
@@ -42,26 +45,33 @@ public:
 
     Board& get_board() const;
 
-    void update(RuleChange __event) override;
+    void update(RuleChange event) override;
 
     void add_character(Character* character);
-    void add_player(Character* player);
 
+    void apply_rule (Rule rule);
+    void unapply_rule (Rule rule);
     void make_player (Label label);
     void unmake_player (Label label);
-    void change_collision_handlings (Label label, CollisionResult collision_handling);
+    void add_property (Label label, Property property);
+    void remove_property (Label label, Property property);
+    //void check_for_tautologies (Label label);
 
-    void add_rule_to_history (Rule rule);
-
-    //Action computeNextAction(Character& character, Direction direction);
-    void force_rule_initialization();
-    void check_effects_after_move(Character& player);
 
     void play (Direction direction);
-    void _do(Action action);
+    bool undo() {return false;};
+    bool redo() {return false;};
 
-    bool undo();
-    bool redo();
+    void move (Character * player, Direction direction);
+    bool has_property (Character * character, Property property);
+    bool has_no_property (Label label);
+    bool is_open (Position position);
+    bool is_subject_to_push (Position position);
+    void move_characters (Position position, Direction direction);
+    CoexistionResult get_coexistion_result (Character * visitor, Character * host);
+    CoexistionResult get_prioritary_coexistion_result (Character * visitor, Position hosts_position);
+    int pushes_chain_range (Position start, Direction direction);
+    void launch_pushes (Position start, Direction direction, int range);
 
     void terminate(bool win, const std::string& message = "");
 
@@ -69,12 +79,11 @@ public:
     bool isVictory() const noexcept { return is_terminated && has_won; }
     bool isDefeat() const noexcept { return is_terminated && !has_won; }
 
-    void push_chain(Character& obj, Direction dir, Action& action);
-    bool can_push(Character& obj, Direction dir);
-    void move_character (Character & character, Direction direction);
+
+    void move_character (Character * character, Direction direction);
 
 private:
-    void reverseAction(const Action& action); 
+    //void reverseAction(const Action& action); 
     
     
     friend ostream& operator << (ostream& out, const Game& game);

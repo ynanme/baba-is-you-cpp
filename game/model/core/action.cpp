@@ -12,15 +12,6 @@ Direction Action :: get_direction () const {
 }
 
 
-CollisionResult Action :: get_result () const {
-    return result;
-}
-
-void Action :: set_result (CollisionResult new_result) {
-    result = new_result;
-}
-
-
 Character * Action :: get_initiator () const {
     return involved_characters.at(0);
 }

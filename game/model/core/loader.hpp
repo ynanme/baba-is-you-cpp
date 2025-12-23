@@ -10,14 +10,13 @@
 #include "game.hpp"
 #include <sstream>
 
-using RuleT = tuple<Label, Label, Label>;
 
 class Loader {
 
     private:
 
         static unordered_map<string, Label> LABELS;
-        static unordered_map<string, CollisionResult> COLLISION_HANDLINGS;
+        static unordered_map<string, Category> CATEGORIES;
 
         Board * build_board (std::istream& file);
         Label get_you (std::istream& file);
@@ -27,6 +26,7 @@ class Loader {
         void setup_game (Game * game, Board * board, Ruler * ruler, Label who_is_you);
 
     public:
+    
         Game * load (std::string file_path);
 
 };

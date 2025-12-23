@@ -37,6 +37,7 @@ public:
     void remove_character(Character* character);
     const vector<Character*>& get_neighbor(Character& character, Direction direction);
     void set(Character& character);
+    void unset (Position position);
 
     bool in_bounds(const Position& pos) const;
     vector<Character*>& get_cell(const Position& pos);

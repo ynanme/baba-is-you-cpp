@@ -13,130 +13,36 @@ void Game::add_character(Character* character) {
     board.add_character(character);
 }
 
-void Game::add_player(Character* player) {
-    players.push_back(player);
-    add_character(player);
+
+
+void Game :: update (RuleChange event) {
+    for (Rule new_rule: event.new_rules) {
+        apply_rule(new_rule);
+    }
+    for (Rule old_rule: event.old_rules) {
+        if (rules_history.find(old_rule) != rules_history.end())
+            unapply_rule(old_rule);
+    }
 }
 
-void Game :: add_rule_to_history (Rule rule) {
+void Game :: apply_rule (Rule rule) {
+    add_property(WORDS_SUBJECTS[get<0>(rule)], WORDS_PROPERTIES[get<2>(rule)]);
     rules_history.insert(rule);
 }
 
-/*void Game::update() {
-    // on peut ajouter une fonction de rendu graphique, rafraîchir l'écran, etc...
-    std::cout << "Board mis à jour." << std::endl;
-}*/
-
-void Game::update(RuleChange event) {
-
-    cout << "game received rule change" << endl;
-
-    for (const LabelT& rule : event.new_rules) {
-
-        Label subject  = get<0>(rule);
-        Label property = get<2>(rule);
-
-        cout << " + rule added: ";
-        print_rules({rule});
-
-        if (property == Label::WORD_YOU) {
-            make_player(WORDS_SUBJECTS[subject]); 
-            continue;
-        } else {
-            change_collision_handlings(
-                WORDS_SUBJECTS[subject],
-                COLLISION_HANDLINGS[property]
-            );
-        }
-        
-        rules_history.insert(rule);
-    
-    }
-
-    cout << "rules are ";
-    for (Rule rule: rules_history) {
-        cout << get<0>(rule) << "_" << get<1>(rule) << "_" << get<2>(rule) << " ";
-    }
-    cout << endl;
-
-    for (const LabelT& rule : event.old_rules) {
-
-        if (rules_history.find(rule) != rules_history.end()) {
-            Label subject  = get<0>(rule);
-            Label property = get<2>(rule);
-
-            cout << " and do contain " << get<0>(rule) << "_" << get<1>(rule) << "_" << get<2>(rule) << endl;
-    
-            cout << " - rule removed: ";
-            print_rules({rule});
-    
-            if (property == Label::WORD_YOU) {
-                unmake_player(WORDS_SUBJECTS[subject]); 
-            }
-            else {
-                change_collision_handlings(
-                    WORDS_SUBJECTS[subject],
-                    CollisionResult::COEXISTED
-                );
-            }
-            rules_history.erase(rule);
-        }
-
-    }
-
-    /*bool hasYou = !players.empty();
-
-    if (!hasYou) {
-        terminate(false, "NO MORE YOU!");
-        return;
-    }*/
-
-    for (Character* player : players) {
-        for (Character* obj : board.at(player->get_position())) {
-            if (obj->collide() == CollisionResult::AWARDED) {
-                terminate(true);
-                return;
-            }
-        }
-    }
+void Game :: unapply_rule (Rule rule) {
+    remove_property(WORDS_SUBJECTS[get<0>(rule)], WORDS_PROPERTIES[get<2>(rule)]);
+    rules_history.erase(rule);
 }
 
-void Game::force_rule_initialization() {
-
-    for (Character* c : characters) {
-
-        // Détecter si le character est un mot 
-        if (WORDS_SUBJECTS.find(c->get_label()) == WORDS_SUBJECTS.end())
-            continue;
-
-        Position original = c->get_position();
-
-        for (Direction dir : {
-                 Direction::UP,
-                 Direction::DOWN,
-                 Direction::LEFT,
-                 Direction::RIGHT }) {
-
-            Position next = Position::neighbor(original, dir, 1);
-            if (!board.in_bounds(next)) continue;
-
-            move_character(*c, dir);
-            move_character(*c, !dir);
-
-            return; 
-        }
-    }
+void Game :: add_property (Label label, Property property) {
+    properties[label].insert(property);
+    if (property == Property::YOU) make_player(label);
 }
 
-
-
-void Game :: change_collision_handlings (Label label, CollisionResult collision_handling) {
-    for (Character * character : characters) {
-        if (character->get_label() == label && character->get_label() != Label::WORD_YOU) {
-            cout << character->get_label() << " at " << character->get_position() << " now handle collisions like " << collision_handling << endl;
-            character->change_collision_handling(collision_handling);
-        }
-    }
+void Game :: remove_property (Label label, Property property) {
+    properties[label].erase(property);
+    if (property == Property::YOU) unmake_player(label);
 }
 
 void Game :: make_player (Label label) {
@@ -157,13 +63,15 @@ void Game :: unmake_player (Label label) {
     }
 }
 
-unordered_map<Label, CollisionResult> Game :: COLLISION_HANDLINGS = {
-    {Label::WORD_DEFEAT, CollisionResult::DEFEATED},
-    {Label::WORD_HOT, CollisionResult::DEFEATED},
-    {Label::WORD_PUSH, CollisionResult::SHIFTED},
-    {Label::WORD_SINK, CollisionResult::DEFEATED},
-    {Label::WORD_STOP, CollisionResult::BLOCKED},
-    {Label::WORD_WIN, CollisionResult::AWARDED}
+unordered_map<Label, Property> Game :: WORDS_PROPERTIES = {
+    {Label::WORD_DEFEAT, Property::DEFEAT},
+    {Label::WORD_HOT, Property::HOT},
+    {Label::WORD_MELT, Property::MELT},
+    {Label::WORD_PUSH, Property::PUSH},
+    {Label::WORD_SINK, Property::SINK},
+    {Label::WORD_STOP, Property::STOP},
+    {Label::WORD_WIN, Property::WIN},
+    {Label::WORD_YOU, Property::YOU}
 };
 
 unordered_map<Label, Label> Game :: WORDS_SUBJECTS = {
@@ -179,229 +87,143 @@ unordered_map<Label, Label> Game :: WORDS_SUBJECTS = {
 
 
 void Game :: play (Direction direction) {
-    if (is_terminated) {
-        return;
-    }
+    cout << "---------------------------------------------------------------" << endl;
     for (Character * player: players) {
-        Action action {player, direction};
-        _do(action);
+        cout << "playing with " << *player << " towards " << direction << endl;
+        move(player, direction);
+    }
+    cout << "---------------------------------------------------------------" << endl;
+}
+
+
+void Game :: move (Character * player, Direction direction) {
+    Position destination = Position::neighbor(player->get_position(), direction);
+    int chain_range = pushes_chain_range(destination, direction);
+    cout << "chain range is " << chain_range << endl;
+    if (chain_range >= 0) {
+        launch_pushes(player->get_position(), direction, chain_range);
+        move_character(player, direction);
     }
 }
 
-/*void Game :: _do (Action action) {
-
-    Character & player = *action.get_initiator();
-    vector<Character*> neighbors = board.get_neighbor(player, action.get_direction());
-    if(neighbors.empty()) {
-        move_character (player, action.get_direction());
-        done_actions.push(action);
-        return;
-    }
-    for (Character* neighbor_ptr : neighbors){
-
-        Character& neighbor = *neighbor_ptr;
-
-        CollisionResult result = neighbor.collide();
-        action.set_result(result);
-        
-        switch (action.get_result()) {
-    
-            case CollisionResult::BLOCKED:
-                cout << "Mouvement bloqué." << endl;
-                break;
-    
-            case CollisionResult::SHIFTED:
-                cout << "On pousse un objet." << endl;
-                // Vérifier si on peut pousser la chaîne d'objets
-                if (can_push(neighbor, action.get_direction())) {
-                    // Pousser la chaîne d'objets du dernier voisin au premier
-                    push_chain(neighbor, action.get_direction(), action);
-                    move_character(player, action.get_direction());
-                }
-                break;
-    
-            case CollisionResult::COEXISTED:
-                cout << "Superposition autorisée." << endl;
-                move_character (player, action.get_direction());
-                break;
-    
-            case CollisionResult::DEFEATED:
-                cout << "Le joueur est mort." << endl;
-                terminate(false);
-                break;
-    
-            case CollisionResult::AWARDED:
-                cout << "Victoire !" << endl;
-                terminate(true);
-    
-                break;
-        }
-        done_actions.push(action);
-         
-    }
-    
-}*/
-
-void Game::_do(Action action) {
-    Character& player = *action.get_initiator();
-    Direction dir = action.get_direction();
-
-    Position target_pos = Position::neighbor(player.get_position(), dir, 1);
-    if (!board.in_bounds(target_pos)) {
-        cout << "Mouvement bloqué (hors limites)." << endl;
-        return;
-    }
-
-    vector<Character*> target_objects = board.at(target_pos);
-
-    if (target_objects.empty()) {
-        move_character(player, dir);
-        check_effects_after_move(player); 
-        done_actions.push(action);
-        return;
-    }
-
-    bool has_blocked = false;
-    bool has_shifted = false;
-    vector<Character*> pushable_objects;
-
-    for (Character* obj : target_objects) {
-        CollisionResult res = obj->collide();
-        switch (res) {
-            case CollisionResult::BLOCKED:
-                has_blocked = true;
-                break;
-            case CollisionResult::SHIFTED:
-                has_shifted = true;
-                pushable_objects.push_back(obj);
-                break;
-            case CollisionResult::COEXISTED:
-                break;
-            case CollisionResult::DEFEATED:
-            case CollisionResult::AWARDED:
-                break;
-        }
-    }
-
-    if (has_blocked) {
-        cout << "Mouvement bloqué." << endl;
-        return;
-    }
-
-    bool will_move = true;
-    if (has_shifted) {
-        bool can_push_all = true;
-        for (Character* pushable : pushable_objects) {
-            if (!can_push(*pushable, dir)) {
-                can_push_all = false;
-                break;
-            }
-        }
-
-        if (can_push_all) {
-            cout << "On pousse un objet." << endl;
-            // Pousser toute la chaîne
-            for (Character* pushable : pushable_objects) {
-                push_chain(*pushable, dir, action);
-            }
-        } else {
-            cout << "Mouvement bloqué (objet non poussable)." << endl;
-            will_move = false;
-        }
-    }
-
-    if (will_move) {
-        // Cas COEXISTED ou vide ou après push : on bouge
-        if (!has_shifted) {
-            cout << "Superposition autorisée." << endl;
-        }
-        move_character(player, dir);
-        check_effects_after_move(player);  // Check defeated/awarded sur la NOUVELLE position
-        done_actions.push(action);
+void Game :: launch_pushes (Position start, Direction direction, int range) {
+    cout << "pushes launched from " << start << " towards " << direction << ", range " << range << endl;
+    Position end = Position::neighbor(start, direction, range);
+    while (end != start) {
+        move_characters(end, direction);
+        end.shift(!direction);
     }
 }
 
-void Game::check_effects_after_move(Character& player) {
-    vector<Character*> current_objects = board.at(player.get_position());
-
-    bool has_defeated = false;
-    bool has_awarded = false;
-
-    for (Character* obj : current_objects) {
-        if (obj == &player) continue;  
-
-        CollisionResult res = obj->collide();
-        if (res == CollisionResult::DEFEATED) {
-            has_defeated = true;
-        } else if (res == CollisionResult::AWARDED) {
-            has_awarded = true;
-        }
-    }
-
-    if (has_defeated) {
-        cout << "Le joueur est mort." << endl;
-        terminate(false);
-        return;
-    }
-
-    if (has_awarded) {
-        cout << "Victoire !" << endl;
-        terminate(true);
-        return;
-    }
+bool Game :: has_property (Character * character, Property property) {
+    if (character->get_category() == Category::WORD) return property == Property::PUSH;
+    Label label = character->get_label();
+    return
+        properties.find(label) != properties.end() &&
+        properties[label].find(property) != properties[label].end()
+    ;
 }
 
-void Game::push_chain(Character& obj, Direction dir, Action& action) {
-    Position next_pos = Position::neighbor(obj.get_position(), dir, 1);
-    if (!board.in_bounds(next_pos)) return;
-
-    vector<Character*> next_cell = board.at(next_pos);
-
-    // Pousser récursivement tout ce qui est poussable devant
-    for (Character* candidate : next_cell) {
-        if (candidate->collide() == CollisionResult::SHIFTED) {
-            if (can_push(*candidate, dir)) {
-                push_chain(*candidate, dir, action);  // pousse d'abord plus loin
-            }
-        }
-    }
-
-    // Maintenant on peut déplacer l'objet courant en toute sécurité
-    move_character(obj, dir);
-    action.add_involved_character(obj);
+bool Game :: has_no_property (Label label) {
+    return
+        properties.find(label) == properties.end() ||
+        properties[label].empty()
+    ;
 }
 
-bool Game::can_push(Character& obj, Direction dir) {
-    Position next_pos = Position::neighbor(obj.get_position(), dir, 1);
-    if (!board.in_bounds(next_pos)) return false;
-
-    vector<Character*> next_cell = board.at(next_pos);
-    if (next_cell.empty()) return true;
-
-    for (Character* c : next_cell) {
-        if (c->collide() == CollisionResult::BLOCKED) {
+bool Game :: is_open (Position position) {
+    for (Character * character: board.at(position)) {
+        if (has_property(character, Property::STOP)) {
             return false;
         }
     }
-
-    for (Character* c : next_cell) {
-        if (c->collide() == CollisionResult::SHIFTED) {
-            if (!can_push(*c, dir)) {
-                return false;
-            }
-        }
-    }
-
     return true;
 }
 
-void Game :: move_character (Character & character, Direction direction) {
-    board.remove_character(&character);
-    character.move(direction);
-    board.set(character);
+bool Game :: is_subject_to_push (Position position) {
+    for (Character * character: board.at(position)) {
+        if (has_property(character, Property::PUSH)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+int Game :: pushes_chain_range (Position start, Direction direction) {
+    int range = 0;
+    while (board.in_bounds(start)) {
+        if (!is_open(start)) return -1;
+        if (is_subject_to_push(start)) {
+            range ++;
+            start.shift(direction);
+        } else break;
+    }
+    if (!board.in_bounds(start)) return -1;
+    return range;
+}
+
+void Game :: move_characters (Position position, Direction direction) {
+    for (Character * character: board.at(position)) {
+        if (has_property(character, Property::PUSH)) {
+            move_character(character, direction);
+        }
+    }
+}
+
+CoexistionResult Game :: get_coexistion_result (Character * visitor, Character * host) {
+    if (has_property(visitor, Property::YOU) && has_property(host, Property::WIN)) {
+        return CoexistionResult::WON;
+    }
+    if (has_property(visitor, Property::YOU) && has_property(host, Property::DEFEAT)) {
+        return CoexistionResult::DEFEATED;
+    }
+    if (has_property(visitor, Property::MELT) && has_property(host, Property::HOT)) {
+        return CoexistionResult::MELTED;
+    }
+    if (has_property(visitor, Property::SINK) || has_property(host, Property::SINK)) {
+        return CoexistionResult::SINKED;
+    }
+    return CoexistionResult::COEXISTED;
+}
+
+CoexistionResult Game :: get_prioritary_coexistion_result (Character * visitor, Position hosts_position) {
+    CoexistionResult final_result = CoexistionResult::COEXISTED;
+    for (Character * host: board.at(hosts_position)) {
+        CoexistionResult host_result = get_coexistion_result(visitor, host);
+        if (host_result > final_result) final_result = host_result;
+    }
+    return final_result;
 }
 
 
+
+void Game :: move_character (Character * character, Direction direction) {
+    cout << "moving " << *character << " towards " << direction << endl;
+    board.remove_character(character);
+    character->move(direction);    
+    switch (get_prioritary_coexistion_result(character, character->get_position())) {
+        case CoexistionResult::WON:
+            cout << "chosen collision is WON" << endl;
+            board.set(*character);
+            terminate(true);
+            break;
+        case CoexistionResult::DEFEATED: // || CoexistionResult::MELTED
+            cout << "chosen collision is DEFEATED or MELTED" << endl;
+            terminate(false);
+            break;
+        case CoexistionResult::SINKED:
+            cout << "chosen collision is SINKED" << endl;
+            board.unset(character->get_position());
+            if (has_property(character, Property::YOU)) terminate(false);
+            break;
+        case CoexistionResult::COEXISTED:
+            cout << "chosen collision is COEXISTED" << endl;
+            board.set(*character);
+            break;
+    }
+}
+
+/*
 bool Game::undo() {
     if (done_actions.empty()) {
         cout << "Rien à undo." << endl;
@@ -434,7 +256,7 @@ bool Game::redo() {
 
     for (Character* character : action.get_involved_characters()) {
         if (character) {
-            move_character(*character, direction); 
+            move_character(character, direction); 
         }
     }
 
@@ -444,7 +266,7 @@ bool Game::redo() {
          << " caractères déplacés." << endl;
 
     return true;
-}
+}*/
 
 void Game::terminate(bool win, const string& message) {
     if (is_terminated) {
@@ -463,7 +285,7 @@ void Game::terminate(bool win, const string& message) {
     // notify(); 
 }
 
-void Game::reverseAction(const Action& action) {
+/*void Game::reverseAction(const Action& action) {
     Character& c = *action.get_initiator();
     Direction dir = action.get_direction();
 
@@ -473,13 +295,13 @@ void Game::reverseAction(const Action& action) {
     new_pos.shift(inverse);
     for (Character* character : action.get_involved_characters()) {
         if (character) {
-            move_character(*character, inverse); 
+            move_character(character, inverse); 
         }
     }
 
     vector<Character*>& old_cell = board.get_cell(old_pos);
 }
-
+*/
 
 
 ostream& operator << (ostream& out, const Game& game) {

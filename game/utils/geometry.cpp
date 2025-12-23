@@ -43,6 +43,12 @@ bool operator == (const Position& first, const Position& second) {
     return first.get_x() == second.get_x() && first.get_y() == second.get_y();
 }
 
+
+bool operator != (const Position& first, const Position& second) {
+    return first.get_x() != second.get_x() || first.get_y() != second.get_y();
+}
+
+
 ostream& operator << (ostream& out, const Position& position) {
     out << "(" << position.get_x() << ", " << position.get_y() << ")";
     return out;

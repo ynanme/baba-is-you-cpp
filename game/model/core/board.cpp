@@ -1,7 +1,7 @@
 #include "board.hpp"
 #include <iostream>
 
-Character Board::NONE_CHARACTER(Position(-1, -1), CollisionResult::BLOCKED, Label::NONE);
+Character Board::NONE_CHARACTER(Position(-1, -1), Label::NONE, Category::OBJECT);
 const std::vector<Character*> Board::NONE_VECTOR = {
     &Board::NONE_CHARACTER
 };
@@ -47,6 +47,14 @@ void Board::set(Character& character) {
     if (std::find(cell.begin(), cell.end(), &character) == cell.end()) {
         cell.push_back(&character);
         notify({this, character.get_position()}); 
+    }
+}
+
+void Board :: unset (Position position) {
+    if (in_bounds(position)) {
+        for (Character * character: grid[position]) {
+            remove_character(character);
+        }
     }
 }
 

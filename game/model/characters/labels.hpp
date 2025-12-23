@@ -29,6 +29,7 @@ enum class Label {
 
     WORD_DEFEAT,
     WORD_HOT,
+    WORD_MELT,
     WORD_PUSH,
     WORD_SINK,
     WORD_STOP,
@@ -37,6 +38,12 @@ enum class Label {
 
     NONE
     
+};
+
+
+enum class Category {
+    OBJECT,
+    WORD
 };
 
 

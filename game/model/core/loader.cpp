@@ -41,15 +41,11 @@ unordered_map<string, Label> Loader :: LABELS = {
 };
 
 
-unordered_map<string, CollisionResult> Loader :: COLLISION_HANDLINGS = {
-
-    {"BLOCKED", CollisionResult::BLOCKED},
-    {"SHIFTED", CollisionResult::SHIFTED},
-    {"COEXISTED", CollisionResult::COEXISTED},
-    {"DEFEATED", CollisionResult::DEFEATED},
-    {"AWARDED", CollisionResult::AWARDED}
-
+unordered_map<string, Category> Loader :: CATEGORIES = {
+    {"O", Category::OBJECT},
+    {"W", Category::WORD}
 };
+
 
 
 Game* Loader::load(string file_path) {
@@ -95,7 +91,7 @@ void Loader :: build_rules (istream& file, Game * game) {
         if (!(iss >> subject >> verb >> property)) {
             string subject, verb, property;
             cout << subject << " " << verb << " " << property << endl;
-            game->add_rule_to_history({LABELS[subject], LABELS[verb], LABELS[property]});
+            game->apply_rule({LABELS[subject], LABELS[verb], LABELS[property]});
         }
     }
 }
@@ -106,7 +102,6 @@ void Loader :: build_characters (istream& file, Game * game) {
     cout << "characters" << endl;
     while (file >> x >> y >> label >> collision) {
         cout << x << " " << y << " " << label << " " << collision << endl;
-        game->add_character(new Character({x, y}, COLLISION_HANDLINGS[collision], LABELS[label]));
     }
 }
 
@@ -116,14 +111,14 @@ void Loader::build_rules_and_characters(std::istream& file, Game* game) {
         if (isdigit(first[0])) {
             int x = std::stoi(first);
             int y;
-            string label, collision;
-            file >> y >> label >> collision;
-            game->add_character(new Character({x, y}, COLLISION_HANDLINGS[collision], LABELS[label]));
+            string label, category;
+            file >> y >> label >> category;
+            game->add_character(new Character({x, y}, LABELS[label], CATEGORIES[category]));
         }
         else {
             string verb, property;
             file >> verb >> property;
-            game->add_rule_to_history({LABELS[first], LABELS[verb], LABELS[property]});
+            game->apply_rule({LABELS[first], LABELS[verb], LABELS[property]});
         }
     }
 }

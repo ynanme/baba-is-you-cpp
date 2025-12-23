@@ -33,11 +33,13 @@ class Position {
 
         void shift (Direction direction);
 
-        static Position neighbor (Position position, Direction direction, int range);
+        static Position neighbor (Position position, Direction direction, int range = 1);
 
 };
 
 bool operator == (const Position& first, const Position& second);
+
+bool operator != (const Position& first, const Position& second);
 
 bool operator<(const Position& first, const Position& second);
 
