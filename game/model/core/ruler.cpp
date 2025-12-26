@@ -8,16 +8,18 @@ using namespace std;
 
 void Ruler :: update (CharacterSet event) {
 
-    cout << "ruler received notification for event at position " << event.position << endl;
+    Position event_position = event.set_character->get_position();
 
-    if (word_index(event.board->at(event.position)) != -1) {
+    cout << "ruler received notification for event at position " << event_position << endl;
+
+    if (event.set_character->get_category() == Category::WORD) {
 
         cout << "found a word at said position" << endl;
 
         vector<LabelT> potential_new_rules = filter_on_rules(
             filter_on_phrases(
                 get_cells_to_scan(
-                    *event.board, get_positions_to_scan_for_rule_creation(event.position)
+                    *event.board, get_positions_to_scan_for_rule_creation(event_position)
                 )
             )
         );
@@ -25,7 +27,7 @@ void Ruler :: update (CharacterSet event) {
         vector<LabelT> potential_old_rules = filter_on_rules(
             filter_on_phrases(
                 get_cells_to_scan(
-                    *event.board, get_positions_to_scan_for_rule_destruction(event.position)
+                    *event.board, get_positions_to_scan_for_rule_destruction(event_position)
                 )
             )
         );
@@ -52,7 +54,7 @@ vector<LabelT> Ruler :: filter_on_rules (vector<LabelT> filtered_phrases) {
         if (
             WORDS_TOKENS[get<0>(phrase)] == Token::SUBJECT &&
             WORDS_TOKENS[get<1>(phrase)] == Token::VERB &&
-            WORDS_TOKENS[get<2>(phrase)] == Token::PROPERTY
+            WORDS_TOKENS[get<2>(phrase)] != Token::VERB
         ) {
             rules.push_back(phrase);
         }
@@ -215,13 +217,12 @@ vector<PositonT> Ruler :: get_positions_to_scan_for_rule_destruction (Position w
 
 
 int Ruler :: word_index (vector<Character *> cell) {
-    int index = -1;
     for (size_t i = 0; i < cell.size(); i ++) {
-        if (WORDS.find((cell.at(i)->get_label())) != WORDS.end()) {
-            index = i;
+        if (cell.at(i)->get_category() == Category::WORD) {
+            return i;
         }
     }
-    return index;
+    return -1;
 }
 
 
@@ -232,29 +233,6 @@ void print_rules (vector<LabelT> rules) {
     cout << endl;
 }
 
-
-unordered_set<Label> Ruler :: WORDS = {
-    
-    Label::WORD_BABA,
-    Label::WORD_FLAG,
-    Label::WORD_GRASS,
-    Label::WORD_LAVA,
-    Label::WORD_ROCK,
-    Label::WORD_SKULL,
-    Label::WORD_WALL,
-    Label::WORD_WATER,
-    
-    Label::WORD_IS,
-    
-    Label::WORD_DEFEAT,
-    Label::WORD_HOT,
-    Label::WORD_PUSH,
-    Label::WORD_SINK,
-    Label::WORD_STOP,
-    Label::WORD_WIN,
-    Label::WORD_YOU
-
-};
 
 
 unordered_map<Label, Token> Ruler :: WORDS_TOKENS = {

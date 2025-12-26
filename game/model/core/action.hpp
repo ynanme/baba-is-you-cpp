@@ -10,18 +10,20 @@
 class Action {
 
     private:
-        vector<Character *> involved_characters;
+        vector<Character *> moved_characters;
+        vector<Character *> destroyed_characters;
         Direction direction;
 
     public:
 
-        Action (Character * initiator, Direction direction);
+        Action (Direction direction);
 
         Direction get_direction () const;
+        vector<Character *> get_moved_characters () const;
+        vector<Character *> get_destroyed_characters () const;
 
-        Character * get_initiator () const;
-        vector<Character *> get_involved_characters () const;
-        void add_involved_character (Character & involved_character);
+        void add_moved_character (Character * moved_character);
+        void add_destroyed_character (Character * destroyed_character);
 
 };
 

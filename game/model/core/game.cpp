@@ -26,18 +26,28 @@ void Game :: update (RuleChange event) {
 }
 
 void Game :: apply_rule (Rule rule) {
-    add_property(WORDS_SUBJECTS[get<0>(rule)], WORDS_PROPERTIES[get<2>(rule)]);
+    print_rules({rule});
+    if (WORDS_PROPERTIES.find(get<2>(rule)) != WORDS_PROPERTIES.end())
+        add_property(WORDS_SUBJECTS[get<0>(rule)], WORDS_PROPERTIES[get<2>(rule)]);
+    else{
+        cout << "tranfering from " << get<2>(rule) << " to " << get<0>(rule) << endl;
+        transfer_properties(WORDS_SUBJECTS[get<2>(rule)], WORDS_SUBJECTS[get<0>(rule)]);}
     rules_history.insert(rule);
 }
 
 void Game :: unapply_rule (Rule rule) {
-    remove_property(WORDS_SUBJECTS[get<0>(rule)], WORDS_PROPERTIES[get<2>(rule)]);
+    print_rules({rule});
+    if (WORDS_PROPERTIES.find(get<2>(rule)) != WORDS_PROPERTIES.end())
+        remove_property(WORDS_SUBJECTS[get<0>(rule)], WORDS_PROPERTIES[get<2>(rule)]);
+    else
+        retrieve_properties(WORDS_SUBJECTS[get<2>(rule)], WORDS_SUBJECTS[get<0>(rule)]);
     rules_history.erase(rule);
 }
 
 void Game :: add_property (Label label, Property property) {
     properties[label].insert(property);
     if (property == Property::YOU) make_player(label);
+    check_for_tautologies(label);
 }
 
 void Game :: remove_property (Label label, Property property) {
@@ -63,6 +73,23 @@ void Game :: unmake_player (Label label) {
     }
 }
 
+void Game :: transfer_properties (Label from, Label to) {
+    for (Property property: properties[from])
+        add_property(to, property);
+}
+
+void Game :: retrieve_properties (Label of, Label to) {
+    for (Property property: properties[of])
+        remove_property(to, property);
+}
+
+void Game :: check_for_tautologies (Label label) {
+    if (has_property(label, Property::YOU) && has_property(label, Property::DEFEAT))
+        terminate(false);
+    if (has_property(label, Property::YOU) && has_property(label, Property::WIN))
+        terminate(true);
+}
+
 unordered_map<Label, Property> Game :: WORDS_PROPERTIES = {
     {Label::WORD_DEFEAT, Property::DEFEAT},
     {Label::WORD_HOT, Property::HOT},
@@ -85,50 +112,62 @@ unordered_map<Label, Label> Game :: WORDS_SUBJECTS = {
     {Label::WORD_WATER, Label::WATER}
 };
 
+unordered_map<CoexistionResult, int>  Game :: COEXISTION_RESULTS_PRIORITIES = {
+    {CoexistionResult::WON, 2},
+    {CoexistionResult::DEFEATED, 1},
+    {CoexistionResult::MELTED, 1},
+    {CoexistionResult::SINKED, 0},
+    {CoexistionResult::COEXISTED, 3}
+};
+
 
 void Game :: play (Direction direction) {
+    Action * new_action = new Action(direction);
     cout << "---------------------------------------------------------------" << endl;
     for (Character * player: players) {
         cout << "playing with " << *player << " towards " << direction << endl;
-        move(player, direction);
+        move(player, direction, new_action);
     }
     cout << "---------------------------------------------------------------" << endl;
+    if (
+        new_action->get_moved_characters().empty() &&
+        new_action->get_destroyed_characters().empty()
+    )
+        delete new_action;
+    else
+        done_actions.push(new_action);
 }
 
 
-void Game :: move (Character * player, Direction direction) {
+void Game :: move (Character * player, Direction direction, Action * ongoing_action) {
     Position destination = Position::neighbor(player->get_position(), direction);
     int chain_range = pushes_chain_range(destination, direction);
     cout << "chain range is " << chain_range << endl;
     if (chain_range >= 0) {
-        launch_pushes(player->get_position(), direction, chain_range);
-        move_character(player, direction);
+        launch_pushes(player->get_position(), direction, chain_range, ongoing_action);
+        move_character(player, direction, ongoing_action);
     }
 }
 
-void Game :: launch_pushes (Position start, Direction direction, int range) {
+void Game :: launch_pushes (Position start, Direction direction, int range, Action * ongoing_action) {
     cout << "pushes launched from " << start << " towards " << direction << ", range " << range << endl;
     Position end = Position::neighbor(start, direction, range);
     while (end != start) {
-        move_characters(end, direction);
+        move_characters(end, direction, ongoing_action);
         end.shift(!direction);
     }
 }
 
-bool Game :: has_property (Character * character, Property property) {
-    if (character->get_category() == Category::WORD) return property == Property::PUSH;
-    Label label = character->get_label();
+bool Game :: has_property (Label label, Property property) {
     return
         properties.find(label) != properties.end() &&
         properties[label].find(property) != properties[label].end()
     ;
 }
 
-bool Game :: has_no_property (Label label) {
-    return
-        properties.find(label) == properties.end() ||
-        properties[label].empty()
-    ;
+bool Game :: has_property (Character * character, Property property) {
+    if (character->get_category() == Category::WORD) return property == Property::PUSH;
+    return has_property(character->get_label(), property);
 }
 
 bool Game :: is_open (Position position) {
@@ -162,10 +201,10 @@ int Game :: pushes_chain_range (Position start, Direction direction) {
     return range;
 }
 
-void Game :: move_characters (Position position, Direction direction) {
+void Game :: move_characters (Position position, Direction direction, Action * ongoing_action) {
     for (Character * character: board.at(position)) {
         if (has_property(character, Property::PUSH)) {
-            move_character(character, direction);
+            move_character(character, direction, ongoing_action);
         }
     }
 }
@@ -190,36 +229,98 @@ CoexistionResult Game :: get_prioritary_coexistion_result (Character * visitor, 
     CoexistionResult final_result = CoexistionResult::COEXISTED;
     for (Character * host: board.at(hosts_position)) {
         CoexistionResult host_result = get_coexistion_result(visitor, host);
-        if (host_result > final_result) final_result = host_result;
+        if (COEXISTION_RESULTS_PRIORITIES[host_result] < COEXISTION_RESULTS_PRIORITIES[final_result]) final_result = host_result;
     }
     return final_result;
 }
 
 
 
-void Game :: move_character (Character * character, Direction direction) {
-    cout << "moving " << *character << " towards " << direction << endl;
+void Game :: move_character (Character * character, Direction direction, Action * ongoing_action) {
+    Position destination = Position::neighbor(character->get_position(), direction);
     board.remove_character(character);
-    character->move(direction);    
-    switch (get_prioritary_coexistion_result(character, character->get_position())) {
+    switch (get_prioritary_coexistion_result(character, destination)) {
         case CoexistionResult::WON:
-            cout << "chosen collision is WON" << endl;
-            board.set(*character);
-            terminate(true);
+            cout << "WON" << endl;
+            register_move(character, direction, ongoing_action, true);
             break;
-        case CoexistionResult::DEFEATED: // || CoexistionResult::MELTED
-            cout << "chosen collision is DEFEATED or MELTED" << endl;
-            terminate(false);
+        case CoexistionResult::DEFEATED:
+            cout << "DEFEATED" << endl;
+            register_destruction(character, ongoing_action);
+            break;
+        case CoexistionResult::MELTED:
+            cout << "MELTED" << endl;
+            register_destruction(character, ongoing_action);
             break;
         case CoexistionResult::SINKED:
-            cout << "chosen collision is SINKED" << endl;
-            board.unset(character->get_position());
-            if (has_property(character, Property::YOU)) terminate(false);
+            cout << "SINKED" << endl;
+            register_destruction(character, ongoing_action);
+            for (Character * character: board.at(destination)) register_destruction(character, ongoing_action);
             break;
         case CoexistionResult::COEXISTED:
-            cout << "chosen collision is COEXISTED" << endl;
-            board.set(*character);
+            cout << "COEXISTED" << endl;
+            register_move(character, direction, ongoing_action, false);
             break;
+    }
+}
+
+void Game :: register_destruction (Character * character, Action * ongoing_action) {
+    cout << "destruction of " << *character << endl;
+    board.remove_character(character);
+    ongoing_action->add_destroyed_character(character);
+    if (
+        has_property(character, Property::YOU) &&
+        std::find(players.begin(), players.end(), character) != players.end()
+    ) {
+        players.erase(
+            std::remove(players.begin(), players.end(), character),
+            players.end()
+        );
+        if (players.size() == 0) terminate(false);
+    }
+}
+
+void Game :: register_move (Character * character, Direction direction, Action * ongoing_action, bool is_move_winning) {
+    cout << "moving of " << *character << " towards " << direction << endl;
+    character->move(direction);    
+    board.set(*character);
+    ongoing_action->add_moved_character(character);
+    if (is_move_winning) terminate(true);
+}
+
+
+void Game :: undo () {
+    if (!done_actions.empty()) {
+        Action * last_done_action = done_actions.top();
+        replay_action_movings(last_done_action, true);
+        for (Character * character: last_done_action->get_destroyed_characters()) {
+            board.set(*character);
+            if (has_property(character, Property::YOU)) players.push_back(character);
+        }
+        done_actions.pop();
+        undone_actions.push(last_done_action);
+    }
+}
+
+void Game :: redo () {
+    if (!undone_actions.empty()) {
+        Action * last_undone_action = undone_actions.top();
+        replay_action_movings(last_undone_action, false);
+        for (Character * character: last_undone_action->get_destroyed_characters()) {
+            board.remove_character(character);
+        }
+        undone_actions.pop();
+        done_actions.push(last_undone_action);
+    }
+}
+
+void Game :: replay_action_movings (Action * action, bool undoing) {
+    Direction moving_direction = action->get_direction();
+    if (undoing) moving_direction = !moving_direction;
+    for (Character * character: action->get_moved_characters()) {
+        board.remove_character(character);
+        character->move(moving_direction);
+        board.set(*character);
     }
 }
 

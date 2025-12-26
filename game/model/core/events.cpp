@@ -5,5 +5,5 @@ RuleChange :: RuleChange (vector<tuple<Label, Label, Label>> new_rules, vector<t
 new_rules {new_rules}, old_rules {old_rules} {}
 
 
-CharacterSet :: CharacterSet (Board * board, Position position):
-board {board}, position {position} {}
+CharacterSet :: CharacterSet (Board * board, Character * set_character):
+board {board}, set_character {set_character} {}

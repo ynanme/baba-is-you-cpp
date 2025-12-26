@@ -23,12 +23,12 @@ private:
 
     static unordered_map<Label, Property> WORDS_PROPERTIES;
     static unordered_map<Label, Label> WORDS_SUBJECTS;
+    static unordered_map<CoexistionResult, int> COEXISTION_RESULTS_PRIORITIES;
 
     Board& board;
 
-    vector<Action> actions;         
-    stack<Action> done_actions;      
-    stack<Action> redone_actions;   
+    stack<Action *> done_actions;      
+    stack<Action *> undone_actions;   
     
     vector<Character *> characters;
     vector<Character *> players;
@@ -55,23 +55,28 @@ public:
     void unmake_player (Label label);
     void add_property (Label label, Property property);
     void remove_property (Label label, Property property);
-    //void check_for_tautologies (Label label);
+    void transfer_properties (Label from, Label to);
+    void retrieve_properties (Label of, Label to);
+    void check_for_tautologies (Label label);
 
 
     void play (Direction direction);
-    bool undo() {return false;};
-    bool redo() {return false;};
+    void undo ();
+    void redo ();
+    void replay_action_movings (Action * action, bool undoing);
+    void register_destruction (Character * character, Action * ongoing_action);
+    void register_move (Character * character, Direction direction, Action * ongoing_action, bool is_move_winning);
 
-    void move (Character * player, Direction direction);
+    void move (Character * player, Direction direction, Action * ongoing_action);
+    bool has_property (Label label, Property property);
     bool has_property (Character * character, Property property);
-    bool has_no_property (Label label);
     bool is_open (Position position);
     bool is_subject_to_push (Position position);
-    void move_characters (Position position, Direction direction);
+    void move_characters (Position position, Direction direction, Action * ongoing_action);
     CoexistionResult get_coexistion_result (Character * visitor, Character * host);
     CoexistionResult get_prioritary_coexistion_result (Character * visitor, Position hosts_position);
     int pushes_chain_range (Position start, Direction direction);
-    void launch_pushes (Position start, Direction direction, int range);
+    void launch_pushes (Position start, Direction direction, int range, Action * ongoing_action);
 
     void terminate(bool win, const std::string& message = "");
 
@@ -80,7 +85,7 @@ public:
     bool isDefeat() const noexcept { return is_terminated && !has_won; }
 
 
-    void move_character (Character * character, Direction direction);
+    void move_character (Character * character, Direction direction, Action * ongoing_action);
 
 private:
     //void reverseAction(const Action& action); 

@@ -4,7 +4,7 @@
 #include <vector>
 #include <tuple>
 #include "../characters/labels.hpp"
-#include "../../utils/geometry.hpp"
+#include "../characters/character.hpp"
 
 
 class Board;
@@ -24,8 +24,8 @@ class CharacterSet {
 
     public:
         Board * board;
-        Position position;
-        CharacterSet (Board * board, Position position);
+        Character * set_character;
+        CharacterSet (Board * board, Character * set_character);
 
 };
 
