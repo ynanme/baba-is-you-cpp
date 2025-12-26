@@ -18,12 +18,7 @@ class Loader {
         static unordered_map<string, Label> LABELS;
         static unordered_map<string, Category> CATEGORIES;
 
-        Board * build_board (std::istream& file);
-        Label get_you (std::istream& file);
-        void build_characters (std::istream& file, Game * game);
-        void build_rules (std::istream& file, Game * game);
-        void build_rules_and_characters(std::istream& file, Game* game);
-        void setup_game (Game * game, Board * board, Ruler * ruler, Label who_is_you);
+        void load_rules_and_characters (std::istream& file, Game * game);
 
     public:
     

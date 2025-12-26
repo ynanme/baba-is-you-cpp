@@ -11,6 +11,7 @@
 #include "./action.hpp"
 #include "../../utils/observer_pattern.hpp"
 #include "events.hpp"
+#include "ruler.hpp"
 #include "properties.hpp"
 
 using namespace std;
@@ -25,7 +26,8 @@ private:
     static unordered_map<Label, Label> WORDS_SUBJECTS;
     static unordered_map<CoexistionResult, int> COEXISTION_RESULTS_PRIORITIES;
 
-    Board& board;
+    Board * board;
+    Ruler * ruler;
 
     stack<Action *> done_actions;      
     stack<Action *> undone_actions;   
@@ -41,7 +43,9 @@ private:
     string end_message;
 
 public:
-    Game(Board& board);
+
+    Game(int board_width, int board_height);
+    ~ Game ();
 
     Board& get_board() const;
 
