@@ -1,0 +1,56 @@
+13 9
+
+BABA
+
+WORD_BABA WORD_IS WORD_YOU
+WORD_FLAG WORD_IS WORD_WIN
+WORD_WALL WORD_IS WORD_STOP
+WORD_WALL WORD_IS WORD_BABA
+
+0  0 WORD_BABA W
+1  0 WORD_IS   W
+2  0 WORD_YOU  W
+
+4  0 WORD_FLAG W
+5  0 WORD_IS   W
+6  0 WORD_WIN  W
+
+8  0 WORD_WALL W
+9  0 WORD_IS   W
+10 0 WORD_STOP W
+
+1  2 WORD_FLAG W
+9  2 WORD_IS   W
+10 2 WORD_BABA W
+
+0  3 WALL      O
+1  3 WALL      O
+2  3 WALL      O
+3  3 WALL      O
+4  3 WALL      O
+6  3 WALL      O
+7  3 WALL      O
+8  3 WALL      O
+9  3 WALL      O
+10 3 WALL      O
+11 3 WALL      O
+12 3 WALL      O
+
+10 4 WALL      O
+
+0  5 WALL      O
+1  5 WALL      O
+2  5 WALL      O
+3  5 WALL      O
+4  5 WALL      O
+5  5 WALL      O
+6  5 WALL      O
+7  5 WALL      O
+8  5 WALL      O
+9  5 WALL      O
+10 5 WALL      O
+11 5 WALL      O
+12 5 WALL      O
+
+1  4 BABA      O
+11 4 FLAG      O
