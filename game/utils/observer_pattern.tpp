@@ -17,7 +17,7 @@ void Subject<Event> :: detach (Observer<Event> * observer) {
 }
 
 template<typename Event>
-void Subject<Event> :: notify (Event event) {
+void Subject<Event> :: notify (const Event & event) {
     for (Observer<Event> * observer: observers) {
         observer->update(event);
     }

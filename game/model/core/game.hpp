@@ -49,7 +49,7 @@ public:
 
     Board& get_board() const;
 
-    void update(RuleChange event) override;
+    void update(const RuleChange & event) override;
 
     void add_character(Character* character);
 

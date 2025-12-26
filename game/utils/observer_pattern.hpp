@@ -10,7 +10,7 @@ template<typename Event>
 class Observer {
 
     public:
-        virtual void update (Event event) = 0;
+        virtual void update (const Event & event) = 0;
 
 };
 
@@ -24,7 +24,7 @@ class Subject {
     public:
         void attach (Observer<Event> * observer);
         void detach (Observer<Event> * observer);
-        void notify (Event event);
+        void notify (const Event & event);
 
 };
 

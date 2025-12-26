@@ -39,11 +39,11 @@ void Game::add_character(Character* character) {
 
 
 
-void Game :: update (RuleChange event) {
-    for (Rule new_rule: event.new_rules) {
+void Game :: update (const RuleChange & event) {
+    for (const Rule & new_rule: event.new_rules) {
         apply_rule(new_rule);
     }
-    for (Rule old_rule: event.old_rules) {
+    for (const Rule & old_rule: event.old_rules) {
         if (rules_history.find(old_rule) != rules_history.end())
             unapply_rule(old_rule);
     }

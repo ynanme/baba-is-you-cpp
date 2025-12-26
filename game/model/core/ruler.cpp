@@ -6,20 +6,20 @@ using namespace std;
 
 
 
-void Ruler :: update (CharacterSet event) {
+void Ruler :: update (const CharacterSet & event) {
 
-    Position event_position = event.set_character->get_position();
+    Position event_position = event.set_character.get_position();
 
     cout << "ruler received notification for event at position " << event_position << endl;
 
-    if (event.set_character->get_category() == Category::WORD) {
+    if (event.set_character.get_category() == Category::WORD) {
 
         cout << "found a word at said position" << endl;
 
         vector<LabelT> potential_new_rules = filter_on_rules(
             filter_on_phrases(
                 get_cells_to_scan(
-                    *event.board, get_positions_to_scan_for_rule_creation(event_position)
+                    event.board, get_positions_to_scan_for_rule_creation(event_position)
                 )
             )
         );
@@ -27,7 +27,7 @@ void Ruler :: update (CharacterSet event) {
         vector<LabelT> potential_old_rules = filter_on_rules(
             filter_on_phrases(
                 get_cells_to_scan(
-                    *event.board, get_positions_to_scan_for_rule_destruction(event_position)
+                    event.board, get_positions_to_scan_for_rule_destruction(event_position)
                 )
             )
         );
@@ -46,11 +46,11 @@ void Ruler :: update (CharacterSet event) {
 }
 
 
-vector<LabelT> Ruler :: filter_on_rules (vector<LabelT> filtered_phrases) {
+vector<LabelT> Ruler :: filter_on_rules (const vector<LabelT> & filtered_phrases) {
 
     vector<LabelT> rules;
 
-    for (LabelT phrase: filtered_phrases) {
+    for (const LabelT & phrase: filtered_phrases) {
         if (
             WORDS_TOKENS[get<0>(phrase)] == Token::SUBJECT &&
             WORDS_TOKENS[get<1>(phrase)] == Token::VERB &&
@@ -65,11 +65,11 @@ vector<LabelT> Ruler :: filter_on_rules (vector<LabelT> filtered_phrases) {
 }
 
 
-vector<LabelT> Ruler :: filter_on_phrases (vector<CellT> scanned_cells) {
+vector<LabelT> Ruler :: filter_on_phrases (const vector<CellT> & scanned_cells) {
 
     vector<LabelT> phrases;
 
-    for (CellT triplet : scanned_cells) {
+    for (const CellT & triplet : scanned_cells) {
 
         int first_index = word_index(get<0>(triplet));
         int second_index = word_index(get<1>(triplet));
@@ -90,11 +90,11 @@ vector<LabelT> Ruler :: filter_on_phrases (vector<CellT> scanned_cells) {
 }
 
 
-vector<CellT> Ruler :: get_cells_to_scan (Board & board, vector<PositonT> scanned_positions) {
+vector<CellT> Ruler :: get_cells_to_scan (const Board & board, const vector<PositonT> & scanned_positions) {
 
     vector<CellT> cells_to_scan;
 
-    for (PositonT triplet : scanned_positions) {
+    for (const PositonT & triplet : scanned_positions) {
         cells_to_scan.push_back({
             board.at(get<0>(triplet)),
             board.at(get<1>(triplet)),
@@ -216,9 +216,9 @@ vector<PositonT> Ruler :: get_positions_to_scan_for_rule_destruction (Position w
 }
 
 
-int Ruler :: word_index (vector<Character *> cell) {
+int Ruler :: word_index (const vector<Character *> & cell) {
     for (size_t i = 0; i < cell.size(); i ++) {
-        if (cell.at(i)->get_category() == Category::WORD) {
+        if (cell[i]->get_category() == Category::WORD) {
             return i;
         }
     }

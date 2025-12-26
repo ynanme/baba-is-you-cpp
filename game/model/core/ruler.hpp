@@ -29,15 +29,16 @@ class Ruler: public Observer<CharacterSet>, public Subject<RuleChange> {
 
         vector<PositonT> get_positions_to_scan_for_rule_creation (Position word_position);
         vector<PositonT> get_positions_to_scan_for_rule_destruction (Position word_position);
-        vector<CellT> get_cells_to_scan (Board & board, vector<PositonT> scanned_positions);
+        vector<CellT> get_cells_to_scan (const Board & board, const vector<PositonT> & scanned_positions);
 
-        vector<LabelT> filter_on_phrases (vector<CellT> scanned_cells);
-        vector<LabelT> filter_on_rules (vector<LabelT> filtered_phrases);
+        vector<LabelT> filter_on_phrases (const vector<CellT> & scanned_cells);
+        vector<LabelT> filter_on_rules (const vector<LabelT> & filtered_phrases);
         
-        int word_index (vector<Character *> cell);
+        int word_index (const vector<Character *> & cell);
 
     public:
-        void update (CharacterSet event);
+
+        void update (const CharacterSet & event) override;
 
 };
 
