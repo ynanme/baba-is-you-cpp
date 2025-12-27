@@ -1,0 +1,219 @@
+32 18
+
+0  0  WORD_WALL   W
+1  0  WORD_IS     W
+2  0  WORD_STOP   W
+3  0  LAVA        O
+4  0  LAVA        O
+6  0  WALL        O
+12 0  WALL        O
+16 0  WALL        O
+19 0  LAVA        O
+20 0  LAVA        O
+21 0  LAVA        O
+22 0  LAVA        O
+23 0  LAVA        O
+24 0  LAVA        O
+25 0  LAVA        O
+
+0  1  LAVA        O
+1  1  LAVA        O
+2  1  LAVA        O
+3  1  LAVA        O
+6  1  WALL        O
+14 1  BABA        O
+16 1  WALL        O
+19 1  LAVA        O
+20 1  LAVA        O
+21 1  LAVA        O
+22 1  LAVA        O
+23 1  LAVA        O
+24 1  LAVA        O
+25 1  LAVA        O
+
+0  2  LAVA        O
+1  2  LAVA        O
+6  2  WALL        O
+12 2  WALL        O
+16 2  WALL        O
+19 2  LAVA        O
+20 2  LAVA        O
+21 2  LAVA        O
+22 2  LAVA        O
+23 2  LAVA        O
+24 2  LAVA        O
+
+0  3  LAVA        O
+6  3  WALL        O
+8  3  WORD_BABA   W
+9  3  WORD_IS     W
+10 3  WORD_YOU    W
+12 3  WALL        O
+13 3  WALL        O
+14 3  WALL        O
+15 3  WALL        O
+16 3  WALL        O
+18 3  LAVA        O
+19 3  LAVA        O
+20 3  LAVA        O
+21 3  LAVA        O
+22 3  LAVA        O
+23 3  LAVA        O
+24 3  LAVA        O
+
+6  4  WALL        O
+7  4  WALL        O
+11 4  WALL        O
+12 4  WALL        O
+18 4  LAVA        O
+19 4  LAVA        O
+20 4  LAVA        O
+21 4  LAVA        O
+22 4  LAVA        O
+23 4  LAVA        O
+
+6  5  WALL        O
+12 5  ROCK        O
+18 5  LAVA        O
+19 5  LAVA        O
+20 5  LAVA        O
+21 5  LAVA        O
+22 5  LAVA        O
+23 5  LAVA        O
+
+6  6  WALL        O
+7  6  WALL        O
+8  6  WALL        O
+9  6  WALL        O
+10 6  WALL        O
+11 6  WALL        O
+12 6  WALL        O
+17 6  LAVA        O
+18 6  LAVA        O
+19 6  LAVA        O
+20 6  LAVA        O
+21 6  LAVA        O
+22 6  LAVA        O
+23 6  LAVA        O
+
+6  7  WALL        O
+7  7  WORD_ROCK   W
+8  7  WALL        O
+17 7  LAVA        O
+18 7  LAVA        O
+19 7  LAVA        O
+20 7  LAVA        O
+21 7  LAVA        O
+22 7  LAVA        O
+
+7  8  WORD_IS     W
+17 8  LAVA        O
+18 8  LAVA        O
+19 8  LAVA        O
+20 8  LAVA        O
+21 8  LAVA        O
+22 8  LAVA        O
+
+7  9  WORD_PUSH   W
+16 9  LAVA        O
+17 9  LAVA        O
+18 9  LAVA        O
+19 9  LAVA        O
+20 9  LAVA        O
+21 9  LAVA        O
+22 9  LAVA        O
+
+12 10 WORD_LAVA   W
+16 10 LAVA        O
+17 10 LAVA        O
+18 10 LAVA        O
+19 10 LAVA        O
+20 10 LAVA        O
+21 10 LAVA        O
+
+16 11 LAVA        O
+17 11 LAVA        O
+18 11 LAVA        O
+19 11 LAVA        O
+20 11 LAVA        O
+21 11 LAVA        O
+
+7  12 WALL        O
+8  12 WORD_BABA   W
+9  12 WORD_IS     W
+10 12 WORD_MELT   W
+11 12 WALL        O
+15 12 LAVA        O
+16 12 LAVA        O
+17 12 LAVA        O
+18 12 LAVA        O
+19 12 LAVA        O
+20 12 LAVA        O
+26 12 FLAG        O
+
+7  13 WALL        O
+8  13 WALL        O
+9  13 WALL        O
+10 13 WALL        O
+11 13 WALL        O
+14 13 LAVA        O
+15 13 LAVA        O
+16 13 LAVA        O
+17 13 LAVA        O
+18 13 LAVA        O
+19 13 LAVA        O
+
+7  14 WALL        O
+8  14 WORD_LAVA   W
+9  14 WORD_IS     W
+10 14 WORD_HOT    W
+11 14 WALL        O
+14 14 LAVA        O
+15 14 LAVA        O
+16 14 LAVA        O
+17 14 LAVA        O
+18 14 LAVA        O
+25 14 WORD_FLAG   W
+26 14 WORD_IS     W
+27 14 WORD_WIN    W
+
+7  15 WALL        O
+8  15 WALL        O
+9  15 WALL        O
+10 15 WALL        O
+11 15 WALL        O
+13 15 LAVA        O
+14 15 LAVA        O
+15 15 LAVA        O
+16 15 LAVA        O
+17 15 LAVA        O
+18 15 LAVA        O
+31 15 LAVA        O
+
+12 16 LAVA        O
+13 16 LAVA        O
+14 16 LAVA        O
+15 16 LAVA        O
+16 16 LAVA        O
+17 16 LAVA        O
+30 16 LAVA        O
+31 16 LAVA        O
+
+11 17 LAVA        O
+12 17 LAVA        O
+13 17 LAVA        O
+14 17 LAVA        O
+15 17 LAVA        O
+16 17 LAVA        O
+17 17 LAVA        O
+29 17 LAVA        O
+30 17 LAVA        O
+31 17 LAVA        O
+
+
+WORD_WALL WORD_IS WORD_STOP
+WORD_BABA WORD_IS WORD_YOU
+WORD_ROCK WORD_IS WORD_PUSH
+WORD_BABA WORD_IS WORD_MELT
+WORD_LAVA WORD_IS WORD_HOT
+WORD_FLAG WORD_IS WORD_WIN

@@ -1,0 +1,146 @@
+24 14
+
+
+0  0 WORD_ROCK   W
+1  0 WORD_IS     W
+2  0 WORD_STOP   W
+4  0 ROCK        O
+5  0 GRASS       O
+6  0 GRASS       O
+7  0 GRASS       O
+8  0 GRASS       O
+9  0 GRASS       O
+12 0 SKULL       O
+21 0 GRASS       O
+22 0 GRASS       O
+23 0 GRASS       O
+
+4  1 ROCK        O
+6  1 GRASS       O
+7  1 GRASS       O
+10 1 WALL        O
+11 1 WALL        O
+12 1 SKULL       O
+13 1 WALL        O
+14 1 WALL        O
+15 1 WALL        O
+16 1 WALL        O
+17 1 WALL        O
+18 1 WALL        O
+19 1 WALL        O
+22 1 GRASS       O
+23 1 GRASS       O
+
+0  2 WORD_SKULL  W
+1  2 WORD_IS     W
+2  2 WORD_DEFEAT W
+4  2 ROCK        O
+10 2 WALL        O
+12 2 SKULL       O
+15 2 WALL        O
+19 2 WALL        O
+23 2 GRASS       O
+
+4  3 ROCK        O
+10 3 WALL        O
+12 3 SKULL       O
+17 3 FLAG        O
+19 3 WALL        O
+
+0  4 WORD_FLAG   W
+1  4 WORD_IS     W
+2  4 WORD_WIN    W
+4  4 ROCK        O
+6  4 WALL        O
+7  4 WALL        O
+8  4 WALL        O
+9  4 WALL        O
+10 4 WALL        O
+12 4 SKULL       O
+15 4 WALL        O
+19 4 WALL        O
+
+4  5 ROCK        O
+6  5 WALL        O
+10 5 WALL        O
+12 5 SKULL       O
+15 5 WALL        O
+16 5 WALL        O
+17 5 WALL        O
+18 5 WALL        O
+19 5 WALL        O
+
+0  6 ROCK        O
+1  6 ROCK        O
+2  6 ROCK        O
+3  6 ROCK        O
+4  6 ROCK        O
+6  6 WALL        O
+8  6 BABA        O
+12 6 SKULL       O
+13 6 WALL        O
+14 6 WALL        O
+15 6 WALL        O
+
+6  7 WALL        O
+10 7 WALL        O
+12 7 SKULL       O
+13 7 SKULL       O
+14 7 SKULL       O
+15 7 SKULL       O
+16 7 SKULL       O
+17 7 SKULL       O
+18 7 SKULL       O
+19 7 SKULL       O
+20 7 SKULL       O
+21 7 SKULL       O
+22 7 SKULL       O
+23 7 SKULL       O
+
+6  8 WALL        O
+7  8 WALL        O
+8  8 WALL        O
+9  8 WALL        O
+10 8 WALL        O
+15 8 WALL        O
+
+2  9 GRASS       O
+10 9 WALL        O
+12 9 WORD_WALL   W
+13 9 WORD_IS     W
+14 9 WORD_STOP   W
+15 9 WALL        O
+
+1  10 GRASS      O
+2  10 GRASS      O
+3  10 GRASS      O
+8  10 WORD_BABA  W
+10 10 WALL       O
+15 10 WALL       O
+
+2  11 GRASS      O
+3  11 GRASS      O
+8  11 WORD_IS    W
+10 11 WALL       O
+11 11 WALL       O
+12 11 WALL       O
+13 11 WALL       O
+14 11 WALL       O
+15 11 WALL       O
+
+8  12 WORD_YOU   W
+21 12 GRASS      O
+22 12 GRASS      O
+
+19 13 GRASS      O
+20 13 GRASS      O
+21 13 GRASS      O
+22 13 GRASS      O
+23 13 GRASS      O
+
+
+WORD_ROCK WORD_IS WORD_STOP
+WORD_SKULL WORD_IS WORD_DEFEAT
+WORD_FLAG WORD_IS WORD_WIN
+WORD_WALL WORD_IS WORD_STOP
+WORD_BABA WORD_IS WORD_YOU
