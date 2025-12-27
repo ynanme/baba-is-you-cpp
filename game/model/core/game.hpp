@@ -45,7 +45,11 @@ private:
 public:
 
     Game(int board_width, int board_height);
+    
     ~ Game ();
+    Game (const Game &) = delete;
+    Game & operator = (const Game &) = delete;
+
 
     Board& get_board() const;
 
