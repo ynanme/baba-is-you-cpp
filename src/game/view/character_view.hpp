@@ -2,8 +2,8 @@
 #define CHARACTER_VIEW_HPP
 
 #include <SFML/Graphics.hpp>
-#include "../model/characters/character.hpp"
-#include "texture_manager.hpp"
+#include "game/model/characters/character.hpp"
+#include "game/view/texture_manager.hpp"
 
 class CharacterView {
 private:

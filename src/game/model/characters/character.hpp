@@ -1,8 +1,8 @@
 #ifndef _CHARACTER
 #define _CHARACTER
 
-#include "labels.hpp"
-#include "../../utils/geometry.hpp"
+#include "game/model/characters/labels.hpp"
+#include "game/utils/geometry.hpp"
 
 
 class Character {
@@ -24,13 +24,13 @@ class Character {
         void move (Direction direction);
 
 
-    friend std::ostream& operator << (ostream& out, const Character& character);
+    friend std::ostream& operator << (std::ostream& out, const Character& character);
 
 };
 
 
 
-ostream& operator << (ostream& out, const Character& character);
+std::ostream& operator << (std::ostream& out, const Character& character);
 
 
 #endif

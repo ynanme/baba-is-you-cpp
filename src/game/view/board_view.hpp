@@ -2,11 +2,11 @@
 #define BOARD_VIEW_HPP
 
 #include <SFML/Graphics.hpp>
-#include "../model/core/board.hpp"
-#include "../model/core/game.hpp"
-#include "../utils/geometry.hpp"
-#include "texture_manager.hpp"
-#include "character_view.hpp"
+#include "game/model/core/board.hpp"
+#include "game/model/core/game.hpp"
+#include "game/utils/geometry.hpp"
+#include "game/view/texture_manager.hpp"
+#include "game/view/character_view.hpp"
 
 class BoardView {
 private:

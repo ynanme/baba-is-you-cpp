@@ -1,4 +1,4 @@
-#include "board.hpp"
+#include "game/model/core/board.hpp"
 #include <iostream>
 
 Character Board::NONE_CHARACTER(Position(-1, -1), Label::NONE, Category::OBJECT);

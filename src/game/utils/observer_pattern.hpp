@@ -29,7 +29,7 @@ class Subject {
 };
 
 
-#include "observer_pattern.tpp"
+#include "game/utils/observer_pattern.tpp"
 
 
 #endif

@@ -1,4 +1,6 @@
-#include "action.hpp"
+#include "game/model/core/action.hpp"
+
+using namespace std;
 
 
 Action :: Action (Direction direction):

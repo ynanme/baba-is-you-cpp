@@ -1,4 +1,6 @@
-#include "character.hpp"
+#include "game/model/characters/character.hpp"
+
+using namespace std;
 
 
 Character :: Character (Position position, Label label, Category category):

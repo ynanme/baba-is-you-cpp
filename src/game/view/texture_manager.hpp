@@ -3,8 +3,8 @@
 
 #include <SFML/Graphics.hpp>
 #include <map>
-#include "../model/characters/labels.hpp"
-#include "sprite_info.hpp"
+#include "game/model/characters/labels.hpp"
+#include "game/view/sprite_info.hpp"
 
 const int TILE_SIZE = 24;
 const int STEP_SIZE = TILE_SIZE + 1; 

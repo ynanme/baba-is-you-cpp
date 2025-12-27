@@ -4,10 +4,8 @@
 #include <string>
 #include <unordered_map>
 
-#include "board.hpp"
-#include "ruler.hpp"
-#include "../characters/labels.hpp"
-#include "game.hpp"
+#include "game/model/characters/labels.hpp"
+#include "game/model/core/game.hpp"
 #include <sstream>
 
 

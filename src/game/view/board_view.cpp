@@ -1,4 +1,4 @@
-#include "board_view.hpp"
+#include "game/view/board_view.hpp"
 
 BoardView::BoardView(Board& board, Game& game)
     :  board(board), game(game), cellSize(25)

@@ -5,11 +5,11 @@
 #include <tuple>
 #include <unordered_set>
 #include <unordered_map>
-#include "board.hpp"
-#include "events.hpp"
-#include "../characters/character.hpp"
-#include "../characters/labels.hpp"
-#include "../../utils/geometry.hpp"
+#include "game/model/core/board.hpp"
+#include "game/model/core/events.hpp"
+#include "game/model/characters/character.hpp"
+#include "game/model/characters/labels.hpp"
+#include "game/utils/geometry.hpp"
 
 
 enum class Token {

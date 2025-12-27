@@ -3,15 +3,15 @@
 
 #include <vector>
 
-#include "../characters/character.hpp"
-#include "../../utils/geometry.hpp"
+#include "game/model/characters/character.hpp"
+#include "game/utils/geometry.hpp"
 
 
 class Action {
 
     private:
-        vector<Character *> moved_characters;
-        vector<Character *> destroyed_characters;
+        std::vector<Character *> moved_characters;
+        std::vector<Character *> destroyed_characters;
         Direction direction;
 
     public:
@@ -19,8 +19,8 @@ class Action {
         Action (Direction direction);
 
         Direction get_direction () const;
-        vector<Character *> get_moved_characters () const;
-        vector<Character *> get_destroyed_characters () const;
+        std::vector<Character *> get_moved_characters () const;
+        std::vector<Character *> get_destroyed_characters () const;
 
         void add_moved_character (Character * moved_character);
         void add_destroyed_character (Character * destroyed_character);

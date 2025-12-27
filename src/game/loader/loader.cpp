@@ -1,9 +1,9 @@
 #include <iostream>
 #include <fstream>
 
-#include "loader.hpp"
-#include "../characters/character.hpp"
-#include "../../utils/geometry.hpp"
+#include "game/loader/loader.hpp"
+#include "game/model/characters/character.hpp"
+#include "game/utils/geometry.hpp"
 
 using namespace std;
 

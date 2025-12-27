@@ -6,15 +6,14 @@
 #include <stack>
 #include <unordered_map>
 #include <set>
-#include "board.hpp"
-#include "../characters/character.hpp"
-#include "./action.hpp"
-#include "../../utils/observer_pattern.hpp"
-#include "events.hpp"
-#include "ruler.hpp"
-#include "properties.hpp"
+#include "game/model/core/board.hpp"
+#include "game/model/characters/character.hpp"
+#include "game/model/core/action.hpp"
+#include "game/utils/observer_pattern.hpp"
+#include "game/model/core/events.hpp"
+#include "game/model/core/ruler.hpp"
+#include "game/model/core/properties.hpp"
 
-using namespace std;
 
 using Rule = tuple<Label, Label, Label>;
 
@@ -22,21 +21,21 @@ using Rule = tuple<Label, Label, Label>;
 class Game : public Observer<RuleChange> {
 private:
 
-    static unordered_map<Label, Property> WORDS_PROPERTIES;
-    static unordered_map<Label, Label> WORDS_SUBJECTS;
-    static unordered_map<CoexistionResult, int> COEXISTION_RESULTS_PRIORITIES;
+    static std::unordered_map<Label, Property> WORDS_PROPERTIES;
+    static std::unordered_map<Label, Label> WORDS_SUBJECTS;
+    static std::unordered_map<CoexistionResult, int> COEXISTION_RESULTS_PRIORITIES;
 
     Board * board;
     Ruler * ruler;
 
-    stack<Action *> done_actions;      
-    stack<Action *> undone_actions;   
+    std::stack<Action *> done_actions;      
+    std::stack<Action *> undone_actions;   
     
-    vector<Character *> characters;
-    vector<Character *> players;
+    std::vector<Character *> characters;
+    std::vector<Character *> players;
 
-    set<Rule> rules_history;
-    unordered_map<Label, set<Property>> properties;
+    std::set<Rule> rules_history;
+    std::unordered_map<Label, set<Property>> properties;
 
     bool is_terminated = false;     
     bool has_won = false;

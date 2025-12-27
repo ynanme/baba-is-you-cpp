@@ -5,11 +5,10 @@
 #include <map>
 #include <vector>
 #include <algorithm>
-#include "../../utils/geometry.hpp"
-#include "../characters/character.hpp"
-#include "action.hpp"
-#include "../../utils/observer_pattern.hpp"
-#include "events.hpp"
+#include "game/utils/geometry.hpp"
+#include "game/utils/observer_pattern.hpp"
+#include "game/model/characters/character.hpp"
+#include "game/model/core/events.hpp"
 
 using std::map;
 using std::vector;

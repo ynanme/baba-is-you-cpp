@@ -1,19 +1,19 @@
-#include "texture_manager.hpp"
+#include "game/view/texture_manager.hpp"
 #include <stdexcept>
 
 TextureManager::TextureManager()
 {
-    tilesTexture_1.loadFromFile("assets/spritesheet_characters_1.png");
-    tilesTexture_2.loadFromFile("assets/spritesheet_characters_2.png");
-    tilesTexture_3.loadFromFile("assets/spritesheet_characters_3.png");
-    wordsTexture.loadFromFile("assets/spritesheet_words.png");
-    grassTexture.loadFromFile("assets/GRASS.png");
-    textGrassTexture.loadFromFile("assets/Text_GRASS_0.png");
-    waterTexture.loadFromFile("assets/WATER_0.png");
-    textWaterTexture.loadFromFile("assets/Text_WATER_0.png");
-    textLavaTexture.loadFromFile("assets/Text_LAVA_0.png");
-    lavaTexture.loadFromFile("assets/LAVA_0.png");
-    hotTextTexture.loadFromFile("assets/Text_HOT_0.png");
+    tilesTexture_1.loadFromFile("res/assets/spritesheet_characters_1.png");
+    tilesTexture_2.loadFromFile("res/assets/spritesheet_characters_2.png");
+    tilesTexture_3.loadFromFile("res/assets/spritesheet_characters_3.png");
+    wordsTexture.loadFromFile("res/assets/spritesheet_words.png");
+    grassTexture.loadFromFile("res/assets/GRASS.png");
+    textGrassTexture.loadFromFile("res/assets/Text_GRASS_0.png");
+    waterTexture.loadFromFile("res/assets/WATER_0.png");
+    textWaterTexture.loadFromFile("res/assets/Text_WATER_0.png");
+    textLavaTexture.loadFromFile("res/assets/Text_LAVA_0.png");
+    lavaTexture.loadFromFile("res/assets/LAVA_0.png");
+    hotTextTexture.loadFromFile("res/assets/Text_HOT_0.png");
 
     // tiles.png
     sprites.insert(std::make_pair(

@@ -1,4 +1,4 @@
-#include "ruler.hpp"
+#include "game/model/core/ruler.hpp"
 
 #include <iostream>
 

@@ -1,4 +1,4 @@
-#include "character_view.hpp"
+#include "game/view/character_view.hpp"
 
 CharacterView::CharacterView(
     const Character& character,

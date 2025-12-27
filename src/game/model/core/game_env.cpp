@@ -1,0 +1,143 @@
+#include "game/model/core/game.hpp"
+#include "game/model/core/ruler.hpp"
+#include <iostream>
+
+
+
+Game :: Game (int board_width, int board_height):
+board {new Board(board_width, board_height)},
+ruler {new Ruler()}
+{
+    board->attach(ruler);
+    ruler->attach(this);
+}
+
+
+Game :: ~ Game () {
+    for (Character * character: characters) delete character;
+    while (!done_actions.empty()) {
+        delete done_actions.top();
+        done_actions.pop();
+    }
+    while (!undone_actions.empty()) {
+        delete undone_actions.top();
+        undone_actions.pop();
+    }
+    delete ruler;
+    delete board;
+}
+
+
+Board& Game::get_board() const { return *board; }
+
+
+void Game::add_character(Character* character) {
+    cout << *character << endl;
+    characters.push_back(character);
+    board->set(*character, false);
+}
+
+
+bool Game :: has_property (Label label, Property property) {
+    return
+        properties.find(label) != properties.end() &&
+        properties[label].find(property) != properties[label].end()
+    ;
+}
+
+
+bool Game :: has_property (Character * character, Property property) {
+    if (character->get_category() == Category::WORD) return property == Property::PUSH;
+    return has_property(character->get_label(), property);
+}
+
+
+bool Game :: is_open (Position position) {
+    for (Character * character: board->at(position)) {
+        if (has_property(character, Property::STOP)) {
+            return false;
+        }
+    }
+    return true;
+}
+
+
+bool Game :: is_subject_to_push (Position position) {
+    for (Character * character: board->at(position)) {
+        if (has_property(character, Property::PUSH)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+
+void Game::terminate(bool win, const string& message) {
+    if (is_terminated) {
+        return; 
+    }
+
+    is_terminated = true;
+    has_won = win;
+
+    if (message.empty()) {
+        end_message = win ? "YOU WIN !" : "Maybe next time...";
+    } else {
+        end_message = message;
+    }
+
+}
+
+
+
+
+unordered_map<Label, Property> Game :: WORDS_PROPERTIES = {
+    {Label::WORD_DEFEAT, Property::DEFEAT},
+    {Label::WORD_HOT, Property::HOT},
+    {Label::WORD_MELT, Property::MELT},
+    {Label::WORD_PUSH, Property::PUSH},
+    {Label::WORD_SINK, Property::SINK},
+    {Label::WORD_STOP, Property::STOP},
+    {Label::WORD_WIN, Property::WIN},
+    {Label::WORD_YOU, Property::YOU}
+};
+
+
+unordered_map<Label, Label> Game :: WORDS_SUBJECTS = {
+    {Label::WORD_BABA, Label::BABA},
+    {Label::WORD_FLAG, Label::FLAG},
+    {Label::WORD_GRASS, Label::GRASS},
+    {Label::WORD_LAVA, Label::LAVA},
+    {Label::WORD_ROCK, Label::ROCK},
+    {Label::WORD_SKULL, Label::SKULL},
+    {Label::WORD_WALL, Label::WALL},
+    {Label::WORD_WATER, Label::WATER}
+};
+
+
+unordered_map<CoexistionResult, int>  Game :: COEXISTION_RESULTS_PRIORITIES = {
+    {CoexistionResult::WON, 2},
+    {CoexistionResult::DEFEATED, 1},
+    {CoexistionResult::MELTED, 1},
+    {CoexistionResult::SINKED, 0},
+    {CoexistionResult::COEXISTED, 3}
+};
+
+
+
+
+ostream& operator << (ostream& out, const Game& game) {
+    out << "Game has " << game.board << " and following characters:" << endl;
+    for (Character * character: game.characters) {
+        out << *character;
+        if (find(game.players.begin(), game.players.end(), character) != game.players.end()) {
+            out << " IS YOU";
+        }
+        out << endl;
+    }
+    for (Rule rule: game.rules_history) {
+        cout << get<0>(rule) << "_" << get<1>(rule) << "_" << get<2>(rule) << " ";
+    }
+    cout << endl;
+    return out;
+}

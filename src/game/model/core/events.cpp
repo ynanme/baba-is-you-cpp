@@ -1,4 +1,6 @@
-#include "events.hpp"
+#include "game/model/core/events.hpp"
+
+using namespace std;
 
 
 RuleChange :: RuleChange (

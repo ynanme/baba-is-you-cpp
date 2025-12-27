@@ -1,5 +1,5 @@
 #include <iostream>
-#include "labels.hpp"
+#include "game/model/characters/labels.hpp"
 
 using namespace std;
 
