@@ -15,6 +15,14 @@ TextureManager::TextureManager()
     lavaTexture.loadFromFile("res/assets/LAVA_0.png");
     hotTextTexture.loadFromFile("res/assets/Text_HOT_0.png");
 
+    skullTextTexture.loadFromFile("res/assets/Text_SKULL_0.png");
+    meltTextTexture.loadFromFile("res/assets/Text_MELT_0.png");
+    keyTextTexture.loadFromFile("res/assets/Text_KEY_0.png");
+    doorTextTexture.loadFromFile("res/assets/Text_DOOR_0.png");
+    openTextTexture.loadFromFile("res/assets/Text_OPEN_0.png");
+    keyTexture.loadFromFile("res/assets/KEY_0.png");
+    doorTexture.loadFromFile("res/assets/DOOR_0.png");
+
     // tiles.png
     sprites.insert(std::make_pair(
         Label::BABA,
@@ -88,6 +96,55 @@ TextureManager::TextureManager()
     sprites.insert(std::make_pair(
         Label::WORD_HOT,
         SpriteInfo(&hotTextTexture, whole_pic_text_hot)
+    ));
+
+    sf::Vector2u textSkullSize = skullTextTexture.getSize();
+    sf::IntRect whole_pic_text_skull(0, 0, textSkullSize.x, textSkullSize.y);
+    sprites.insert(std::make_pair(
+        Label::WORD_SKULL,
+        SpriteInfo(&skullTextTexture, whole_pic_text_skull)
+    ));
+
+    sf::Vector2u textMeltSize = meltTextTexture.getSize();
+    sf::IntRect whole_pic_text_melt(0, 0, textMeltSize.x, textMeltSize.y);
+    sprites.insert(std::make_pair(
+        Label::WORD_MELT,
+        SpriteInfo(&meltTextTexture, whole_pic_text_melt)
+    ));
+
+    sf::Vector2u textKeySize = keyTextTexture.getSize();
+    sf::IntRect whole_pic_text_key(0, 0, textKeySize.x, textKeySize.y);
+    sprites.insert(std::make_pair(
+        Label::WORD_KEY,
+        SpriteInfo(&keyTextTexture, whole_pic_text_key)
+    ));
+
+    sf::Vector2u textDoorSize = doorTextTexture.getSize();
+    sf::IntRect whole_pic_text_door(0, 0, textDoorSize.x, textDoorSize.y);
+    sprites.insert(std::make_pair(
+        Label::WORD_DOOR,
+        SpriteInfo(&doorTextTexture, whole_pic_text_door)
+    ));
+
+    sf::Vector2u textOpenSize = openTextTexture.getSize();
+    sf::IntRect whole_pic_text_open(0, 0, textOpenSize.x, textOpenSize.y);
+    sprites.insert(std::make_pair(
+        Label::WORD_OPEN,
+        SpriteInfo(&openTextTexture, whole_pic_text_open)
+    ));
+
+    sf::Vector2u keySize = keyTexture.getSize();
+    sf::IntRect whole_pic_key(0, 0, keySize.x, keySize.y);
+    sprites.insert(std::make_pair(
+        Label::KEY,
+        SpriteInfo(&keyTexture, whole_pic_key)
+    ));
+
+    sf::Vector2u doorSize = doorTexture.getSize();
+    sf::IntRect whole_pic_door(0, 0, doorSize.x, doorSize.y);
+    sprites.insert(std::make_pair(
+        Label::DOOR,
+        SpriteInfo(&doorTexture, whole_pic_door)
     ));
 
     // words.png

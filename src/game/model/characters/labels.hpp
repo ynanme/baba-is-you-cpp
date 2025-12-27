@@ -14,6 +14,8 @@ enum class Label {
     SKULL,
     WALL,
     WATER,
+    KEY,
+    DOOR,
 
     WORD_BABA,
     WORD_FLAG,
@@ -24,6 +26,8 @@ enum class Label {
     WORD_WALL,
     WORD_WATER,
     WORD_PULL,
+    WORD_KEY,
+    WORD_DOOR,
 
     WORD_IS,
 
@@ -35,6 +39,7 @@ enum class Label {
     WORD_STOP,
     WORD_WIN,
     WORD_YOU,
+    WORD_OPEN,
 
     NONE
     

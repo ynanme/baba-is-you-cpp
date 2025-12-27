@@ -23,6 +23,13 @@ private:
     sf::Texture lavaTexture;
     sf::Texture textLavaTexture;
     sf::Texture hotTextTexture;
+    sf::Texture skullTextTexture;
+    sf::Texture meltTextTexture;
+    sf::Texture keyTextTexture;
+    sf::Texture doorTextTexture;
+    sf::Texture openTextTexture;
+    sf::Texture keyTexture;
+    sf::Texture doorTexture;
 
     std::map<Label, SpriteInfo> sprites;
 

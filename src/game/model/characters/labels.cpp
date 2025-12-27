@@ -25,6 +25,8 @@ ostream& operator << (ostream& out, Label label) {
         case Label::WORD_SKULL:  return out << "TEXT_SKULL";
         case Label::WORD_WALL:   return out << "TEXT_WALL";
         case Label::WORD_WATER:  return out << "TEXT_WATER";
+        case Label::WORD_KEY:    return out << "TEXT_KEY";
+        case Label::WORD_DOOR:   return out << "TEXT_DOOR";
 
         case Label::WORD_IS:     return out << "IS";
 
@@ -35,6 +37,7 @@ ostream& operator << (ostream& out, Label label) {
         case Label::WORD_STOP:   return out << "STOP";
         case Label::WORD_WIN:    return out << "WIN";
         case Label::WORD_YOU:    return out << "YOU";
+        case Label::WORD_OPEN:        return out << "OPEN";
 
     }
 

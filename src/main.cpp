@@ -31,7 +31,7 @@ int main() {
         "res/levels/1.txt",
         "res/levels/2.txt",
         "res/levels/3.txt",
-        "res/levels/4.txt"
+        "res/levels/7.txt"
     };
 
     std::vector<bool> unlocked(levels.size(), false);
