@@ -1,33 +1,53 @@
+#pragma once
 #ifndef MENU_HPP
 #define MENU_HPP
 
-#pragma once
 #include <SFML/Graphics.hpp>
 #include <vector>
+#include <string>
 
-class Menu {
-public:
-    Menu();
-    void update(const std::vector<bool>& unlocked);
-    int run();
+using namespace sf;
 
-private:
-    sf::RenderWindow window;
-    sf::Font font;
-    sf::RectangleShape background;
-    sf::Text title;
-    sf::Text titleShadow;
-
-    struct Button {
-        sf::RectangleShape rect;
-        sf::Text text;
-        sf::Text textShadow;
-        std::size_t index;
-        bool isLocked;
-    };
-
-    std::vector<Button> buttons;
+struct Button {
+    RectangleShape rect;
+    Text text;
+    Text textShadow;
+    std::size_t index = 0;
+    bool isLocked = false;
 };
 
+class Menu {
+private:
+    RenderWindow window;
+    Font font;
 
-#endif
+    RectangleShape background;
+    Text title;
+    Text titleShadow;
+
+    std::vector<Button> buttons;
+
+    enum class State { 
+        CHOOSE_MODE,      // 0 = Normal / 1 = Explorer
+        CHOOSE_LEVEL    
+    };
+
+    State currentState = State::CHOOSE_MODE;
+
+    bool explorerMode = false;  
+
+    void createModeSelection();
+    void createLevelSelection(const std::vector<bool>& unlocked);
+
+    int handleModeSelection();
+    int handleLevelSelection(Event& event);
+
+public:
+    Menu();
+
+    int chooseGameMode();
+    int runLevelSelection(const std::vector<bool>& unlocked);
+    bool isExplorerMode() const { return explorerMode; }
+};
+
+#endif 
