@@ -22,6 +22,7 @@ TextureManager::TextureManager()
     openTextTexture.loadFromFile("res/assets/Text_OPEN_0.png");
     keyTexture.loadFromFile("res/assets/KEY_0.png");
     doorTexture.loadFromFile("res/assets/DOOR_0.png");
+    shutTextTexture.loadFromFile("res/assets/Text_SHUT_0.png");
 
     // tiles.png
     sprites.insert(std::make_pair(
@@ -131,6 +132,13 @@ TextureManager::TextureManager()
     sprites.insert(std::make_pair(
         Label::WORD_OPEN,
         SpriteInfo(&openTextTexture, whole_pic_text_open)
+    ));
+
+    sf::Vector2u textShutSize = shutTextTexture.getSize();
+    sf::IntRect whole_pic_text_shut(0, 0, textShutSize.x, textShutSize.y);
+    sprites.insert(std::make_pair(
+        Label::WORD_SHUT,
+        SpriteInfo(&shutTextTexture, whole_pic_text_shut)
     ));
 
     sf::Vector2u keySize = keyTexture.getSize();
