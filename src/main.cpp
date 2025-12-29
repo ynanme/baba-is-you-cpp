@@ -28,10 +28,11 @@ int main() {
     Menu menu;
 
     std::vector<std::string> levels = {
-        "res/levels/1.txt",
-        "res/levels/2.txt",
-        "res/levels/3.txt",
-        "res/levels/7.txt"
+        "res/levels/4.txt",
+        "res/levels/6.txt",
+        "res/levels/10.txt",
+        "res/levels/9.txt",
+        "res/levels/11.txt"
     };
 
     std::vector<bool> unlocked(levels.size(), false);

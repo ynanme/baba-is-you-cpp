@@ -34,12 +34,13 @@ enum class Label {
     WORD_DEFEAT,
     WORD_HOT,
     WORD_MELT,
+    WORD_OPEN,
     WORD_PUSH,
+    WORD_SHUT,
     WORD_SINK,
     WORD_STOP,
     WORD_WIN,
     WORD_YOU,
-    WORD_OPEN,
 
     NONE
     

@@ -11,8 +11,10 @@ using namespace std;
 unordered_map<string, Label> Loader :: LABELS = {
 
     {"BABA", Label::BABA},
+    {"DOOR", Label::DOOR},
     {"FLAG", Label::FLAG},
     {"GRASS", Label::GRASS},
+    {"KEY", Label::KEY},
     {"LAVA", Label::LAVA},
     {"ROCK", Label::ROCK},
     {"SKULL", Label::SKULL},
@@ -20,8 +22,10 @@ unordered_map<string, Label> Loader :: LABELS = {
     {"WATER", Label::WATER},
 
     {"WORD_BABA", Label::WORD_BABA},
+    {"WORD_DOOR", Label::WORD_DOOR},
     {"WORD_FLAG", Label::WORD_FLAG},
     {"WORD_GRASS", Label::WORD_GRASS},
+    {"WORD_KEY", Label::WORD_KEY},
     {"WORD_LAVA", Label::WORD_LAVA},
     {"WORD_ROCK", Label::WORD_ROCK},
     {"WORD_SKULL", Label::WORD_SKULL},
@@ -33,7 +37,10 @@ unordered_map<string, Label> Loader :: LABELS = {
     {"WORD_DEFEAT", Label::WORD_DEFEAT},
     {"WORD_HOT", Label::WORD_HOT},
     {"WORD_MELT", Label::WORD_MELT},
+    {"WORD_OPEN", Label::WORD_OPEN},
+    {"WORD_PULL", Label::WORD_PULL},
     {"WORD_PUSH", Label::WORD_PUSH},
+    {"WORD_SHUT", Label::WORD_SHUT},
     {"WORD_SINK", Label::WORD_SINK},
     {"WORD_STOP", Label::WORD_STOP},
     {"WORD_WIN", Label::WORD_WIN},

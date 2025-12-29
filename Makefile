@@ -114,4 +114,4 @@ $(BUILD)main.o : $(SRC)main.cpp $(CORE)board.hpp $(CORE)game.hpp $(LOADER)loader
 	$(CCO)
 
 clean :
-	rm -rf $(BUILD)*
+	rm -rf $(BUILD) otosan

@@ -47,24 +47,15 @@ bool Game :: has_property (Label label, Property property) {
 
 
 bool Game :: has_property (Character * character, Property property) {
-    if (character->get_category() == Category::WORD) return property == Property::PUSH;
+    if (character->get_category() == Category::WORD)
+        return property == Property::PUSH || property == Property::PULL;
     return has_property(character->get_label(), property);
 }
 
 
-bool Game :: is_open (Position position) {
+bool Game :: has_property (Position position, Property property) {
     for (Character * character: board->at(position)) {
-        if (has_property(character, Property::STOP)) {
-            return false;
-        }
-    }
-    return true;
-}
-
-
-bool Game :: is_subject_to_push (Position position) {
-    for (Character * character: board->at(position)) {
-        if (has_property(character, Property::PUSH)) {
+        if (has_property(character, property)) {
             return true;
         }
     }
@@ -95,7 +86,10 @@ unordered_map<Label, Property> Game :: WORDS_PROPERTIES = {
     {Label::WORD_DEFEAT, Property::DEFEAT},
     {Label::WORD_HOT, Property::HOT},
     {Label::WORD_MELT, Property::MELT},
+    {Label::WORD_OPEN, Property::OPEN},
+    {Label::WORD_PULL, Property::PULL},
     {Label::WORD_PUSH, Property::PUSH},
+    {Label::WORD_SHUT, Property::SHUT},
     {Label::WORD_SINK, Property::SINK},
     {Label::WORD_STOP, Property::STOP},
     {Label::WORD_WIN, Property::WIN},
@@ -105,7 +99,9 @@ unordered_map<Label, Property> Game :: WORDS_PROPERTIES = {
 
 unordered_map<Label, Label> Game :: WORDS_SUBJECTS = {
     {Label::WORD_BABA, Label::BABA},
+    {Label::WORD_DOOR, Label::DOOR},
     {Label::WORD_FLAG, Label::FLAG},
+    {Label::WORD_KEY, Label::KEY},
     {Label::WORD_GRASS, Label::GRASS},
     {Label::WORD_LAVA, Label::LAVA},
     {Label::WORD_ROCK, Label::ROCK},
@@ -116,11 +112,12 @@ unordered_map<Label, Label> Game :: WORDS_SUBJECTS = {
 
 
 unordered_map<CoexistionResult, int>  Game :: COEXISTION_RESULTS_PRIORITIES = {
-    {CoexistionResult::WON, 2},
+    {CoexistionResult::COEXISTED, 4},
     {CoexistionResult::DEFEATED, 1},
     {CoexistionResult::MELTED, 1},
+    {CoexistionResult::OPENED, 3},
     {CoexistionResult::SINKED, 0},
-    {CoexistionResult::COEXISTED, 3}
+    {CoexistionResult::WON, 2}
 };
 
 

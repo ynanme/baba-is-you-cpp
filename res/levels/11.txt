@@ -1,0 +1,146 @@
+22 16
+
+
+9   3  BABA        O
+
+12  3  ROCK        O
+12  5  ROCK        O
+
+5   13 FLAG        O
+
+8   7  WATER       O
+9   7  WATER       O
+10  7  WATER       O
+
+2   0  WALL        O
+2   1  WALL        O
+2   2  WALL        O
+7   1  WALL        O
+8   1  WALL        O
+9   1  WALL        O
+10  1  WALL        O
+11  1  WALL        O
+12  1  WALL        O
+13  1  WALL        O
+14  1  WALL        O
+7   2  WALL        O
+14  2  WALL        O
+0   3  WALL        O
+1   3  WALL        O
+2   3  WALL        O
+7   3  WALL        O
+14  3  WALL        O
+7   4  WALL        O
+14  4  WALL        O
+7   5  WALL        O
+14  5  WALL        O
+7   6  WALL        O
+14  6  WALL        O
+4   7  WALL        O
+5   7  WALL        O
+6   7  WALL        O
+7   7  WALL        O
+11  7  WALL        O
+12  7  WALL        O
+13  7  WALL        O
+14  7  WALL        O
+15  7  WALL        O
+16  7  WALL        O
+17  7  WALL        O
+4   8  WALL        O
+11  8  WALL        O
+17  8  WALL        O
+4   9  WALL        O
+11  9  WALL        O
+17  9  WALL        O
+4   10 WALL        O
+11  10 WALL        O
+17  10 WALL        O
+4   11 WALL        O
+9   11 WALL        O
+17  11 WALL        O
+4   12 WALL        O
+11  12 WALL        O
+17  12 WALL        O
+4   13 WALL        O
+11  13 WALL        O
+17  13 WALL        O
+4   14 WALL        O
+5   14 WALL        O
+6   14 WALL        O
+7   14 WALL        O
+8   14 WALL        O
+9   14 WALL        O
+10  14 WALL        O
+11  14 WALL        O
+12  14 WALL        O
+13  14 WALL        O
+14  14 WALL        O
+15  14 WALL        O
+16  14 WALL        O
+17  14 WALL        O
+
+0   0  WORD_BABA   W
+0   1  WORD_IS     W
+0   2  WORD_YOU    W
+1   0  WORD_WALL   W
+1   1  WORD_IS     W
+1   2  WORD_STOP   W
+
+6   4  WORD_WATER  W
+6   5  WORD_IS     W
+6   6  WORD_SINK   W
+
+13  9  WORD_ROCK   W
+14  9  WORD_IS     W
+15  9  WORD_PUSH   W
+
+13  12 WORD_FLAG   W
+14  12 WORD_IS     W
+15  12 WORD_WIN    W
+
+13  13 WORD_GRASS   W
+14  13 WORD_IS      W
+15  13 WORD_DEFEAT  W
+
+21   0  WORD_GRASS  W
+21   1  WORD_IS     W
+21   2  WORD_PULL   W
+
+16  0  GRASS       O
+16  1  GRASS       O
+4   1  GRASS       O
+5   3  GRASS       O
+3   5  GRASS       O
+4   5  GRASS       O
+0   7  GRASS       O
+19  7  GRASS       O
+1   8  GRASS       O
+20  9  GRASS       O
+1   12 GRASS       O
+2   12 GRASS       O
+18  12 GRASS       O
+1   13 GRASS       O
+2   13 GRASS       O
+20  13 GRASS       O
+21  13 GRASS       O
+20  14 GRASS       O
+
+ 5   11 GRASS       O
+ 6   11 GRASS       O
+ 7   11 GRASS       O
+ 5   12 GRASS       O
+ 6   12 GRASS       O
+ 7   12 GRASS       O
+ 6   13 GRASS       O
+ 7   13 GRASS       O
+11   11 GRASS       O
+
+
+WORD_BABA WORD_IS WORD_YOU
+WORD_WALL WORD_IS WORD_STOP
+WORD_WATER WORD_IS WORD_SINK
+WORD_ROCK WORD_IS WORD_PUSH
+WORD_FLAG WORD_IS WORD_WIN
+WORD_GRASS WORD_IS WORD_DEFEAT
+WORD_GRASS WORD_IS WORD_PULL

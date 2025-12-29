@@ -11,6 +11,7 @@ class Observer {
 
     public:
         virtual void update (const Event & event) = 0;
+        virtual ~Observer() = default;
 
 };
 

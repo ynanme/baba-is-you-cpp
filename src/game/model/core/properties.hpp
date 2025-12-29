@@ -11,16 +11,20 @@ enum class Property {
     DEFEAT,
     HOT,
     MELT,
-    SINK
+    SINK,
+    PULL,
+    SHUT,
+    OPEN
 };
 
 
-enum CoexistionResult {
+enum class CoexistionResult {
     WON ,
     DEFEATED,
     MELTED,
     SINKED,
-    COEXISTED
+    COEXISTED,
+    OPENED
 };
 
 
