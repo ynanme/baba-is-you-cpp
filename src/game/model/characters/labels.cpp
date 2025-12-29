@@ -37,7 +37,8 @@ ostream& operator << (ostream& out, Label label) {
         case Label::WORD_STOP:   return out << "STOP";
         case Label::WORD_WIN:    return out << "WIN";
         case Label::WORD_YOU:    return out << "YOU";
-        case Label::WORD_OPEN:        return out << "OPEN";
+        case Label::WORD_OPEN:   return out << "OPEN";
+        case Label::WORD_SHUT:   return out << "SHUT";
 
     }
 

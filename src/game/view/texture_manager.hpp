@@ -30,6 +30,7 @@ private:
     sf::Texture openTextTexture;
     sf::Texture keyTexture;
     sf::Texture doorTexture;
+    sf::Texture shutTextTexture;
 
     std::map<Label, SpriteInfo> sprites;
 
