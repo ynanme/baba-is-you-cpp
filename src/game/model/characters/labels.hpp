@@ -28,7 +28,6 @@ enum class Label {
     WORD_PULL,
     WORD_KEY,
     WORD_DOOR,
-    WORD_SHUT,
 
     WORD_IS,
 

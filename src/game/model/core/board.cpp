@@ -40,13 +40,13 @@ const vector<Character*>& Board::get_neighbor(Character& character, Direction di
     return cell; 
 }
 
-void Board::set(Character& character, bool notify_ruler) {
-    Position pos = character.get_position();
+void Board::set(Character * character, bool notify_ruler) {
+    Position pos = character->get_position();
     vector<Character*>& cell = get_cell(pos);
 
-    if (std::find(cell.begin(), cell.end(), &character) == cell.end()) {
-        cell.push_back(&character);
-        if (notify_ruler) notify({*this, character}); 
+    if (std::find(cell.begin(), cell.end(), character) == cell.end()) {
+        cell.push_back(character);
+        if (notify_ruler) notify({*this, *character}); 
     }
 }
 

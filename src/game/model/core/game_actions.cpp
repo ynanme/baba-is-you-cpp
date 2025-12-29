@@ -2,11 +2,13 @@
 
 
 void Game :: play (Direction direction, bool pull) {
-    Action * new_action = new Action(direction);
     cout << "---------------------------------------------------------------" << endl;
-    for (Character * player: players) {
+    vector<Character *> players_snapshot = players;
+    Action * new_action = new Action(direction);
+    for (Character * player: players_snapshot) {
         cout << "playing with " << *player << " towards " << direction << endl;
-        move(player, direction, new_action, pull);
+        if (find(players.begin(), players.end(), player) != players.end())
+            move(player, direction, new_action, pull);
     }
     cout << "---------------------------------------------------------------" << endl;
     if (
@@ -30,8 +32,10 @@ void Game :: move (Character * player, Direction direction, Action * ongoing_act
             Position before = Position::neighbor(destination, !direction, 2);
             int pulls_range = pulls_chain_range(before, direction);
             cout << "pull range is " << pulls_range << endl;
-            if (!has_property(Position::neighbor(before, direction), Property::STOP))
-                launch_pulls(before, direction, pulls_range, ongoing_action);
+            if (
+                pulls_range > 0 &&
+                !has_property(Position::neighbor(before, direction), Property::STOP)
+            ) launch_pulls(before, direction, pulls_range, ongoing_action);
         }
     }
 }
@@ -73,7 +77,7 @@ int Game :: pulls_chain_range (Position start, Direction direction) {
     int range = 0;
     while (
         board->in_bounds(start) &&
-        !has_property(start, Property::STOP) &&
+        !has_property_but(start, Property::STOP, Property::PULL) &&
         has_property(start, Property::PULL)
     ) {
         range ++;
@@ -173,7 +177,7 @@ void Game :: register_destruction (Character * character, Action * ongoing_actio
 void Game :: register_move (Character * character, Direction direction, Action * ongoing_action, bool is_move_winning) {
     cout << "moving of " << *character << " towards " << direction << endl;
     character->move(direction);    
-    board->set(*character);
+    board->set(character);
     ongoing_action->add_moved_character(character);
     if (is_move_winning) terminate(true);
 }
@@ -184,7 +188,7 @@ void Game :: undo () {
         Action * last_done_action = done_actions.top();
         replay_action_movings(last_done_action, true);
         for (Character * character: last_done_action->get_destroyed_characters()) {
-            board->set(*character);
+            board->set(character);
             if (
                 has_property(character, Property::YOU) &&
                 std::find(players.begin(), players.end(), character) == players.end()
@@ -201,6 +205,8 @@ void Game :: redo () {
         replay_action_movings(last_undone_action, false);
         for (Character * character: last_undone_action->get_destroyed_characters()) {
             board->remove_character(character);
+            if (has_property(character, Property::YOU))
+                players.erase(std::remove(players.begin(), players.end(), character),players.end());
         }
         undone_actions.pop();
         done_actions.push(last_undone_action);
@@ -213,6 +219,6 @@ void Game :: replay_action_movings (Action * action, bool undoing) {
     for (Character * character: action->get_moved_characters()) {
         board->remove_character(character);
         character->move(moving_direction);
-        board->set(*character);
+        board->set(character);
     }
 }

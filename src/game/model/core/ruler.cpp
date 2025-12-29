@@ -238,8 +238,10 @@ void print_rules (vector<LabelT> rules) {
 unordered_map<Label, Token> Ruler :: WORDS_TOKENS = {
 
     {Label::WORD_BABA, Token::SUBJECT},
+    {Label::WORD_DOOR, Token::SUBJECT},
     {Label::WORD_FLAG, Token::SUBJECT},
     {Label::WORD_GRASS, Token::SUBJECT},
+    {Label::WORD_KEY, Token::SUBJECT},
     {Label::WORD_LAVA, Token::SUBJECT},
     {Label::WORD_ROCK, Token::SUBJECT},
     {Label::WORD_SKULL, Token::SUBJECT},
@@ -250,7 +252,10 @@ unordered_map<Label, Token> Ruler :: WORDS_TOKENS = {
 
     {Label::WORD_DEFEAT, Token::PROPERTY},
     {Label::WORD_HOT, Token::PROPERTY},
+    {Label::WORD_OPEN, Token::PROPERTY},
+    {Label::WORD_PULL, Token::PROPERTY},
     {Label::WORD_PUSH, Token::PROPERTY},
+    {Label::WORD_SHUT, Token::PROPERTY},
     {Label::WORD_SINK, Token::PROPERTY},
     {Label::WORD_STOP, Token::PROPERTY},
     {Label::WORD_WIN, Token::PROPERTY},

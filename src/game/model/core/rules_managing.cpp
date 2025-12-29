@@ -71,8 +71,8 @@ void Game :: unmake_player (Label label) {
 }
 
 
-void Game :: transfer_properties (Label from, Label to) {
-    for (Property property: properties[from])
+void Game :: transfer_properties (Label of, Label to) {
+    for (Property property: properties[of])
         add_property(to, property);
 }
 

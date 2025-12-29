@@ -62,7 +62,7 @@ public:
     void unmake_player (Label label);
     void add_property (Label label, Property property);
     void remove_property (Label label, Property property);
-    void transfer_properties (Label from, Label to);
+    void transfer_properties (Label of, Label to);
     void retrieve_properties (Label of, Label to);
     void check_for_tautologies (Label label);
 
@@ -78,6 +78,8 @@ public:
     bool has_property (Label label, Property property);
     bool has_property (Character * character, Property property);
     bool has_property (Position position, Property property);
+    bool has_property_but (Character * character, Property property, Property but);
+    bool has_property_but (Position position, Property property, Property but);
     void move_characters (Position position, Direction direction, Property moving_property, Action * ongoing_action);
     CoexistionResult get_coexistion_result (Character * visitor, Character * host);
     CoexistionResult get_prioritary_coexistion_result (Character * visitor, Position hosts_position);
