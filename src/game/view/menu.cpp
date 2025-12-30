@@ -126,9 +126,7 @@ void Menu::createLevelSelection(const std::vector<bool>& unlocked) {
     float buttonHeight = 80.f;
     float buttonSpacing = 50.f;
 
-    // Calcul du placement vertical des boutons de niveaux
-    float totalHeight = unlocked.size() * buttonHeight + (unlocked.size() - 1) * buttonSpacing;
-    float startY = (windowSize.y - totalHeight) / 2.0f + 60.f;
+    float startY = 200.f; // juste sous le titre
 
     // Création des boutons de niveaux
     for (std::size_t i = 0; i < unlocked.size(); ++i) {
@@ -211,6 +209,22 @@ void Menu::createLevelSelection(const std::vector<bool>& unlocked) {
 
     buttons.push_back(backBtn);
 
+    scrollView = window.getDefaultView();
+
+    float contentHeight = unlocked.size() * buttonHeight + (unlocked.size() - 1) * buttonSpacing;
+
+    float viewHeight = scrollView.getSize().y;
+
+    // si le contenu dépasse
+    if (contentHeight > viewHeight) {
+        maxScroll = contentHeight - viewHeight + 240.f; 
+    } else {
+        maxScroll = 0.f;
+    }
+
+    scrollOffset = 0.f;
+
+
     // Titre 
     FloatRect titleBounds = title.getLocalBounds();
     title.setOrigin(titleBounds.left + titleBounds.width / 2.0f,
@@ -226,18 +240,36 @@ int Menu::handleLevelSelection(Event& event) {
         return -1;
     }
 
-    if (event.type == Event::MouseButtonPressed && event.mouseButton.button == Mouse::Left) {
-        Vector2f mousePos = window.mapPixelToCoords({event.mouseButton.x, event.mouseButton.y});
+    if (event.type == Event::MouseButtonPressed &&
+        event.mouseButton.button == Mouse::Left) {
 
-        for (std::size_t i = 0; i < buttons.size(); ++i) {
-            if (buttons[i].rect.getGlobalBounds().contains(mousePos)) {
-                if (buttons[i].index == -999) return -2; 
-                if (!buttons[i].isLocked) return buttons[i].index; 
+        window.setView(scrollView);
+        Vector2f mousePosScroll =
+            window.mapPixelToCoords({event.mouseButton.x, event.mouseButton.y});
+        window.setView(window.getDefaultView());
+
+        for (const Button& btn : buttons) {
+            if (btn.index != -999 && 
+                btn.rect.getGlobalBounds().contains(mousePosScroll)) {
+
+                if (!btn.isLocked)
+                    return btn.index;
+            }
+        }
+
+        Vector2f mousePosFixed =
+            window.mapPixelToCoords({event.mouseButton.x, event.mouseButton.y});
+
+        for (const Button& btn : buttons) {
+            if (btn.index == -999 &&
+                btn.rect.getGlobalBounds().contains(mousePosFixed)) {
+
+                return -2;
             }
         }
     }
 
-    return -1; 
+    return -1;
 }
 
 int Menu::chooseGameMode() {
@@ -273,6 +305,18 @@ int Menu::runLevelSelection(const std::vector<bool>& unlocked) {
     while (window.isOpen()) {
         Event event;
         while (window.pollEvent(event)) {
+            if (event.type == Event::MouseWheelScrolled) {
+                scrollOffset -= event.mouseWheelScroll.delta * 40.f;
+
+                if (scrollOffset < 0.f) scrollOffset = 0.f;
+                if (scrollOffset > maxScroll) scrollOffset = maxScroll;
+
+                scrollView.setCenter(
+                    scrollView.getSize().x / 2.f,
+                    scrollView.getSize().y / 2.f + scrollOffset
+                );
+            }
+
             int choice = handleLevelSelection(event);
 
             if (choice != -1 && choice != -2) { 
@@ -285,7 +329,10 @@ int Menu::runLevelSelection(const std::vector<bool>& unlocked) {
 
         // Hover effect
         Vector2i mousePixel = Mouse::getPosition(window);
+        window.setView(scrollView);
         Vector2f mousePos = window.mapPixelToCoords(mousePixel);
+        window.setView(window.getDefaultView());
+
 
         for (std::size_t i = 0; i < buttons.size(); ++i) {
             bool hovered = buttons[i].rect.getGlobalBounds().contains(mousePos) && !buttons[i].isLocked;
@@ -304,16 +351,28 @@ int Menu::runLevelSelection(const std::vector<bool>& unlocked) {
             }
         }
 
-        // Dessin
         window.clear();
         window.draw(background);
         window.draw(titleShadow);
         window.draw(title);
 
-        for (std::size_t i = 0; i < buttons.size(); ++i) {
-            window.draw(buttons[i].rect);
-            window.draw(buttons[i].textShadow);
-            window.draw(buttons[i].text);
+        window.setView(scrollView);
+        for (const Button& btn : buttons) {
+            if (btn.index != -999) {
+                window.draw(btn.rect);
+                window.draw(btn.textShadow);
+                window.draw(btn.text);
+            }
+        }
+        window.setView(window.getDefaultView());
+
+        // bouton retour
+        for (const Button& btn : buttons) {
+            if (btn.index == -999) {
+                window.draw(btn.rect);
+                window.draw(btn.textShadow);
+                window.draw(btn.text);
+            }
         }
 
         window.display();

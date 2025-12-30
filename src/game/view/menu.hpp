@@ -12,7 +12,7 @@ struct Button {
     RectangleShape rect;
     Text text;
     Text textShadow;
-    std::size_t index = 0;
+    int index = 0;
     bool isLocked = false;
 };
 
@@ -26,6 +26,10 @@ private:
     Text titleShadow;
 
     std::vector<Button> buttons;
+
+    sf::View scrollView;
+    float scrollOffset = 0.f;
+    float maxScroll = 0.f;
 
     enum class State { 
         CHOOSE_MODE,      // 0 = Normal / 1 = Explorer

@@ -9,7 +9,7 @@
 
 // unlock tout les les niveaux si en mode explorer
 std::vector<bool> buildLevelsToShow(const std::vector<bool>& realUnlocked, bool isExplorer) {
-    auto toShow = realUnlocked;
+    std::vector<bool> toShow = realUnlocked;
     if (isExplorer) {
         std::fill(toShow.begin(), toShow.end(), true);
     }
@@ -28,7 +28,13 @@ int main() {
     Menu menu;
 
     std::vector<std::string> levels = {
+        "res/levels/1.txt",
+        "res/levels/2.txt",
+        "res/levels/3.txt",
         "res/levels/4.txt",
+        "res/levels/5.txt",
+        "res/levels/6.txt",
+        "res/levels/7.txt",
         "res/levels/8.txt",
         "res/levels/9.txt",
         "res/levels/10.txt",
