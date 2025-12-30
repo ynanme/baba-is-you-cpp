@@ -52,14 +52,35 @@ void BoardView::processEvents() {
         }
 
         if (event.type == sf::Event::KeyPressed) {
-            if (event.key.code == sf::Keyboard::Up)
-                game.play(Direction::UP);
-            if (event.key.code == sf::Keyboard::Down)
-                game.play(Direction::DOWN);
-            if (event.key.code == sf::Keyboard::Left)
-                game.play(Direction::LEFT);
-            if (event.key.code == sf::Keyboard::Right)
-                game.play(Direction::RIGHT);
+            if (event.key.code == sf::Keyboard::Up) {
+                if (event.key.control) {
+                    game.play(Direction::UP, true);
+                } else {
+                    game.play(Direction::UP, false);
+                }
+            }
+                
+            if (event.key.code == sf::Keyboard::Down) {
+                if (event.key.control) {
+                    game.play(Direction::DOWN, true);
+                } else {
+                    game.play(Direction::DOWN, false);
+                }
+            }
+            if (event.key.code == sf::Keyboard::Left) {
+                if (event.key.control) {
+                    game.play(Direction::LEFT, true);
+                } else {
+                    game.play(Direction::LEFT, false);
+                }
+            }
+            if (event.key.code == sf::Keyboard::Right) {
+                if (event.key.control) {
+                    game.play(Direction::RIGHT, true);
+                } else {
+                    game.play(Direction::RIGHT, false);
+                }
+            }
             if (event.key.code == sf::Keyboard::Z)
                 game.undo();
             if (event.key.code == sf::Keyboard::Y)
