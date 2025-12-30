@@ -19,87 +19,83 @@ using Rule = tuple<Label, Label, Label>;
 
 
 class Game : public Observer<RuleChange> {
-private:
 
-    static std::unordered_map<Label, Property> WORDS_PROPERTIES;
-    static std::unordered_map<Label, Label> WORDS_SUBJECTS;
-    static std::unordered_map<CoexistionResult, int> COEXISTION_RESULTS_PRIORITIES;
+    public:
 
-    Board * board;
-    Ruler * ruler;
+        Game(int board_width, int board_height);
+        
+        ~ Game ();
+        Game (const Game &) = delete;
+        Game & operator = (const Game &) = delete;
 
-    std::stack<Action *> done_actions;      
-    std::stack<Action *> undone_actions;   
-    
-    std::vector<Character *> characters;
-    std::vector<Character *> players;
+        Board& get_board() const;
+        
+        void update(const RuleChange & event) override;
+        
+        void add_character(Character* character);
+        void apply_rule (Rule rule);
+        
+        void play (Direction direction, bool pull = true);
+        void undo ();
+        void redo ();
 
-    std::set<Rule> rules_history;
-    std::unordered_map<Label, set<Property>> properties;
-
-    bool is_terminated = false;     
-    bool has_won = false;
-    string end_message;
-
-public:
-
-    Game(int board_width, int board_height);
-    
-    ~ Game ();
-    Game (const Game &) = delete;
-    Game & operator = (const Game &) = delete;
+        bool ended() const noexcept;
+        bool is_victory() const noexcept;
+        bool is_defeat() const noexcept;
 
 
-    Board& get_board() const;
+    private:
 
-    void update(const RuleChange & event) override;
+        static std::unordered_map<Label, Property> WORDS_PROPERTIES;
+        static std::unordered_map<Label, Label> WORDS_SUBJECTS;
+        static std::unordered_map<CoexistionResult, int> COEXISTION_RESULTS_PRIORITIES;
 
-    void add_character(Character* character);
+        Board * board;
+        Ruler * ruler;
 
-    void apply_rule (Rule rule);
-    void unapply_rule (Rule rule);
-    void make_player (Label label);
-    void unmake_player (Label label);
-    void add_property (Label label, Property property);
-    void remove_property (Label label, Property property);
-    void transfer_properties (Label of, Label to);
-    void retrieve_properties (Label of, Label to);
-    void check_for_tautologies (Label label);
+        std::stack<Action *> done_actions;      
+        std::stack<Action *> undone_actions;   
+        
+        std::vector<Character *> characters;
+        std::vector<Character *> players;
 
+        std::set<Rule> rules_history;
+        std::unordered_map<Label, set<Property>> properties;
 
-    void play (Direction direction, bool pull = true);
-    void undo ();
-    void redo ();
-    void replay_action_movings (Action * action, bool undoing);
-    void register_destruction (Character * character, Action * ongoing_action);
-    void register_move (Character * character, Direction direction, Action * ongoing_action, bool is_move_winning);
+        bool is_terminated = false;     
+        bool has_won = false;
+        string end_message;
 
-    void move (Character * player, Direction direction, Action * ongoing_action, bool pull = true);
-    bool has_property (Label label, Property property);
-    bool has_property (Character * character, Property property);
-    bool has_property (Position position, Property property);
-    bool has_property_but (Character * character, Property property, Property but);
-    bool has_property_but (Position position, Property property, Property but);
-    void move_characters (Position position, Direction direction, Property moving_property, Action * ongoing_action);
-    CoexistionResult get_coexistion_result (Character * visitor, Character * host);
-    CoexistionResult get_prioritary_coexistion_result (Character * visitor, Position hosts_position);
-    int pushes_chain_range (Position start, Direction direction);
-    int pulls_chain_range (Position start, Direction direction);
-    void launch_pushes (Position start, Direction direction, int range, Action * ongoing_action);
-    void launch_pulls (Position start, Direction direction, int range, Action * ongoing_action);
-
-    void terminate(bool win, const std::string& message = "");
-
-    bool isTerminated() const noexcept { return is_terminated; }
-    bool isVictory() const noexcept { return is_terminated && has_won; }
-    bool isDefeat() const noexcept { return is_terminated && !has_won; }
-
-
-    void move_character (Character * character, Direction direction, Action * ongoing_action);
-
-private:
-    //void reverseAction(const Action& action); 
-    
+        
+        void unapply_rule (Rule rule);
+        void make_player (Label label);
+        void unmake_player (Label label);
+        void add_property (Label label, Property property);
+        void remove_property (Label label, Property property);
+        void transfer_properties (Label of, Label to);
+        void retrieve_properties (Label of, Label to);
+        void check_for_tautologies (Label label);
+        
+        void move (Character * player, Direction direction, Action * ongoing_action, bool pull = true);
+        void move_characters (Position position, Direction direction, Property moving_property, Action * ongoing_action);
+        void move_character (Character * character, Direction direction, Action * ongoing_action);
+        int pushes_chain_range (Position start, Direction direction);
+        int pulls_chain_range (Position start, Direction direction);
+        void launch_pushes (Position start, Direction direction, int range, Action * ongoing_action);
+        void launch_pulls (Position start, Direction direction, int range, Action * ongoing_action);
+        CoexistionResult get_coexistion_result (Character * visitor, Character * host);
+        CoexistionResult get_prioritary_coexistion_result (Character * visitor, Position hosts_position);
+        void register_destruction (Character * character, Action * ongoing_action);
+        void register_move (Character * character, Direction direction, Action * ongoing_action, bool is_move_winning);
+        void replay_action_movings (Action * action, bool undoing);
+        
+        bool has_property (Label label, Property property);
+        bool has_property (Character * character, Property property);
+        bool has_property (Position position, Property property);
+        bool has_property_but (Character * character, Property property, Property but);
+        bool has_property_but (Position position, Property property, Property but);
+        void terminate(bool win, const std::string& message = "");
+        
     
     friend ostream& operator << (ostream& out, const Game& game);
 

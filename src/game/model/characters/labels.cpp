@@ -40,6 +40,13 @@ ostream& operator << (ostream& out, Label label) {
         case Label::WORD_OPEN:   return out << "OPEN";
         case Label::WORD_SHUT:   return out << "SHUT";
 
+        case Label::KEY:   return out << "KEY";
+        case Label::DOOR:   return out << "DOOR";
+        case Label::WORD_PULL:   return out << "WORD_PULL";
+        case Label::WORD_MELT:   return out << "WORD_MELT";
+        case Label::NONE:   return out << "NONE";
+
+
     }
 
     return out;

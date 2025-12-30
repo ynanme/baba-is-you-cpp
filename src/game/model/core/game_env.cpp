@@ -94,6 +94,19 @@ void Game::terminate(bool win, const string& message) {
 }
 
 
+bool Game :: ended() const noexcept {
+    return is_terminated; 
+}
+
+bool Game :: is_victory() const noexcept {
+    return is_terminated && has_won;
+}
+
+bool Game :: is_defeat() const noexcept {
+    return is_terminated && !has_won;
+}
+
+
 
 
 unordered_map<Label, Property> Game :: WORDS_PROPERTIES = {

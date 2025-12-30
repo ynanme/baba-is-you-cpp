@@ -36,6 +36,7 @@ OBJECTS = \
 all : $(OBJECTS)
 	@mkdir -p $(BUILD)
 	$(CC) -o otosan $(OBJECTS) -lsfml-graphics -lsfml-window -lsfml-system
+	./otosan
 
 $(UTILS_BUILD)geometry.o : $(UTILS)geometry.cpp $(UTILS)geometry.hpp
 	@mkdir -p $(UTILS_BUILD)

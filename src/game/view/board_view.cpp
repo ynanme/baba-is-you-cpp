@@ -47,7 +47,7 @@ void BoardView::processEvents() {
     sf::Event event;
 
     while (window.pollEvent(event)) {
-        if (event.type == sf::Event::Closed || game.isTerminated()) {
+        if (event.type == sf::Event::Closed || game.ended()) {
             window.close();
         }
 

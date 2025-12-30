@@ -29,9 +29,9 @@ int main() {
 
     std::vector<std::string> levels = {
         "res/levels/4.txt",
-        "res/levels/6.txt",
-        "res/levels/10.txt",
+        "res/levels/8.txt",
         "res/levels/9.txt",
+        "res/levels/10.txt",
         "res/levels/11.txt"
     };
 
@@ -74,7 +74,7 @@ int main() {
                         view.processEvents();
                         view.render();
 
-                        if (game->isVictory()) {
+                        if (game->is_victory()) {
                             victory = true;
                             break;
                         }
