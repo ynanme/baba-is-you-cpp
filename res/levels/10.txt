@@ -1,127 +1,149 @@
 22 14
 
+ 0  0 WORD_KEY    W
+ 3  0 WORD_ROCK   W
+ 4  0 WORD_IS     W
+10  0 WORD_IS     W
+20  0 WORD_BABA   W
+21  0 WORD_PULL   W
 
-0 0 WORD_KEY W
-3 0 WORD_ROCK W
-4 0 WORD_IS W
-10 0 WORD_IS W
-20 0 WORD_BABA W
-21 0 WORD_PULL W
-10 1 BABA O
-0 3 KEY O
-1 3 KEY O
-2 3 KEY O
-3 3 KEY O
-4 3 KEY O
-5 3 KEY O
-6 3 KEY O
-7 3 KEY O
-8 3 KEY O
-9 3 KEY O
-10 3 KEY O
-11 3 KEY O
-12 3 KEY O
-13 3 KEY O
-14 3 KEY O
-15 3 KEY O
-16 3 KEY O
-17 3 KEY O
-18 3 KEY O
-19 3 KEY O
-20 3 KEY O
-21 3 KEY O
-0 6 DOOR O
-1 6 DOOR O
-2 6 DOOR O
-3 6 DOOR O
-4 6 DOOR O
-5 6 DOOR O
-6 6 DOOR O
-7 6 DOOR O
-8 6 DOOR O
-9 6 DOOR O
-10 6 DOOR O
-11 6 DOOR O
-12 6 DOOR O
-13 6 DOOR O
-14 6 DOOR O
-15 6 DOOR O
-16 6 DOOR O
-17 6 DOOR O
-18 6 DOOR O
-19 6 DOOR O
-20 6 DOOR O
-21 6 DOOR O
-0 10 WALL O
-1 10 WALL O
-1 11 WALL O
-1 12 WALL O
-1 13 WALL O
-0 11 WORD_DOOR W
-0 12 WORD_IS W
-0 13 WORD_SHUT W
-18 12 WALL O
-19 12 WALL O
-20 12 WALL O
-21 12 WALL O
-18 13 WALL O
-19 13 WORD_KEY W
-20 13 WORD_IS W
-21 13 WORD_OPEN W
-19 11 WORD_FLAG W
-20 11 WORD_IS W
-21 11 WORD_WIN W
-10 13 WALL O
-11 13 FLAG O
-12 13 WALL O
-10 12 WALL O
-11 12 DOOR O
-12 12 WALL O
-10 11 WALL O
-12 11 WALL O
-11 11 ROCK O
-12 10 WALL O
-10 10 KEY O
-18 11 WALL O
-18 10 WALL O
-19 10 WALL O
-20 10 WALL O
-21 10 WALL O
-18 8 WALL O
-19 8 WALL O
-20 8 WALL O
-21 8 WALL O
-21 9 WORD_PUSH W
-20 9 WORD_IS W
-18 9 ROCK O
-17 12 WORD_KEY W
-3 10 WALL O
-4 10 WALL O
-4 11 WALL O
-4 12 WALL O
-4 13 WALL O
-3 11 WORD_WALL W
-3 12 WORD_IS W
-3 13 WORD_STOP W
-5 10 WALL O
-6 10 WALL O
-6 11 WALL O
-6 12 WALL O
-6 13 WALL O
-5 11 WORD_ROCK W
-5 12 WORD_IS W
-5 13 WORD_STOP W 
-2 10 WALL O
-2 11 WALL O
-2 12 WALL O
-2 13 WALL O
-0 9 WORD_BABA W
-1 9 WORD_IS W
-2 9 WORD_YOU W
+10  1 BABA        O
+
+ 0  3 KEY         O
+ 1  3 KEY         O
+ 2  3 KEY         O
+ 3  3 KEY         O
+ 4  3 KEY         O
+ 5  3 KEY         O
+ 6  3 KEY         O
+ 7  3 KEY         O
+ 8  3 KEY         O
+ 9  3 KEY         O
+10  3 KEY         O
+11  3 KEY         O
+12  3 KEY         O
+13  3 KEY         O
+14  3 KEY         O
+15  3 KEY         O
+16  3 KEY         O
+17  3 KEY         O
+18  3 KEY         O
+19  3 KEY         O
+20  3 KEY         O
+21  3 KEY         O
+
+ 0  6 DOOR        O
+ 1  6 DOOR        O
+ 2  6 DOOR        O
+ 3  6 DOOR        O
+ 4  6 DOOR        O
+ 5  6 DOOR        O
+ 6  6 DOOR        O
+ 7  6 DOOR        O
+ 8  6 DOOR        O
+ 9  6 DOOR        O
+10  6 DOOR        O
+11  6 DOOR        O
+12  6 DOOR        O
+13  6 DOOR        O
+14  6 DOOR        O
+15  6 DOOR        O
+16  6 DOOR        O
+17  6 DOOR        O
+18  6 DOOR        O
+19  6 DOOR        O
+20  6 DOOR        O
+21  6 DOOR        O
+
+ 0 10 WALL        O
+ 1 10 WALL        O
+ 1 11 WALL        O
+ 1 12 WALL        O
+ 1 13 WALL        O
+
+ 0 11 WORD_DOOR   W
+ 0 12 WORD_IS     W
+ 0 13 WORD_SHUT   W
+
+18 12 WALL        O
+19 12 WALL        O
+20 12 WALL        O
+21 12 WALL        O
+18 13 WALL        O
+
+19 13 WORD_KEY    W
+20 13 WORD_IS     W
+21 13 WORD_OPEN   W
+
+19 11 WORD_FLAG   W
+20 11 WORD_IS     W
+21 11 WORD_WIN    W
+
+10 13 WALL        O
+11 13 FLAG        O
+12 13 WALL        O
+
+10 12 WALL        O
+11 12 DOOR        O
+12 12 WALL        O
+
+10 11 WALL        O
+11 11 ROCK        O
+12 11 WALL        O
+
+12 10 WALL        O
+10 10 KEY         O
+
+18 11 WALL        O
+18 10 WALL        O
+19 10 WALL        O
+20 10 WALL        O
+21 10 WALL        O
+
+18  8 WALL        O
+19  8 WALL        O
+20  8 WALL        O
+21  8 WALL        O
+
+21  9 WORD_PUSH   W
+20  9 WORD_IS     W
+18  9 ROCK        O
+
+17 12 WORD_KEY    W
+
+ 3 10 WALL        O
+ 4 10 WALL        O
+ 4 11 WALL        O
+ 4 12 WALL        O
+ 4 13 WALL        O
+
+ 3 11 WORD_WALL   W
+ 3 12 WORD_IS     W
+ 3 13 WORD_STOP   W
+
+ 5 10 WALL        O
+ 6 10 WALL        O
+ 6 11 WALL        O
+ 6 12 WALL        O
+ 6 13 WALL        O
+
+ 5 11 WORD_ROCK   W
+ 5 12 WORD_IS     W
+ 5 13 WORD_STOP   W
+
+ 2 10 WALL        O
+ 2 11 WALL        O
+ 2 12 WALL        O
+ 2 13 WALL        O
+
+ 0  9 WORD_BABA   W
+ 1  9 WORD_IS     W
+ 2  9 WORD_YOU    W
+
 
 WORD_BABA WORD_IS WORD_YOU
 WORD_DOOR WORD_IS WORD_SHUT
 WORD_WALL WORD_IS WORD_STOP
 WORD_ROCK WORD_IS WORD_STOP
 WORD_FLAG WORD_IS WORD_WIN
-WORD_KEY WORD_IS WORD_OPEN
+WORD_KEY  WORD_IS WORD_OPEN

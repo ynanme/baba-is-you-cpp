@@ -1,53 +1,148 @@
-13 9
+22 14
 
+ 0  0 WORD_BABA   W
+ 1  0 WORD_IS     W
+ 2  0 WORD_YOU    W
+10  0 WORD_FLAG   W
+11  0 WORD_IS     W
+12  0 WORD_WIN    W
+19  0 WORD_WALL   W
+20  0 WORD_IS     W
+21  0 WORD_STOP   W
 
-0  0 WORD_BABA W
-1  0 WORD_IS   W
-2  0 WORD_YOU  W
+10  1 WALL        O
+11  1 FLAG        O
+12  1 WALL        O
 
-4  0 WORD_FLAG W
-5  0 WORD_IS   W
-6  0 WORD_WIN  W
+ 0  2 WALL        O
+ 1  2 WALL        O
+ 2  2 WALL        O
+ 3  2 WALL        O
+ 4  2 WALL        O
+ 5  2 WALL        O
+ 6  2 WALL        O
+ 7  2 WALL        O
+ 8  2 WALL        O
+ 9  2 WALL        O
+10  2 WALL        O
+11  2 WALL        O
+12  2 WALL        O
+13  2 WALL        O
+14  2 WALL        O
+15  2 WALL        O
+16  2 WALL        O
+17  2 WALL        O
+18  2 WALL        O
+19  2 WALL        O
+20  2 WALL        O
+21  2 WALL        O
 
-8  0 WORD_WALL W
-9  0 WORD_IS   W
-10 0 WORD_STOP W
+16  3 BABA        O
+18  3 WORD_BABA   W
+20  3 WORD_IS     W
+21  3 WORD_DEFEAT W
 
-1  2 WORD_FLAG W
-9  2 WORD_IS   W
-10 2 WORD_BABA W
+ 1  4 WALL        O
+ 2  4 WALL        O
+ 3  4 WALL        O
+ 4  4 WALL        O
+ 5  4 WALL        O
+ 6  4 WALL        O
+ 7  4 WALL        O
+ 8  4 WALL        O
+ 9  4 WALL        O
+10  4 WALL        O
+11  4 WALL        O
+12  4 WALL        O
+13  4 WALL        O
+14  4 WALL        O
+15  4 WALL        O
+16  4 WALL        O
+17  4 WALL        O
 
-0  3 WALL      O
-1  3 WALL      O
-2  3 WALL      O
-3  3 WALL      O
-4  3 WALL      O
-6  3 WALL      O
-7  3 WALL      O
-8  3 WALL      O
-9  3 WALL      O
-10 3 WALL      O
-11 3 WALL      O
-12 3 WALL      O
+17  5 WALL        O
 
-10 4 WALL      O
+ 0  6 WALL        O
+ 1  6 WALL        O
+ 2  6 WALL        O
+ 3  6 WALL        O
+ 4  6 WALL        O
+ 5  6 WALL        O
+ 6  6 WALL        O
+ 7  6 WALL        O
+ 8  6 WALL        O
+ 9  6 WALL        O
+10  6 WALL        O
+11  6 WALL        O
+12  6 WALL        O
+13  6 WALL        O
+14  6 WALL        O
+15  6 WALL        O
+17  6 WALL        O
 
-0  5 WALL      O
-1  5 WALL      O
-2  5 WALL      O
-3  5 WALL      O
-4  5 WALL      O
-5  5 WALL      O
-6  5 WALL      O
-7  5 WALL      O
-8  5 WALL      O
-9  5 WALL      O
-10 5 WALL      O
-11 5 WALL      O
-12 5 WALL      O
+17  7 WALL        O
 
-1  4 BABA      O
-11 4 FLAG      O
+ 1  8 WALL        O
+ 2  8 WALL        O
+ 3  8 WALL        O
+ 4  8 WALL        O
+ 5  8 WALL        O
+ 6  8 WALL        O
+ 7  8 WALL        O
+ 8  8 WALL        O
+ 9  8 WALL        O
+10  8 WALL        O
+11  8 WALL        O
+12  8 WALL        O
+13  8 WALL        O
+14  8 WALL        O
+15  8 WALL        O
+16  8 WALL        O
+17  8 WALL        O
+
+17  9 WALL        O
+
+ 0 10 WALL        O
+ 1 10 WALL        O
+ 2 10 WALL        O
+ 3 10 WALL        O
+ 4 10 WALL        O
+ 5 10 WALL        O
+ 6 10 WALL        O
+ 7 10 WALL        O
+ 8 10 WALL        O
+ 9 10 WALL        O
+10 10 WALL        O
+11 10 WALL        O
+12 10 WALL        O
+13 10 WALL        O
+14 10 WALL        O
+15 10 WALL        O
+17 10 WALL        O
+
+17 11 WALL        O
+
+ 1 12 WALL        O
+ 2 12 WALL        O
+ 3 12 WALL        O
+ 4 12 WALL        O
+ 5 12 WALL        O
+ 6 12 WALL        O
+ 7 12 WALL        O
+ 8 12 WALL        O
+ 9 12 WALL        O
+10 12 WALL        O
+11 12 WALL        O
+12 12 WALL        O
+13 12 WALL        O
+14 12 WALL        O
+15 12 WALL        O
+16 12 WALL        O
+17 12 WALL        O
+
+21  6 WORD_FLAG   W
+21  7 WORD_IS     W
+21 12 WORD_BABA   W
 
 
 WORD_BABA WORD_IS WORD_YOU

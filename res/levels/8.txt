@@ -1,0 +1,84 @@
+22 14
+
+ 4  2 WALL        O
+ 5  2 WALL        O
+ 6  2 WALL        O
+ 7  2 WALL        O
+ 8  2 WALL        O
+ 9  2 WALL        O
+10  2 WALL        O
+11  2 WALL        O
+12  2 WALL        O
+13  2 WALL        O
+14  2 WALL        O
+15  2 WALL        O
+16  2 WALL        O
+17  2 WALL        O
+
+ 4  3 WALL        O
+ 9  3 GRASS       O
+17  3 WALL        O
+
+ 4  4 WALL        O
+ 6  4 WORD_BABA   W
+ 7  4 WORD_IS     W
+ 8  4 WORD_YOU    W
+15  4 FLAG        O
+17  4 WALL        O
+
+ 4  5 WALL        O
+ 5  5 GRASS       O
+12  5 GRASS       O
+17  5 WALL        O
+
+ 4  6 WALL        O
+13  6 GRASS       O
+15  6 GRASS       O
+17  6 WALL        O
+21  6 WORD_GRASS  W
+
+ 4  7 WALL        O
+ 8  7 BABA        O
+11  7 GRASS       O
+14  7 GRASS       O
+16  7 GRASS       O
+17  7 WALL        O
+21  7 WORD_IS     W
+
+ 4  8 WALL        O
+ 5  8 GRASS       O
+11  8 GRASS       O
+13  8 WORD_FLAG   W
+15  8 WORD_WIN    W
+17  8 WALL        O
+21  8 WORD_STOP   W
+
+ 4  9 WALL        O
+ 6  9 GRASS       O
+11  9 GRASS       O
+14  9 GRASS       O
+17  9 WALL        O
+
+ 4 10 WALL        O
+ 9 10 GRASS       O
+12 10 GRASS       O
+17 10 WALL        O
+
+ 4 11 WALL        O
+ 5 11 WALL        O
+ 6 11 WALL        O
+ 7 11 WALL        O
+ 8 11 WALL        O
+ 9 11 WALL        O
+10 11 WALL        O
+11 11 WALL        O
+12 11 WALL        O
+13 11 WALL        O
+14 11 WALL        O
+15 11 WALL        O
+16 11 WALL        O
+17 11 WALL        O
+
+
+WORD_BABA  WORD_IS  WORD_YOU
+WORD_GRASS WORD_IS  WORD_STOP
