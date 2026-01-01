@@ -68,12 +68,12 @@ void Board::add_character(Character* character) {
     notify({*this, *character}); 
 }
 
-void Board::remove_character(Character* character) {
+void Board::remove_character(Character* character, bool notify_ruler) {
     Position pos = character->get_position();
     vector<Character*>& cell = get_cell(pos);
 
     cell.erase(std::remove(cell.begin(), cell.end(), character), cell.end());
-    notify({*this, *character}); 
+    if (notify_ruler) notify({*this, *character}); 
 }
 
 

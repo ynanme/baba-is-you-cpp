@@ -33,7 +33,7 @@ public:
     const vector<Character*>& at(const Position& pos) const;
 
     void add_character(Character* character);
-    void remove_character(Character* character);
+    void remove_character(Character* character, bool notify_ruler = true);
     const vector<Character*>& get_neighbor(Character& character, Direction direction);
     void set(Character * character, bool notify_ruler = true);
 

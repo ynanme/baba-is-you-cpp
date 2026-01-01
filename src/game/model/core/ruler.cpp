@@ -10,11 +10,7 @@ void Ruler :: update (const CharacterSet & event) {
 
     Position event_position = event.set_character.get_position();
 
-    cout << "ruler received notification for event at position " << event_position << endl;
-
     if (event.set_character.get_category() == Category::WORD) {
-
-        cout << "found a word at said position" << endl;
 
         vector<LabelT> potential_new_rules = filter_on_rules(
             filter_on_phrases(
@@ -32,11 +28,6 @@ void Ruler :: update (const CharacterSet & event) {
             )
         );
 
-        cout << "and deduced following new rules: ";
-        print_rules(potential_new_rules);
-        cout << "and following old rules: ";
-        print_rules(potential_old_rules);
-
         if (!potential_new_rules.empty() || !potential_old_rules.empty()) {
             notify({potential_new_rules, potential_old_rules});
         }
@@ -46,7 +37,7 @@ void Ruler :: update (const CharacterSet & event) {
 }
 
 
-vector<LabelT> Ruler :: filter_on_rules (const vector<LabelT> & filtered_phrases) {
+vector<LabelT> Ruler :: filter_on_rules (const vector<LabelT> & filtered_phrases) const {
 
     vector<LabelT> rules;
 
@@ -65,7 +56,7 @@ vector<LabelT> Ruler :: filter_on_rules (const vector<LabelT> & filtered_phrases
 }
 
 
-vector<LabelT> Ruler :: filter_on_phrases (const vector<CellT> & scanned_cells) {
+vector<LabelT> Ruler :: filter_on_phrases (const vector<CellT> & scanned_cells) const {
 
     vector<LabelT> phrases;
 
@@ -90,7 +81,7 @@ vector<LabelT> Ruler :: filter_on_phrases (const vector<CellT> & scanned_cells) 
 }
 
 
-vector<CellT> Ruler :: get_cells_to_scan (const Board & board, const vector<PositonT> & scanned_positions) {
+vector<CellT> Ruler :: get_cells_to_scan (const Board & board, const vector<PositonT> & scanned_positions) const {
 
     vector<CellT> cells_to_scan;
 
@@ -107,7 +98,7 @@ vector<CellT> Ruler :: get_cells_to_scan (const Board & board, const vector<Posi
 }
 
 
-vector<PositonT> Ruler :: get_positions_to_scan_for_rule_creation (Position word_position) {
+vector<PositonT> Ruler :: get_positions_to_scan_for_rule_creation (Position word_position) const {
     return {
         {
             Position::neighbor(word_position, Direction::LEFT, 2),
@@ -143,7 +134,7 @@ vector<PositonT> Ruler :: get_positions_to_scan_for_rule_creation (Position word
 }
 
 
-vector<PositonT> Ruler :: get_positions_to_scan_for_rule_destruction (Position word_position) {
+vector<PositonT> Ruler :: get_positions_to_scan_for_rule_destruction (Position word_position) const {
 
     Position up_neighbor = Position::neighbor(word_position, Direction::UP, 1);
     Position right_neighbor = Position::neighbor(word_position, Direction::RIGHT, 1);
@@ -216,7 +207,7 @@ vector<PositonT> Ruler :: get_positions_to_scan_for_rule_destruction (Position w
 }
 
 
-int Ruler :: word_index (const vector<Character *> & cell) {
+int Ruler :: word_index (const vector<Character *> & cell) const {
     for (size_t i = 0; i < cell.size(); i ++) {
         if (cell[i]->get_category() == Category::WORD) {
             return i;

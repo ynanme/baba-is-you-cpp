@@ -17,7 +17,7 @@ class Character {
 
         Character (Position position, Label label, Category category);
 
-        Position get_position () const;
+        const Position & get_position () const;
         Label get_label () const;
         Category get_category () const;
 

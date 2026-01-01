@@ -32,7 +32,7 @@ void Position :: shift (Direction direction) {
     }
 }
 
-Position Position :: neighbor (Position position, Direction direction, int range) {
+Position Position :: neighbor (const Position & position, Direction direction, int range) {
     Position neighbor {position.get_x(), position.get_y()};
     for (int i = 1; i <= range; i ++) {
         neighbor.shift(direction);

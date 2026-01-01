@@ -56,7 +56,7 @@ unordered_map<string, Category> Loader :: CATEGORIES = {
 
 
 
-Game* Loader::load(string file_path) {
+Game* Loader::load(string file_path) const {
 
     ifstream file(file_path);
     if (!file.is_open()) {
@@ -75,21 +75,19 @@ Game* Loader::load(string file_path) {
 }
 
 
-void Loader :: load_rules_and_characters(std::istream& file, Game* game) {
+void Loader :: load_rules_and_characters(std::istream& file, Game* game) const {
     string first;
     while (file >> first) {
-        if (isdigit(first[0])) {
+        if (isdigit(static_cast<unsigned char>(first[0]))) {
             int x = std::stoi(first);
             int y;
             string label, category;
             file >> y >> label >> category;
-            cout << x << " " << y << " " << label << " " << category << endl;
             game->add_character(new Character({x, y}, LABELS[label], CATEGORIES[category]));
         }
         else {
             string verb, property;
             file >> verb >> property;
-            cout << first << " " << verb << " " << property << endl;
             game->apply_rule({LABELS[first], LABELS[verb], LABELS[property]});
         }
     }

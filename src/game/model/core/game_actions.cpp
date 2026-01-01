@@ -1,16 +1,14 @@
 #include "game/model/core/game.hpp"
 
 
+
 void Game :: play (Direction direction, bool pull) {
-    cout << "---------------------------------------------------------------" << endl;
     vector<Character *> players_snapshot = players;
     Action * new_action = new Action(direction);
     for (Character * player: players_snapshot) {
-        cout << "playing with " << *player << " towards " << direction << endl;
         if (find(players.begin(), players.end(), player) != players.end())
             move(player, direction, new_action, pull);
     }
-    cout << "---------------------------------------------------------------" << endl;
     if (
         new_action->get_moved_characters().empty() &&
         new_action->get_destroyed_characters().empty()
@@ -22,26 +20,29 @@ void Game :: play (Direction direction, bool pull) {
 
 
 void Game :: move (Character * player, Direction direction, Action * ongoing_action, bool pull) {
+    
     Position destination = Position::neighbor(player->get_position(), direction);
     int pushes_range = pushes_chain_range(destination, direction);
-    cout << "chain range is " << pushes_range << endl;
+    
     if (pushes_range >= 0) {
+        
         launch_pushes(player->get_position(), direction, pushes_range, ongoing_action);
         move_character(player, direction, ongoing_action);
+        
         if (pull) {
             Position before = Position::neighbor(destination, !direction, 2);
             int pulls_range = pulls_chain_range(before, direction);
-            cout << "pull range is " << pulls_range << endl;
             if (
                 pulls_range > 0 &&
                 !has_property(Position::neighbor(before, direction), Property::STOP)
             ) launch_pulls(before, direction, pulls_range, ongoing_action);
         }
+
     }
 }
 
+
 void Game :: launch_pushes (Position start, Direction direction, int range, Action * ongoing_action) {
-    cout << "pushes launched from " << start << " towards " << direction << ", range " << range << endl;
     Position end = Position::neighbor(start, direction, range);
     while (end != start) {
         move_characters(end, direction, Property::PUSH, ongoing_action);
@@ -49,8 +50,8 @@ void Game :: launch_pushes (Position start, Direction direction, int range, Acti
     }
 }
 
+
 void Game :: launch_pulls (Position start, Direction direction, int range, Action * ongoing_action) {
-    cout << "pulls launched from " << start << " towards " << direction << ", range " << range << endl;
     while (range > 0) {
         move_characters(start, direction, Property::PULL, ongoing_action);
         start.shift(!direction);
@@ -73,6 +74,7 @@ int Game :: pushes_chain_range (Position start, Direction direction) {
     return range;
 }
 
+
 int Game :: pulls_chain_range (Position start, Direction direction) {
     int range = 0;
     while (
@@ -86,6 +88,7 @@ int Game :: pulls_chain_range (Position start, Direction direction) {
     return range;
 }
 
+
 void Game :: move_characters (Position position, Direction direction, Property moving_property, Action * ongoing_action) {
     for (Character * character: board->at(position)) {
         if (has_property(character, moving_property)) {
@@ -93,6 +96,7 @@ void Game :: move_characters (Position position, Direction direction, Property m
         }
     }
 }
+
 
 CoexistionResult Game :: get_coexistion_result (Character * visitor, Character * host) {
     if (has_property(visitor, Property::SINK) || has_property(host, Property::SINK)) {
@@ -113,6 +117,7 @@ CoexistionResult Game :: get_coexistion_result (Character * visitor, Character *
     return CoexistionResult::COEXISTED;
 }
 
+
 CoexistionResult Game :: get_prioritary_coexistion_result (Character * visitor, Position hosts_position) {
     CoexistionResult final_result = CoexistionResult::COEXISTED;
     for (Character * host: board->at(hosts_position)) {
@@ -125,41 +130,45 @@ CoexistionResult Game :: get_prioritary_coexistion_result (Character * visitor, 
 
 
 void Game :: move_character (Character * character, Direction direction, Action * ongoing_action) {
+    
     Position destination = Position::neighbor(character->get_position(), direction);
-    board->remove_character(character);
+    vector<Character *> neighbors = board->at(destination);
+    
     switch (get_prioritary_coexistion_result(character, destination)) {
+        
         case CoexistionResult::WON:
-            cout << "WON" << endl;
             register_move(character, direction, ongoing_action, true);
             break;
+        
         case CoexistionResult::DEFEATED:
-            cout << "DEFEATED" << endl;
             register_destruction(character, ongoing_action);
             break;
+        
         case CoexistionResult::MELTED:
-            cout << "MELTED" << endl;
             register_destruction(character, ongoing_action);
             break;
+        
         case CoexistionResult::SINKED:
-            cout << "SINKED" << endl;
             register_destruction(character, ongoing_action);
-            for (Character * character: board->at(destination)) register_destruction(character, ongoing_action);
+            for (Character * character: neighbors) register_destruction(character, ongoing_action);
             break;
+        
         case CoexistionResult::OPENED:
-            cout << "OPENED" << endl;
             register_destruction(character, ongoing_action);
-            for (Character * character: board->at(destination))
+            for (Character * character: neighbors)
                 if (has_property(character, Property::SHUT)) register_destruction(character, ongoing_action);
             break;
+        
         case CoexistionResult::COEXISTED:
-            cout << "COEXISTED" << endl;
             register_move(character, direction, ongoing_action, false);
             break;
+
     }
+
 }
 
+
 void Game :: register_destruction (Character * character, Action * ongoing_action) {
-    cout << "destruction of " << *character << endl;
     board->remove_character(character);
     ongoing_action->add_destroyed_character(character);
     if (
@@ -174,8 +183,9 @@ void Game :: register_destruction (Character * character, Action * ongoing_actio
     }
 }
 
+
 void Game :: register_move (Character * character, Direction direction, Action * ongoing_action, bool is_move_winning) {
-    cout << "moving of " << *character << " towards " << direction << endl;
+    board->remove_character(character, false);
     character->move(direction);    
     board->set(character);
     ongoing_action->add_moved_character(character);
@@ -199,6 +209,7 @@ void Game :: undo () {
     }
 }
 
+
 void Game :: redo () {
     if (!undone_actions.empty()) {
         Action * last_undone_action = undone_actions.top();
@@ -212,6 +223,7 @@ void Game :: redo () {
         done_actions.push(last_undone_action);
     }
 }
+
 
 void Game :: replay_action_movings (Action * action, bool undoing) {
     Direction moving_direction = action->get_direction();

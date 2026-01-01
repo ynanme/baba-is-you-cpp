@@ -15,18 +15,15 @@ void Game :: update (const RuleChange & event) {
 
 
 void Game :: apply_rule (Rule rule) {
-    print_rules({rule});
     if (WORDS_PROPERTIES.find(get<2>(rule)) != WORDS_PROPERTIES.end())
         add_property(WORDS_SUBJECTS[get<0>(rule)], WORDS_PROPERTIES[get<2>(rule)]);
-    else{
-        cout << "tranfering from " << get<2>(rule) << " to " << get<0>(rule) << endl;
-        transfer_properties(WORDS_SUBJECTS[get<2>(rule)], WORDS_SUBJECTS[get<0>(rule)]);}
+    else
+        transfer_properties(WORDS_SUBJECTS[get<2>(rule)], WORDS_SUBJECTS[get<0>(rule)]);
     rules_history.insert(rule);
 }
 
 
 void Game :: unapply_rule (Rule rule) {
-    print_rules({rule});
     if (WORDS_PROPERTIES.find(get<2>(rule)) != WORDS_PROPERTIES.end())
         remove_property(WORDS_SUBJECTS[get<0>(rule)], WORDS_PROPERTIES[get<2>(rule)]);
     else
@@ -54,7 +51,6 @@ void Game :: make_player (Label label) {
             character->get_label() == label &&
             std::find(players.begin(), players.end(), character) == players.end()
         ) {
-            cout << character->get_label() << " at " << character->get_position() << " became player" << endl;
             players.push_back(character);
         }
     }
@@ -64,7 +60,6 @@ void Game :: make_player (Label label) {
 void Game :: unmake_player (Label label) {
     for (Character * character : characters) {
         if (character->get_label() == label) {
-            cout << character->get_label() << " at " << character->get_position() << " is no longer player" << endl;
             players.erase(remove(players.begin(), players.end(), character), players.end());
         }
     }

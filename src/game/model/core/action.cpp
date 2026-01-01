@@ -11,11 +11,11 @@ Direction Action :: get_direction () const {
     return direction;
 }
 
-vector<Character *> Action :: get_moved_characters () const {
+const vector<Character *> & Action :: get_moved_characters () const {
     return moved_characters;
 }
 
-vector<Character *> Action :: get_destroyed_characters () const {
+const vector<Character *> & Action :: get_destroyed_characters () const {
     return destroyed_characters;
 }
 

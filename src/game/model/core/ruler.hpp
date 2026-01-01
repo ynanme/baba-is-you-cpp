@@ -27,14 +27,14 @@ class Ruler: public Observer<CharacterSet>, public Subject<RuleChange> {
 
         static unordered_map<Label, Token> WORDS_TOKENS;
 
-        vector<PositonT> get_positions_to_scan_for_rule_creation (Position word_position);
-        vector<PositonT> get_positions_to_scan_for_rule_destruction (Position word_position);
-        vector<CellT> get_cells_to_scan (const Board & board, const vector<PositonT> & scanned_positions);
+        vector<PositonT> get_positions_to_scan_for_rule_creation (Position word_position) const;
+        vector<PositonT> get_positions_to_scan_for_rule_destruction (Position word_position) const;
+        vector<CellT> get_cells_to_scan (const Board & board, const vector<PositonT> & scanned_positions) const;
 
-        vector<LabelT> filter_on_phrases (const vector<CellT> & scanned_cells);
-        vector<LabelT> filter_on_rules (const vector<LabelT> & filtered_phrases);
+        vector<LabelT> filter_on_phrases (const vector<CellT> & scanned_cells) const;
+        vector<LabelT> filter_on_rules (const vector<LabelT> & filtered_phrases) const;
         
-        int word_index (const vector<Character *> & cell);
+        int word_index (const vector<Character *> & cell) const;
 
     public:
 

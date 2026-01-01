@@ -19,8 +19,8 @@ class Action {
         Action (Direction direction);
 
         Direction get_direction () const;
-        std::vector<Character *> get_moved_characters () const;
-        std::vector<Character *> get_destroyed_characters () const;
+        const std::vector<Character *> & get_moved_characters () const;
+        const std::vector<Character *> & get_destroyed_characters () const;
 
         void add_moved_character (Character * moved_character);
         void add_destroyed_character (Character * destroyed_character);

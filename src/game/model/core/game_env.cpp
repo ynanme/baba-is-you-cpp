@@ -32,7 +32,6 @@ Board& Game::get_board() const { return *board; }
 
 
 void Game::add_character(Character* character) {
-    cout << *character << endl;
     characters.push_back(character);
     board->set(character, false);
 }
@@ -66,6 +65,7 @@ bool Game :: has_property (Position position, Property property) {
 bool Game :: has_property_but (Character * character, Property property, Property but) {
     return has_property(character, property) && !has_property(character, but);
 }
+
 
 bool Game :: has_property_but (Position position, Property property, Property but) {
     for (Character * character: board->at(position)) {

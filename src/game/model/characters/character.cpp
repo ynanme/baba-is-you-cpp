@@ -9,7 +9,7 @@ label {label},
 category {category} {}
 
 
-Position Character :: get_position () const {
+const Position & Character :: get_position () const {
     return position;
 }
 

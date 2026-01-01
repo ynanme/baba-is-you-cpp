@@ -37,7 +37,7 @@
 20  2 WALL        O
 21  2 WALL        O
 
-16  3 BABA        O
+17  3 BABA        O
 18  3 WORD_BABA   W
 20  3 WORD_IS     W
 21  3 WORD_DEFEAT W

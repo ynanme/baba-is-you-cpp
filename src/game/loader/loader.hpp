@@ -16,11 +16,11 @@ class Loader {
         static unordered_map<string, Label> LABELS;
         static unordered_map<string, Category> CATEGORIES;
 
-        void load_rules_and_characters (std::istream& file, Game * game);
+        void load_rules_and_characters (std::istream& file, Game * game) const;
 
     public:
     
-        Game * load (std::string file_path);
+        Game * load (std::string file_path) const;
 
 };
 

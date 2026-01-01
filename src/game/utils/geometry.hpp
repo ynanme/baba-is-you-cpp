@@ -31,7 +31,7 @@ class Position {
 
         void shift (Direction direction);
 
-        static Position neighbor (Position position, Direction direction, int range = 1);
+        static Position neighbor (const Position & position, Direction direction, int range = 1);
 
 };
 
