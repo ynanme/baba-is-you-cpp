@@ -14,8 +14,10 @@ void Game :: play (Direction direction, bool pull) {
         new_action->get_destroyed_characters().empty()
     )
         delete new_action;
-    else
+    else {
         done_actions.push(new_action);
+        clear_actions(undone_actions);
+    }
 }
 
 

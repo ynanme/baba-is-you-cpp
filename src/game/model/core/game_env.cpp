@@ -15,16 +15,18 @@ ruler {new Ruler()}
 
 Game :: ~ Game () {
     for (Character * character: characters) delete character;
-    while (!done_actions.empty()) {
-        delete done_actions.top();
-        done_actions.pop();
-    }
-    while (!undone_actions.empty()) {
-        delete undone_actions.top();
-        undone_actions.pop();
-    }
+    clear_actions(done_actions);
+    clear_actions(undone_actions);
     delete ruler;
     delete board;
+}
+
+
+void Game :: clear_actions (stack<Action *> & actions) {
+    while (!actions.empty()) {
+        delete actions.top();
+        actions.pop();
+    }
 }
 
 

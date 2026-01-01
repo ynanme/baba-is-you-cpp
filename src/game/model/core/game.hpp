@@ -94,6 +94,7 @@ class Game : public Observer<RuleChange> {
         bool has_property (Position position, Property property);
         bool has_property_but (Character * character, Property property, Property but);
         bool has_property_but (Position position, Property property, Property but);
+        void clear_actions (stack<Action *> & actions);
         void terminate(bool win, const std::string& message = "");
         
     
