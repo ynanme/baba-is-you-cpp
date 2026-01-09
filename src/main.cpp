@@ -88,7 +88,7 @@ int main() {
 
                     if (victory && currentMode == 0) {
                         unlocked[choice] = true;
-                        if (choice + 1 < unlocked.size()) {
+                        if (choice + 1 < (int)unlocked.size()) {
                             unlocked[choice + 1] = true;
                         }
                     }
