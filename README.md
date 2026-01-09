@@ -24,19 +24,19 @@ La compilation et l’exécution du jeu se font automatiquement via le Makefile.
     cd otosan
     ```
 
-2.  **Nettoyer les fichiers de compilation :**
-    ```bash
-    make clean
-    ```
-
-3.  **Compiler et lancer le jeu :**
+2.  **Compiler et lancer le jeu :**
     ```bash
     make
     ```
     Le `make` compile le projet et lance directement le jeu.
 
+3.  **Pour nettoyer les fichiers de compilation :**
+    ```bash
+    make clean
+    ```
+
 ## Exemple de commandes dans le terminal
 
 ```bash
-/mnt/c/Users/DELL/OneDrive/Desktop/Cours Master/C++/otosan$ make clean
 /mnt/c/Users/DELL/OneDrive/Desktop/Cours Master/C++/otosan$ make
+/mnt/c/Users/DELL/OneDrive/Desktop/Cours Master/C++/otosan$ make clean
