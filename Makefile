@@ -33,9 +33,13 @@ OBJECTS = \
 	$(BUILD)main.o
 
 
-all : $(OBJECTS)
+all: otosan
+
+otosan : $(OBJECTS)
 	@mkdir -p $(BUILD)
 	$(CC) -o otosan $(OBJECTS) -lsfml-graphics -lsfml-window -lsfml-system
+
+run: otosan
 	./otosan
 
 $(UTILS_BUILD)geometry.o : $(UTILS)geometry.cpp $(UTILS)geometry.hpp
@@ -116,3 +120,5 @@ $(BUILD)main.o : $(SRC)main.cpp $(CORE)board.hpp $(CORE)game.hpp $(LOADER)loader
 
 clean :
 	rm -rf $(BUILD) otosan
+
+.PHONY: all run clean
