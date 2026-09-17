@@ -41,17 +41,15 @@ their respective copyright holders.
 They are included here solely as part of a free, non-commercial academic
 project.
 
-## Font
+### Font
 
-`res/assets/DejaVuSans.ttf` is part of the DejaVu Fonts project.
+`res/assets/DejaVuSans.ttf` is part of the DejaVu Fonts family.
 
-DejaVu Fonts:
+License:
+[`licenses/DEJAVU-FONTS-LICENSE.txt`](licenses/DEJAVU-FONTS-LICENSE.txt)
+
+Official project:
 https://dejavu-fonts.github.io/
-
-The font is distributed under the DejaVu / Bitstream Vera font license.
-
-See:
-https://dejavu-fonts.github.io/License.html
 
 ## Disclaimer
 
